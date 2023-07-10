@@ -1,1 +1,5 @@
 rootProject.name = 'boardapplication'
+include 'module-admin'
+include 'module-common'
+include 'module-board'
+
