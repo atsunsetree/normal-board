@@ -49,6 +49,8 @@ subprojects {
 
 project(':module-admin') {
     dependencies {
+        implementation(project(':module-board'))
+
         developmentOnly 'org.springframework.boot:spring-boot-devtools'
         // JSP
         implementation 'javax.servlet:jstl'
