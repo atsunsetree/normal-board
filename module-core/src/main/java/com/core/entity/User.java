@@ -1,9 +1,14 @@
-package com.boardapplication.entity;
+package com.core.entity;
+
+import lombok.Getter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "user_tb")
+@Getter
+@ToString
 public class User {
 
     @Id

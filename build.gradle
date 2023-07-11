@@ -39,6 +39,8 @@ subprojects {
         runtimeOnly 'com.mysql:mysql-connector-j'
         annotationProcessor 'org.projectlombok:lombok'
 
+        implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
     }
 
@@ -47,14 +49,23 @@ subprojects {
     }
 }
 
-project(':module-admin') {
+project(':module-core') {
+
     dependencies {
-        implementation(project(':module-board'))
+
+    }
+}
+
+project(':module-admin') {
+
+    dependencies {
+        implementation project(':module-core')
 
         developmentOnly 'org.springframework.boot:spring-boot-devtools'
-        // JSP
-        implementation 'javax.servlet:jstl'
-        implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+
+//        // JSP
+//        implementation 'javax.servlet:jstl'
+//        implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
         // MyBatis
         implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.1'
         testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.3.1'
@@ -63,9 +74,11 @@ project(':module-admin') {
 
 project(':module-board') {
     dependencies {
+        implementation project(':module-core')
+
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation 'org.springframework.boot:spring-boot-starter-security'
-        implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
         implementation 'org.springframework.boot:spring-boot-starter-validation'
         implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
