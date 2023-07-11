@@ -1,6 +1,6 @@
 package com.adminapplication.admin;
 
-import com.boardapplication.entity.User;
+import com.core.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

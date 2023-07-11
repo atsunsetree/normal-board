@@ -1,9 +1,9 @@
-package com.boardapplication.entity;
+package com.core.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "user_tb")
 public class User {
 
     @Id
