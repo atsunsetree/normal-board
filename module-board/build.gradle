@@ -2,7 +2,14 @@ plugins {
     id 'java'
 }
 
-group = 'com.boardapplication'
+bootJar {
+    enabled = false
+}
+jar {
+    enabled = true
+}
+
+group = 'com.commonapplication'
 version = '0.0.1-SNAPSHOT'
 
 repositories {
