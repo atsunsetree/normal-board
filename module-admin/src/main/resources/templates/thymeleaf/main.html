@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th=":http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 메인</title>
+</head>
+<body>
+    <table class="tb_col">
+        <tr th:each="user : ${users}">
+            <td th:text="${user.getUsername}"></td>
+            <td th:text="${user.getEmail}"></td>
+        </tr>
+    </table>
+</body>
+</html>

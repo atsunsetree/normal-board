@@ -1,4 +1,4 @@
-package com.boardapplication.entity;
+package com.core.entity;
 
 public enum Category {
 
