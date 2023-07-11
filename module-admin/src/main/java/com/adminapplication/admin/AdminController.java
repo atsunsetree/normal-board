@@ -26,11 +26,9 @@ public class AdminController {
     @GetMapping("/userList")
     public String main(Model model) {
 
-        List<User> users = adminRepository.findAllUsers();
+        model.addAttribute("users", adminService.getUserList());
 
-        model.addAttribute("users", users);
-
-        return "admin/main";
+        return "/main";
     }
 
 }

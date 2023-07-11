@@ -7,5 +7,4 @@
     <select id="findAllUsers" resultType="com.core.entity.User">
         select * from user_tb
     </select>
-
 </mapper>
