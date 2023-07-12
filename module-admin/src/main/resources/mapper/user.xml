@@ -5,9 +5,9 @@
 
 <mapper namespace="com.adminapplication.admin.AdminRepository">
 
-    <select id="findAllUsers" resultType="com.core.entity.User">
-        select * from user_tb
-    </select>
+<!--    <select id="findAllUsers" resultType="com.core.entity.User">-->
+<!--        select * from user_tb-->
+<!--    </select>-->
 
 <!--    <select id="findAllUsersInfo" resultType="com.adminapplication.dto.AllUsersInfoResponseDto">-->
 <!--        SELECT nickname, email, role, qty_of_board, qty_of_comment-->
@@ -42,4 +42,9 @@
             ON user_tb.id = board_tb.user_id GROUP BY user_tb.id
         ) AS join_b ON user_tb.id = join_b.id ${orderBy} ${target} ${desc}
     </select>
+
+    <update id="updateById">
+        UPDATE user_tb SET role = #{role} WHERE id = #{id}
+    </update>
+
 </mapper>
