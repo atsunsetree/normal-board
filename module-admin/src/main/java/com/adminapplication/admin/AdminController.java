@@ -5,8 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -21,13 +20,23 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+//    @GetMapping("/userList")
+//    public String main(Model model) {
+//        model.addAttribute("userInfoList", adminService.getUserInfoList());
+//        return "/main";
+//    }
+
+    /**
+     * 회원 정보를 받아 출력합니다.
+     * 요청받은 target 값이 null 또는 빈공간 일 때 회원 id로 오름차순 정렬 하고
+     * target 값이 board 또는 comment 일 때 게시글 수 또는 댓글 수로 내림차순 정렬 합니다.
+     * @param target
+     * @param model
+     * @return
+     */
     @GetMapping("/userList")
-    public String main(Model model) {
-
-//        model.addAttribute("users", adminService.getUserList());
-        model.addAttribute("userInfoList", adminService.getUserInfoList());
-
+    public String main(@RequestParam(required = false) String target, Model model) {
+        model.addAttribute("userInfoList", adminService.getSortedUserInfoList(target));
         return "/main";
     }
-
 }

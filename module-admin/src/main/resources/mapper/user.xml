@@ -9,10 +9,27 @@
         select * from user_tb
     </select>
 
-    <select id="findAllUsersInfo" resultType="com.adminapplication.dto.AllUsersInfoResponseDto">
-        SELECT user_tb.nickname, user_tb.email, user_tb.role, join_b.qty_of_board, join_c.qty_of_comment
+<!--    <select id="findAllUsersInfo" resultType="com.adminapplication.dto.AllUsersInfoResponseDto">-->
+<!--        SELECT nickname, email, role, qty_of_board, qty_of_comment-->
+<!--        FROM user_tb-->
+<!--        LEFT OUTER JOIN (-->
+<!--            SELECT user_tb.id, count(comment_tb.id) qty_of_comment-->
+<!--            FROM user_tb-->
+<!--            LEFT OUTER JOIN comment_tb-->
+<!--            ON user_tb.id = comment_tb.user_id GROUP BY user_tb.id-->
+<!--        ) AS join_c ON user_tb.id = join_c.id-->
+<!--            LEFT OUTER JOIN (-->
+<!--            SELECT user_tb.id, count(board_tb.id) qty_of_board-->
+<!--            FROM user_tb-->
+<!--            LEFT OUTER JOIN board_tb-->
+<!--            ON user_tb.id = board_tb.user_id GROUP BY user_tb.id-->
+<!--        ) AS join_b ON user_tb.id = join_b.id-->
+<!--    </select>-->
+
+    <select id="findSortedAllUsersInfo" resultType="com.adminapplication.dto.AllUsersInfoResponseDto">
+        SELECT nickname, email, role, qty_of_board, qty_of_comment
         FROM user_tb
-        LEFT OUTER JOIN (
+            LEFT OUTER JOIN (
             SELECT user_tb.id, count(comment_tb.id) qty_of_comment
             FROM user_tb
             LEFT OUTER JOIN comment_tb
@@ -23,6 +40,6 @@
             FROM user_tb
             LEFT OUTER JOIN board_tb
             ON user_tb.id = board_tb.user_id GROUP BY user_tb.id
-        ) AS join_b ON user_tb.id = join_b.id
+        ) AS join_b ON user_tb.id = join_b.id ${orderBy} ${target} ${desc}
     </select>
 </mapper>
