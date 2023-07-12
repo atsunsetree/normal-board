@@ -1,28 +1,48 @@
 package com.core.entity;
 
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity(name = "user_tb")
 @Getter
-@ToString
-public class User {
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
+@Table(name = "user_tb")
+@Entity
 
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false, length = 20)
     private String username;
 
+    @Column(nullable = false, length = 60) // 패스워드 인코딩(BCrypt)
     private String password;
+
+    @Column(nullable = false, length = 20)
     private String email;
+
+    @Column(nullable = false, length = 20)
     private String nickname;
 
-    @Enumerated(value = EnumType.STRING)
-    private Role role;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role; // NORMAL, VIP, BLACK
+
+    @CreatedDate
+    @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
+
 }
