@@ -6,7 +6,7 @@ build/
 !**/src/test/**/build/
 
 application.yml
-/resource/static/asset/upload/**
+upload/
 ### STS ###
 .apt_generated
 .classpath
