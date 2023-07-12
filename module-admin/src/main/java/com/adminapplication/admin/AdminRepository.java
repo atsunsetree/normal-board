@@ -8,6 +8,8 @@ import java.util.List;
 
 @Mapper
 public interface AdminRepository {
-    List<User> findAllUsers();
-    List<AllUsersInfoResponseDto> findAllUsersInfo();
+//    List<User> findAllUsers();
+//    List<AllUsersInfoResponseDto> findAllUsersInfo();
+
+    List<AllUsersInfoResponseDto> findSortedAllUsersInfo(String orderBy, String target, String desc);
 }

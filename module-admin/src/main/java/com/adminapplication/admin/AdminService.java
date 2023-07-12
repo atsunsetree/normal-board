@@ -13,15 +13,31 @@ public class AdminService { // 비즈니스 로직
     @Autowired
     private AdminRepository adminRepository;
 
-    public List<User> getUserList() {
-        return adminRepository.findAllUsers();
+//    public List<User> getUserList() {
+//        return adminRepository.findAllUsers();
+//    }
+
+//    public List<AllUsersInfoResponseDto> getUserInfoList() {
+//        return adminRepository.findAllUsersInfo();
+//    }
+
+    public List<AllUsersInfoResponseDto> getSortedUserInfoList(String target) {
+        String orderBy = "ORDER BY";
+        String desc ="DESC";
+
+        if (target == null || target.isBlank()) {
+            target = "";
+            orderBy = "";
+            desc = "";
+        }
+        if (target.equals("board")) target = "qty_of_board";
+
+        if (target.equals("comment")) target = "qty_of_comment";
+
+
+        return adminRepository.findSortedAllUsersInfo(orderBy, target, desc);
     }
 
-    public List<AllUsersInfoResponseDto> getUserInfoList() {
-        List<AllUsersInfoResponseDto> allUsersInfoResponseDto = adminRepository.findAllUsersInfo();
-        System.out.println(allUsersInfoResponseDto.get(0).toString());
 
-        return adminRepository.findAllUsersInfo();
-    }
 
 }
