@@ -1,6 +1,7 @@
 package com.adminapplication.admin;
 
 import com.core.entity.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,13 +21,11 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    @Autowired
-    private AdminRepository adminRepository;
-
     @GetMapping("/userList")
     public String main(Model model) {
 
-        model.addAttribute("users", adminService.getUserList());
+//        model.addAttribute("users", adminService.getUserList());
+        model.addAttribute("userInfoList", adminService.getUserInfoList());
 
         return "/main";
     }

@@ -3,7 +3,7 @@ package com.core.entity;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "board_tb")
 public class Board {
 
     @Id
