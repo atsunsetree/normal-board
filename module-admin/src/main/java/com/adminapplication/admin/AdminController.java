@@ -26,15 +26,6 @@ public class AdminController {
 //        return "/main";
 //    }
 
-    /**
-     * 메인 페이지 요청 시 회원 정보를 받아 화면에 출력합니다.
-     * 요청 받은 target 값이 null 또는 빈공간 일 때 회원 id로 오름차순 정렬 하고
-     * target 값이 board 또는 comment 일 때 게시글 수 또는 댓글 수로 내림차순 정렬 합니다.
-     * localhost:8081/admin/userList?target={}
-     * @param target
-     * @param model
-     * @return
-     */
     @GetMapping("/userList")
     public String main(@RequestParam(name = "target", required = false) String target, Model model) {
         model.addAttribute("userInfoList", adminService.getSortedUserInfoList(target));
@@ -45,5 +36,17 @@ public class AdminController {
     public String setRole(@RequestParam(name = "id") int id) {
         adminService.setRoleById(id);
         return "redirect:/admin/userList";
+    }
+
+    @GetMapping("/boardList")
+    public String board(Model model) {
+        model.addAttribute("boardList", adminService.getBoardList());
+        return "/board";
+    }
+
+    @GetMapping("/status")
+    public String setStatus(@RequestParam(name = "id") int id) {
+        adminService.setStatusById(id);
+        return "redirect:/admin/boardList";
     }
 }
