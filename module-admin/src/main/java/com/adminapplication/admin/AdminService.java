@@ -49,6 +49,7 @@ public class AdminService { // 비즈니스 로직
         return adminRepository.findSortedAllUsersInfo(orderBy, target, desc);
     }
 
+    // TODO: 예외 처리, 이메일 메세지에 대한 enum
     /**
      * 사용자의 권한을 수정합니다.
      * 화면에서 권한 버튼을 누를 때 사용자 권한이 BLACK이 아니면 BLACK으로 변경하고
