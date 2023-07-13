@@ -9,23 +9,6 @@
 <!--        select * from user_tb-->
 <!--    </select>-->
 
-<!--    <select id="findAllUsersInfo" resultType="com.adminapplication.dto.AllUsersInfoResponseDto">-->
-<!--        SELECT nickname, email, role, qty_of_board, qty_of_comment-->
-<!--        FROM user_tb-->
-<!--        LEFT OUTER JOIN (-->
-<!--            SELECT user_tb.id, count(comment_tb.id) qty_of_comment-->
-<!--            FROM user_tb-->
-<!--            LEFT OUTER JOIN comment_tb-->
-<!--            ON user_tb.id = comment_tb.user_id GROUP BY user_tb.id-->
-<!--        ) AS join_c ON user_tb.id = join_c.id-->
-<!--            LEFT OUTER JOIN (-->
-<!--            SELECT user_tb.id, count(board_tb.id) qty_of_board-->
-<!--            FROM user_tb-->
-<!--            LEFT OUTER JOIN board_tb-->
-<!--            ON user_tb.id = board_tb.user_id GROUP BY user_tb.id-->
-<!--        ) AS join_b ON user_tb.id = join_b.id-->
-<!--    </select>-->
-
     <select id="findSortedAllUsersInfo" resultType="com.adminapplication.dto.AllUsersInfoResponseDto">
         SELECT nickname, email, role, qty_of_board, qty_of_comment
         FROM user_tb
@@ -47,7 +30,7 @@
         UPDATE user_tb SET role = #{role} WHERE id = #{id}
     </update>
 
-    <select id="findBoardSizeByUserId" resultType="Integer">
+    <select id="countBoardSizeByUserId" resultType="Integer">
         select count(id) from board_tb WHERE user_id = #{id}
     </select>
 
@@ -65,8 +48,21 @@
     </update>
 
     <select id="findBoardById" resultType="com.core.entity.Board">
-        select * from board_tb WHERE id = #{id}
+        SELECT * FROM board_tb WHERE id = #{id}
     </select>
+
+    <delete id="deleteBoardById">
+        DELETE FROM board_tb WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteAllCommentsByBoardId">
+        DELETE FROM comment_tb WHERE board_id = #{id}
+    </delete>
+
+    <select id="countCommentSizeByBoardId" resultType="Integer">
+        select count(id) from comment_tb WHERE board_id = #{id}
+    </select>
+
 
 
 </mapper>
