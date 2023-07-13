@@ -5,11 +5,24 @@
     <title>관리자 메인</title>
 </head>
 <body>
+
     <table class="tb_col">
-        <tr th:each="user : ${users}">
-            <td th:text="${user.getUsername}"></td>
-            <td th:text="${user.getEmail}"></td>
+        <tr>
+            <td>닉네임</td>
+            <td>이메일</td>
+            <td>권한</td>
+            <td>게시글 수</td>
+            <td>댓글 수</td>
+        </tr>
+        <tr th:each="userInfo : ${userInfoList}">
+            <td th:text="${userInfo.getNickname}"></td>
+            <td th:text="${userInfo.getEmail}"></td>
+            <td th:text="${userInfo.getRole}"></td>
+            <td th:text="${userInfo.getQtyOfBoard}"></td>
+            <td th:text="${userInfo.getQtyOfComment}"></td>
         </tr>
     </table>
+
+
 </body>
 </html>
