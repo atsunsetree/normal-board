@@ -13,5 +13,9 @@ public interface AdminRepository {
 
     List<AllUsersInfoResponseDto> findSortedAllUsersInfo(String orderBy, String target, String desc);
 
-    int updateById(String role, Integer id);
+    int updateRoleById(String role, Integer id);
+
+    User findById(Integer id);
+
+    int findBoardSizeByUserId(Integer id);
 }

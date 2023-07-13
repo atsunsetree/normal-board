@@ -43,8 +43,19 @@
         ) AS join_b ON user_tb.id = join_b.id ${orderBy} ${target} ${desc}
     </select>
 
-    <update id="updateById">
+    <update id="updateRoleById">
         UPDATE user_tb SET role = #{role} WHERE id = #{id}
     </update>
+
+    <select id="findBoardSizeByUserId" resultType="Integer">
+        select count(id) from board_tb WHERE user_id = #{id}
+    </select>
+
+    <select id="findById" resultType="com.core.entity.User">
+        select * from user_tb WHERE id = #{id}
+    </select>
+
+
+
 
 </mapper>
