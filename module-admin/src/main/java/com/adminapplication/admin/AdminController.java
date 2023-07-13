@@ -2,6 +2,7 @@ package com.adminapplication.admin;
 
 import com.core.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +30,7 @@ public class AdminController {
     }
 
     @GetMapping("/role")
-    public String setRole(@RequestParam(name = "id") int id) {
+    public String setRole(@RequestParam(name = "id") Integer id) {
         // 유효성 검사
 
         // 서비스 호출 - 사용자 권한 변경(블랙리스트/본래 권한)
@@ -47,7 +48,7 @@ public class AdminController {
     }
 
     @GetMapping("/status")
-    public String setStatus(@RequestParam(name = "id") int id) {
+    public String setStatus(@RequestParam(name = "id") Integer id) {
         // 유효성 검사
 
         // 서비스 호출 - 게시글 상태 변경(숨기기/보이기)
@@ -56,13 +57,19 @@ public class AdminController {
         return "redirect:/admin/boardList";
     }
 
-    @GetMapping("boardList/{id}/delete")
-    public String deleteBoard(@PathVariable int id) {
+    @Autowired
+    private SqlSession sqlSession;
+
+
+    // @PathVariable("id")
+    @GetMapping("/boardList/{id}/delete")
+    public String deleteBoard(@PathVariable(name = "id") Integer id) {
         // 유효성 검사
 
         // 서비스 호출 - 게시글 및 해당 게시글의 댓글 삭제
         adminService.deleteAllCommentByBoardId(id);
         adminService.deleteBoardById(id);
+
         // 응답
         return "redirect:/admin/boardList";
     }

@@ -14,21 +14,21 @@ public interface AdminRepository {
 
     List<AllUsersInfoResponseDto> findSortedAllUsersInfo(String orderBy, String target, String desc);
 
-    int updateRoleById(String role, Integer id);
+    Integer updateRoleById(String role, Integer id);
 
     User findUserById(Integer id);
 
     Board findBoardById(Integer id);
 
-    int countBoardSizeByUserId(Integer id);
+    Integer countBoardSizeByUserId(Integer id);
 
     List<AllBoardResponseDto> findAllBoards();
 
-    int updateStatusById(String status, Integer id);
+    Integer updateStatusById(String status, Integer id);
 
-    int deleteBoardById(Integer id);
+    Integer deleteBoardById(Integer id);
 
     void deleteAllCommentsByBoardId(Integer id);
 
-    int countCommentSizeByBoardId(Integer id);
+    Integer countCommentSizeByBoardId(Integer id);
 }
