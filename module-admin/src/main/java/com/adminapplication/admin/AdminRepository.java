@@ -2,6 +2,7 @@ package com.adminapplication.admin;
 
 import com.adminapplication.dto.AllBoardResponseDto;
 import com.adminapplication.dto.AllUsersInfoResponseDto;
+import com.core.entity.Board;
 import com.core.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -16,9 +17,13 @@ public interface AdminRepository {
 
     int updateRoleById(String role, Integer id);
 
-    User findById(Integer id);
+    User findUserById(Integer id);
+
+    Board findBoardById(Integer id);
 
     int findBoardSizeByUserId(Integer id);
 
     List<AllBoardResponseDto> findAllBoards();
+
+    int updateStatusById(String status, Integer id);
 }

@@ -1,8 +1,11 @@
 package com.core.entity;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Getter
 @Entity(name = "board_tb")
 public class Board {
 

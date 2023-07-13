@@ -3,7 +3,9 @@ package com.adminapplication.admin;
 import com.adminapplication.dto.AllBoardResponseDto;
 import com.adminapplication.dto.AllUsersInfoResponseDto;
 import com.adminapplication.emailservice.EmailService;
+import com.core.entity.Board;
 import com.core.entity.Role;
+import com.core.entity.Status;
 import com.core.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,7 +56,7 @@ public class AdminService { // 비즈니스 로직
     /**
      * 사용자의 권한을 수정합니다.
      * 화면에서 권한 버튼을 누를 때 사용자 권한이 BLACK이 아니면 BLACK으로 변경하고
-     * BLACK이 아니면 게시글 수를 체크해 우수회원 또는 새싹회원으로 변경하며
+     * BLACK이면 게시글 수를 체크해 우수회원 또는 새싹회원으로 변경하며
      * 이를 이메일로 고객에게 알립니다.
      * @param id
      * @return
@@ -62,7 +64,7 @@ public class AdminService { // 비즈니스 로직
     public int setRoleById(Integer id) {
         Role role = Role.BLACK;
 
-        User userData = adminRepository.findById(id);
+        User userData = adminRepository.findUserById(id);
         Role principalRole = userData.getRole();
 
         // 사용자 권한 체크 후 id 의 게시글 수 검색
@@ -84,5 +86,22 @@ public class AdminService { // 비즈니스 로직
 
 
         return adminRepository.findAllBoards();
+    }
+
+    // TODO: 유효성 검사
+    /**
+     * 게시글 상태를 수정합니다.
+     * 화면에서 상태 버튼을 누를 때 게시글 상태가 BLACK이 아니면 BLACK으로 변경하고
+     * BLACK이면 NORMAL로 변경합니다.
+     * @param id
+     * @return
+     */
+    public int setStatusById(Integer id) {
+        String status = Status.BLACK.name();
+        Board boardData = adminRepository.findBoardById(id);
+
+        if(boardData.getStatus().equals(Status.BLACK)) status = Status.NORMAL.name();
+
+        return adminRepository.updateStatusById(status, id);
     }
 }
