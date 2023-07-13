@@ -46,30 +46,33 @@ public class AdminService { // 비즈니스 로직
         if (target.equals("board")) target = "qty_of_board";
         if (target.equals("comment")) target = "qty_of_comment";
 
-        emailService.sendMail();
-
         return adminRepository.findSortedAllUsersInfo(orderBy, target, desc);
     }
 
-    // TODO: 권한 변경 시 해당 고객에 이메일 전송
     /**
      * 사용자의 권한을 수정합니다.
      * 화면에서 권한 버튼을 누를 때 사용자 권한이 BLACK이 아니면 BLACK으로 변경하고
-     * BLACK이 아니면 게시글 수를 체크해 우수회원 또는 새싹회원으로 변경합니다.
+     * BLACK이 아니면 게시글 수를 체크해 우수회원 또는 새싹회원으로 변경하며
+     * 이를 이메일로 고객에게 알립니다.
      * @param id
      * @return
      */
     public int setRoleById(Integer id) {
         Role role = Role.BLACK;
 
+        User userData = adminRepository.findById(id);
+        Role principalRole = userData.getRole();
+
         // 사용자 권한 체크 후 id 의 게시글 수 검색
-        Role principalRole = adminRepository.findById(id).getRole();
         if (principalRole.equals(Role.BLACK)) {
             // blacklist 테이블을 하나 만들어두고 참조해서 원래의 권한을 찾아오는 방법도 생각했지만
             // 여기서는 이런 방법으로 구현해봄.
             if(adminRepository.findBoardSizeByUserId(id) >= 10) role = Role.VIP;
             if(adminRepository.findBoardSizeByUserId(id) < 10) role = Role.NORMAL;
         }
+
+        // 변경 전 - 후 권한 안내 메일 전송
+        emailService.sendMail(userData, principalRole, role);
 
         return adminRepository.updateRoleById(role.name(), id);
     }
