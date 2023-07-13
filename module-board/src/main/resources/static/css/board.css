@@ -1,0 +1,34 @@
+.card-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.board-list {
+    flex-basis: calc(33.33% - 10px);
+    margin-bottom: 20px;
+}
+
+.board-content {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-body{
+    height: 300px;
+    width: auto;
+}
+
+.board-title{
+    font-size: large;
+    color: black;
+}
+.board-title:hover{
+    color: #3dd5f3;
+}
+.board-number{
+    font-size: revert;
+}
