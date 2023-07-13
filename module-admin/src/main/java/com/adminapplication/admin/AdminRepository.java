@@ -11,7 +11,6 @@ import java.util.List;
 @Mapper
 public interface AdminRepository {
 //    List<User> findAllUsers();
-//    List<AllUsersInfoResponseDto> findAllUsersInfo();
 
     List<AllUsersInfoResponseDto> findSortedAllUsersInfo(String orderBy, String target, String desc);
 
@@ -21,9 +20,15 @@ public interface AdminRepository {
 
     Board findBoardById(Integer id);
 
-    int findBoardSizeByUserId(Integer id);
+    int countBoardSizeByUserId(Integer id);
 
     List<AllBoardResponseDto> findAllBoards();
 
     int updateStatusById(String status, Integer id);
+
+    int deleteBoardById(Integer id);
+
+    void deleteAllCommentsByBoardId(Integer id);
+
+    int countCommentSizeByBoardId(Integer id);
 }

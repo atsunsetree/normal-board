@@ -25,10 +25,6 @@ public class AdminService { // 비즈니스 로직
 //        return adminRepository.findAllUsers();
 //    }
 
-//    public List<AllUsersInfoResponseDto> getUserInfoList() {
-//        return adminRepository.findAllUsersInfo();
-//    }
-
     /**
      * 메인 페이지 요청 시 DB에서 회원 정보를 받아 옵니다.
      * 요청 받은 target 값이 null 또는 빈공간 일 때 회원 id로 오름차순 정렬 하고
@@ -52,7 +48,6 @@ public class AdminService { // 비즈니스 로직
         return adminRepository.findSortedAllUsersInfo(orderBy, target, desc);
     }
 
-    // TODO: 예외 처리, 이메일 메세지에 대한 enum
     /**
      * 사용자의 권한을 수정합니다.
      * 화면에서 권한 버튼을 누를 때 사용자 권한이 BLACK이 아니면 BLACK으로 변경하고
@@ -71,8 +66,8 @@ public class AdminService { // 비즈니스 로직
         if (principalRole.equals(Role.BLACK)) {
             // blacklist 테이블을 하나 만들어두고 참조해서 원래의 권한을 찾아오는 방법도 생각했지만
             // 여기서는 이런 방법으로 구현해봄.
-            if(adminRepository.findBoardSizeByUserId(id) >= 10) role = Role.VIP;
-            if(adminRepository.findBoardSizeByUserId(id) < 10) role = Role.NORMAL;
+            if(adminRepository.countBoardSizeByUserId(id) >= 10) role = Role.VIP;
+            if(adminRepository.countBoardSizeByUserId(id) < 10) role = Role.NORMAL;
         }
 
         // 변경 전 - 후 권한 안내 메일 전송
@@ -81,14 +76,10 @@ public class AdminService { // 비즈니스 로직
         return adminRepository.updateRoleById(role.name(), id);
     }
 
-
     public List<AllBoardResponseDto> getBoardList() {
-
-
         return adminRepository.findAllBoards();
     }
 
-    // TODO: 유효성 검사
     /**
      * 게시글 상태를 수정합니다.
      * 화면에서 상태 버튼을 누를 때 게시글 상태가 BLACK이 아니면 BLACK으로 변경하고
@@ -103,5 +94,24 @@ public class AdminService { // 비즈니스 로직
         if(boardData.getStatus().equals(Status.BLACK)) status = Status.NORMAL.name();
 
         return adminRepository.updateStatusById(status, id);
+    }
+
+    /**
+     * 게시글을 삭제합니다.
+     * @param id
+     * @return
+     */
+    public int deleteBoardById(Integer id) {
+        return adminRepository.deleteBoardById(id);
+    }
+
+    /**
+     * 게시글에 포함된 모든 댓글을 삭제합니다.
+     * @param id
+     */
+    public void deleteAllCommentByBoardId(Integer id) {
+        for(int index = 0; index < adminRepository.countCommentSizeByBoardId(id); index++) {
+            adminRepository.deleteAllCommentsByBoardId(id);
+        }
     }
 }
