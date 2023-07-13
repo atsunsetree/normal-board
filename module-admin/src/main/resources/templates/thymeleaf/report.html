@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th=":http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>신고 목록 페이지</title>
+</head>
+<body>
+
+    <table class="tb_col">
+        <tr>
+            <td>게시글 제목</td>
+            <td>신고 건수</td>
+        </tr>
+        <tr th:each="userInfo : ${userInfoList}">
+            <a href="/admin/userList">
+                <td th:text="${userInfo.getNickname}"></td>
+                <td th:text="${userInfo.getEmail}"></td>
+            </a>
+        </tr>
+    </table>
+
+</body>
+</html>

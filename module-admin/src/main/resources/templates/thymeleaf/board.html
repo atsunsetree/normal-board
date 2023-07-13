@@ -12,11 +12,16 @@
             <td>제목</td>
             <td>작성일시</td>
         </tr>
+
         <tr th:each="board : ${boardList}">
             <td th:text="${board.getNickname}"></td>
             <td th:text="${board.getTitle}"></td>
             <td th:text="${board.getCreatedAt}"></td>
+            <form th:action="@{/admin/boardList/{id}/delete(id=${board.getId})}" method="GET">
+                <td><button>삭제</button></td>
+            </form>
         </tr>
+
     </table>
 
 
