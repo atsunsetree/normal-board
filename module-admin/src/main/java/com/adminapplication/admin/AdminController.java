@@ -46,4 +46,10 @@ public class AdminController {
         adminService.setRoleById(id);
         return "redirect:/admin/userList";
     }
+
+    @GetMapping("/boardList")
+    public String board(Model model) {
+        model.addAttribute("boardList", adminService.getBoardList());
+        return "/board";
+    }
 }

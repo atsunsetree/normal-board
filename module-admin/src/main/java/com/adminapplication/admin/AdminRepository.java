@@ -1,5 +1,6 @@
 package com.adminapplication.admin;
 
+import com.adminapplication.dto.AllBoardResponseDto;
 import com.adminapplication.dto.AllUsersInfoResponseDto;
 import com.core.entity.User;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,4 +19,6 @@ public interface AdminRepository {
     User findById(Integer id);
 
     int findBoardSizeByUserId(Integer id);
+
+    List<AllBoardResponseDto> findAllBoards();
 }

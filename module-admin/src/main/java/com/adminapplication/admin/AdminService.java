@@ -1,5 +1,6 @@
 package com.adminapplication.admin;
 
+import com.adminapplication.dto.AllBoardResponseDto;
 import com.adminapplication.dto.AllUsersInfoResponseDto;
 import com.adminapplication.emailservice.EmailService;
 import com.core.entity.Role;
@@ -78,4 +79,10 @@ public class AdminService { // 비즈니스 로직
         return adminRepository.updateRoleById(role.name(), id);
     }
 
+
+    public List<AllBoardResponseDto> getBoardList() {
+
+
+        return adminRepository.findAllBoards();
+    }
 }

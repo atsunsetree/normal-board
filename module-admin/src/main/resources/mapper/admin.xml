@@ -55,7 +55,9 @@
         select * from user_tb WHERE id = #{id}
     </select>
 
-
-
+    <select id="findAllBoards" resultType="com.adminapplication.dto.AllBoardResponseDto">
+        SELECT u.nickname, b.title, DATE_FORMAT(b.created_at, '%y-%m-%d %h:%i') created_at
+        FROM board_tb b LEFT OUTER JOIN user_tb u ON user_id = u.id;
+    </select>
 
 </mapper>

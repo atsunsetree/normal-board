@@ -7,7 +7,6 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
 public class AllUsersInfoResponseDto {
     private String nickname;
     private String email;
