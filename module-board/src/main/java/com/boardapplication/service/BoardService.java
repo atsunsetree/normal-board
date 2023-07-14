@@ -42,4 +42,34 @@ public class BoardService {
         }
         return new PageImpl<>(boardDtoList, pageable, boards.getTotalElements());
     }
+
+    public Page<BoardDto> searchBoardList(String searchType, String keyword, Pageable pageable){
+        Page<Board> boards = null;
+        List<BoardDto> boardDtoList = new ArrayList<>();
+        if(searchType.equals("boardTitle")){
+            boards = boardRepository.findByTitleAndStatus(keyword, Status.NORMAL, pageable);
+        }
+        else if(searchType.equals("boardWriter")){
+            boards = boardRepository.findByUserIdAndStatus(Long.parseLong(keyword), Status.NORMAL, pageable);
+        }
+        else {
+            boards = boardRepository.findByContentAndStatus(keyword, Status.NORMAL, pageable);
+        }
+        for(Board board : boards){
+            if(board.getStatus().equals(Status.NORMAL)){
+                BoardDto dto = BoardDto.builder()
+                        .id(board.getId())
+                        .userId(board.getId())
+                        .title(board.getTitle())
+                        .content(board.getContent())
+                        .thumbnail(board.getThumbnail())
+                        .status(board.getStatus())
+                        .createdAt(board.getCreatedAt())
+                        .updatedAt(board.getUpdatedAt())
+                        .build();
+                boardDtoList.add(dto);
+            }
+        }
+        return new PageImpl<>(boardDtoList, pageable, boards.getTotalElements());
+    }
 }
