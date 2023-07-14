@@ -76,6 +76,10 @@ public class AdminService { // 비즈니스 로직
         return adminRepository.updateRoleById(role.name(), id);
     }
 
+    /**
+     * 모든 게시글 정보를 받아옵니다.
+     * @return
+     */
     public List<AllBoardResponseDto> getBoardList() {
         return adminRepository.findAllBoards();
     }
