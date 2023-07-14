@@ -9,5 +9,6 @@ public class AllBoardResponseDto {
     private Integer id;
     private String nickname;
     private String title;
+    private String status;
     private String createdAt;
 }
