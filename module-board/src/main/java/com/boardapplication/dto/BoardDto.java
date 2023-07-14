@@ -8,7 +8,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class BoardDto {
+public class BoardDto{
     private Long id;
     private Long userId;
     private String title;
