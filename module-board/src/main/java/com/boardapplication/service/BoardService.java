@@ -4,6 +4,9 @@ import com.boardapplication.dto.BoardDto;
 import com.boardapplication.repository.BoardRepository;
 import com.core.entity.Board;
 import com.core.entity.Status;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +22,8 @@ public class BoardService {
     }
 
     @Transactional
-    public List<BoardDto> getBoardList(){
-        List<Board> boards = boardRepository.findAll();
+    public Page<BoardDto> getBoardList(Pageable pageable){
+        Page<Board> boards = boardRepository.findByStatus(Status.NORMAL, pageable);
         List<BoardDto> boardDtoList = new ArrayList<>();
         for(Board board : boards){
             if(board.getStatus().equals(Status.NORMAL)){
@@ -37,6 +40,6 @@ public class BoardService {
                 boardDtoList.add(dto);
             }
         }
-        return boardDtoList;
+        return new PageImpl<>(boardDtoList, pageable, boards.getTotalElements());
     }
 }
