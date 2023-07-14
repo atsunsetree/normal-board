@@ -34,7 +34,7 @@
 </nav>
 <div id="contents" class="contents">
     <div class="card-grid">
-        <div th:each="board, index : ${boardList}" class="board-list">
+        <div th:each="board, index : ${boardPage.content}" class="board-list">
             <div class="card">
                 <a th:href="@{'/boardDetail/' + ${board.id}}">
                 <div class="card-body">
@@ -51,7 +51,28 @@
             </div>
         </div>
     </div>
+    <div class="pagination-block">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/boardList(page=${nowPage > 1 ? nowPage - 2 : 0})}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <th:block th:classappend="${'page-item'}" th:each="page:${#numbers.sequence(startPage,endPage)}">
+                        <a th:if="${page != nowPage}" th:href="@{/boardList(page=${page-1})}" th:text ="${page}"></a>
+                        <strong th:if="${page==nowPage}" th:text ="${page}" style="color:cornflowerblue"></strong>
+                    </th:block>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/boardList(page=${nowPage < endPage ? nowPage : nowPage-1})}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </div>
-
 </body>
 </html>
