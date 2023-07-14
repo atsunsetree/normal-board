@@ -25,7 +25,6 @@ public class BoardController {
                 .stream()
                 .sorted(Comparator.comparing(BoardDto::getId).reversed())
                 .collect(Collectors.toList());
-       // boardDtoList.stream().sorted(Comparator.comparing(BoardDto::getId).reversed()).collect(Collectors.toList());
         model.addAttribute("boardList", boardDtoList);
         return "boardList.html";
     }

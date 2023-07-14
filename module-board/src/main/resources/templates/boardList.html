@@ -32,19 +32,22 @@
         </ul>
     </div>
 </nav>
-<div id="contents">
+<div id="contents" class="contents">
     <div class="card-grid">
         <div th:each="board, index : ${boardList}" class="board-list">
             <div class="card">
+                <a th:href="@{'/boardDetail/' + ${board.id}}">
                 <div class="card-body">
-                    <h3 class="board-number" th:text="${board.id +'번'}"></h3>
-                    <a th:href="@{'/list/' + ${board.id}}">
+                        <div class="thumbnail">
+                            <p th:text="${'썸네일입니다: ' + board.thumbnail}"></p>
+                        </div>
+                        <h3 class="board-number" th:text="${board.id +'번'}"></h3>
                         <h6 class="board-title" th:text="${'제목: '+ board.title}"></h6>
-                    </a>
-                    <p class="board-userId" th:text="${'아이디: ' + board.userId}"></p>
-                    <p class="board-content" th:text="${'내용: ' + board.content}"></p>
-                    <p class="board-creatAt" th:text="${'작성시간: ' + #temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}"></p>
+                        <p class="board-userId" th:text="${'아이디: ' + board.userId}"></p>
+                        <p class="board-content" th:text="${'내용: ' + board.content}"></p>
+                        <p class="board-creatAt" th:text="${'작성시간: ' + #temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}"></p>
                 </div>
+                </a>
             </div>
         </div>
     </div>
