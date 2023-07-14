@@ -17,6 +17,9 @@
             <td th:text="${board.getNickname}"></td>
             <td th:text="${board.getTitle}"></td>
             <td th:text="${board.getCreatedAt}"></td>
+            <form th:action="@{/admin/boardList/{id}/status(id=${board.getId})}" method="GET">
+                <td><button>숨김</button></td>
+            </form>
             <form th:action="@{/admin/boardList/{id}/delete(id=${board.getId})}" method="GET">
                 <td><button>삭제</button></td>
             </form>

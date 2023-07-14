@@ -47,8 +47,8 @@ public class AdminController {
         return "/board";
     }
 
-    @GetMapping("/status")
-    public String setStatus(@RequestParam(name = "id") Integer id) {
+    @GetMapping("/boardList/{id}/status")
+    public String setStatus(@PathVariable(name = "id") Integer id) {
         // 유효성 검사
 
         // 서비스 호출 - 게시글 상태 변경(숨기기/보이기)
@@ -57,11 +57,6 @@ public class AdminController {
         return "redirect:/admin/boardList";
     }
 
-    @Autowired
-    private SqlSession sqlSession;
-
-
-    // @PathVariable("id")
     @GetMapping("/boardList/{id}/delete")
     public String deleteBoard(@PathVariable(name = "id") Integer id) {
         // 유효성 검사
