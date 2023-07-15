@@ -1,6 +1,7 @@
 package com.adminapplication.admin;
 
-import com.adminapplication.dto.AllBoardResponseDto;
+import com.adminapplication.dto.AllBoardsResponseDto;
+import com.adminapplication.dto.AllReportsResponseDto;
 import com.adminapplication.dto.AllUsersInfoResponseDto;
 import com.adminapplication.emailservice.EmailService;
 import com.core.entity.Board;
@@ -80,7 +81,7 @@ public class AdminService { // 비즈니스 로직
      * 모든 게시글 정보를 받아옵니다.
      * @return
      */
-    public List<AllBoardResponseDto> getBoardList() {
+    public List<AllBoardsResponseDto> getBoardList() {
         return adminRepository.findAllBoards();
     }
 
@@ -117,5 +118,15 @@ public class AdminService { // 비즈니스 로직
         for(int index = 0; index < adminRepository.countCommentSizeByBoardId(id); index++) {
             adminRepository.deleteAllCommentsByBoardId(id);
         }
+    }
+
+    /**
+     * 신고 목록 페이지 요청 시 DB에서 신고 정보를 받아 옵니다.
+     * localhost:8081/admin/reportList
+     * @return
+     */
+    public List<AllReportsResponseDto> getReportList() {
+
+        return adminRepository.findAllReports();
     }
 }
