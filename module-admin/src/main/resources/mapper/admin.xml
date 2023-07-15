@@ -64,8 +64,15 @@
     </select>
 
     <select id="findAllReports" resultType="com.adminapplication.dto.AllReportsResponseDto">
-        SELECT b.id, b.title, b.user_id, count(b.id) qty_of_report FROM report_tb r LEFT OUTER JOIN board_tb b ON r.board_id = b.id GROUP BY b.id
+        SELECT b.id, b.title, b.user_id, b.status, count(b.id) qty_of_report FROM report_tb r LEFT OUTER JOIN board_tb b ON r.board_id = b.id GROUP BY b.id
     </select>
 
+    <delete id="deleteReportByBoardId">
+        DELETE FROM report_tb WHERE board_id = #{id}
+    </delete>
+
+    <select id="countReportSizeByBoardId" resultType="Integer">
+        SELECT count(id) FROM report_tb WHERE board_id = #{id}
+    </select>
 
 </mapper>

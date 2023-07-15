@@ -129,4 +129,10 @@ public class AdminService { // 비즈니스 로직
 
         return adminRepository.findAllReports();
     }
+
+    public void deleteReportByBoardId(Integer id) {
+        for(int index = 0; index < adminRepository.countReportSizeByBoardId(id); index++) {
+            adminRepository.deleteReportByBoardId(id);
+        }
+    }
 }

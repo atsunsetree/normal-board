@@ -81,4 +81,25 @@ public class AdminController {
         // 응답
         return "/report";
     }
+
+    @PostMapping("/reportList/{id}/hide")
+    public String hide(@PathVariable(name = "id") Integer id) {
+
+        // 서비스 호출 - 게시글 숨김, 작성자 블랙리스트 등록
+        adminService.setStatusById(id);
+        adminService.setRoleById(id);
+        // 응답
+        return "redirect:/admin/reportList";
+    }
+
+    @GetMapping("/reportList/{id}/refuse")
+    public String deleteReport(@PathVariable(name = "id") Integer id) {
+        // 유효성 검사
+
+        // 서비스 호출 - 신고 삭제
+        adminService.deleteReportByBoardId(id);
+
+        // 응답
+        return "redirect:/admin/reportList";
+    }
 }

@@ -13,13 +13,25 @@
             <td>게시글 제목</td>
             <td>신고 건수</td>
         </tr>
-        <tr th:each="report : ${reportList}">
-            <a href="/admin/userList"> <!-- 신고 상세 페이지로 이동 경로 설정 -->
-                <td th:text="${report.getTitle}"></td>
-                <td th:text="${report.getQtyOfReport}"></td>
-                <!-- 승인, 게시글 숨김 처리 및 작성자 블랙리스트 등록, 신고자 및 작성자에 통지 -->
-
-                <!-- 거절, 신고 목록에서 삭제, 신고자에 통지 -->
+        <tr th:each="report : ${reportList}" >
+            <div th:switch="${report.getStatus.name()}">
+                <span th:case="NORMAL" th:href="@{/}"> <!-- 신고 상세 페이지로 이동 경로 설정 -->
+                    <td th:text="${report.getTitle}"></td>
+                    <td th:text="${report.getQtyOfReport}"></td>
+                    <!-- 승인, 게시글 숨김 처리 및 작성자 블랙리스트 등록, 신고자 및 작성자에 통지 -->
+                    <form th:action="@{/admin/reportList/{id}/hide(id=${report.getId})}" method="POST">
+                        <td>
+                            <button class="btn btn-success">승인</button>
+                        </td>
+                    </form>
+                    <!-- 거절, 신고 목록에서 삭제, 신고자에 통지 -->
+                    <form th:action="@{/admin/reportList/{id}/refuse(id=${report.getId})}" method="GET">
+                        <td>
+                            <button class="btn btn-warning">거절</button>
+                        </td>
+                    </form>
+                </span>
+            </div>
             </a>
         </tr>
     </table>

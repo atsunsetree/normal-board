@@ -34,4 +34,8 @@ public interface AdminRepository {
     Integer countCommentSizeByBoardId(Integer id);
 
     List<AllReportsResponseDto> findAllReports();
+
+    Integer deleteReportByBoardId(Integer id);
+
+    Integer countReportSizeByBoardId(Integer id);
 }
