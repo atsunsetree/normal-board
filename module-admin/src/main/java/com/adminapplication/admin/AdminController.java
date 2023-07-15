@@ -29,8 +29,8 @@ public class AdminController {
         return "/main";
     }
 
-    @GetMapping("/role")
-    public String setRole(@RequestParam(name = "id") Integer id) {
+    @PostMapping("/role")
+    public String setRole(@RequestParam(value = "userId") Integer id) {
         // 유효성 검사
 
         // 서비스 호출 - 사용자 권한 변경(블랙리스트/본래 권한)
@@ -47,7 +47,7 @@ public class AdminController {
         return "/board";
     }
 
-    @GetMapping("/boardList/{id}/status")
+    @PostMapping("/boardList/{id}/status")
     public String setStatus(@PathVariable(name = "id") Integer id) {
         // 유효성 검사
 
