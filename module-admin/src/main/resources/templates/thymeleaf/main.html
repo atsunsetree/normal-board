@@ -11,8 +11,12 @@
             <td>닉네임</td>
             <td>이메일</td>
             <td>권한</td>
-            <td>게시글 수</td>
-            <td>댓글 수</td>
+            <td>
+                <a th:href="@{/admin/userList?target=qty_of_board}">게시글 수</a>
+            </td>
+            <td>
+                <a th:href="@{/admin/userList?target=qty_of_comment}">댓글 수</a>
+            </td>
         </tr>
         <tr th:each="userInfo : ${userInfoList}">
             <td th:text="${userInfo.getNickname}"></td>
