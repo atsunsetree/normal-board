@@ -10,7 +10,7 @@
 <!--    </select>-->
 
     <select id="findSortedAllUsersInfo" resultType="com.adminapplication.dto.AllUsersInfoResponseDto">
-        SELECT nickname, email, role, qty_of_board, qty_of_comment
+        SELECT user_tb.id, nickname, email, role, qty_of_board, qty_of_comment
         FROM user_tb
             LEFT OUTER JOIN (
             SELECT user_tb.id, count(comment_tb.id) qty_of_comment
