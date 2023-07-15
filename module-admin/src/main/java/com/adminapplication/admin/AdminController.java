@@ -21,6 +21,7 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    // 사용자 정보 관리 페이지
     @GetMapping("/userList")
     public String main(@RequestParam(name = "target", required = false) String target, Model model) {
         // 조회된 결과물 매핑
@@ -39,8 +40,10 @@ public class AdminController {
         return "redirect:/admin/userList";
     }
 
+    // 게시판 관리 페이지
     @GetMapping("/boardList")
     public String board(Model model) {
+
         // 조회 결과물 매핑
         model.addAttribute("boardList", adminService.getBoardList());
         // 응답
@@ -67,5 +70,36 @@ public class AdminController {
 
         // 응답
         return "redirect:/admin/boardList";
+    }
+
+    // 신고 목록 페이지
+    @GetMapping("/reportList")
+    public String report(Model model) {
+
+        // 조회 결과물 매핑
+        model.addAttribute("reportList", adminService.getReportList());
+        // 응답
+        return "/report";
+    }
+
+    @PostMapping("/reportList/{id}/hide")
+    public String hide(@PathVariable(name = "id") Integer id) {
+
+        // 서비스 호출 - 게시글 숨김, 작성자 블랙리스트 등록
+        adminService.setStatusById(id);
+        adminService.setRoleById(id);
+        // 응답
+        return "redirect:/admin/reportList";
+    }
+
+    @GetMapping("/reportList/{id}/refuse")
+    public String deleteReport(@PathVariable(name = "id") Integer id) {
+        // 유효성 검사
+
+        // 서비스 호출 - 신고 삭제
+        adminService.deleteReportByBoardId(id);
+
+        // 응답
+        return "redirect:/admin/reportList";
     }
 }

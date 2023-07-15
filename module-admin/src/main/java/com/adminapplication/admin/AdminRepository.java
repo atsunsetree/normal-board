@@ -1,6 +1,7 @@
 package com.adminapplication.admin;
 
-import com.adminapplication.dto.AllBoardResponseDto;
+import com.adminapplication.dto.AllBoardsResponseDto;
+import com.adminapplication.dto.AllReportsResponseDto;
 import com.adminapplication.dto.AllUsersInfoResponseDto;
 import com.core.entity.Board;
 import com.core.entity.User;
@@ -22,7 +23,7 @@ public interface AdminRepository {
 
     Integer countBoardSizeByUserId(Integer id);
 
-    List<AllBoardResponseDto> findAllBoards();
+    List<AllBoardsResponseDto> findAllBoards();
 
     Integer updateStatusById(String status, Integer id);
 
@@ -31,4 +32,10 @@ public interface AdminRepository {
     void deleteAllCommentsByBoardId(Integer id);
 
     Integer countCommentSizeByBoardId(Integer id);
+
+    List<AllReportsResponseDto> findAllReports();
+
+    Integer deleteReportByBoardId(Integer id);
+
+    Integer countReportSizeByBoardId(Integer id);
 }

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AllBoardResponseDto {
+public class AllBoardsResponseDto {
     private Integer id;
     private String nickname;
     private String title;
