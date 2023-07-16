@@ -39,7 +39,7 @@
     </select>
 
     <select id="findAllBoards" resultType="com.adminapplication.dto.AllBoardsResponseDto">
-        SELECT b.id, u.nickname, b.title, b.status, DATE_FORMAT(b.created_at, '%y-%m-%d %h:%i') created_at
+        SELECT b.id, u.nickname, b.title, b.status, DATE_FORMAT(b.created_at, '%y/%m/%d %h:%i') created_at
         FROM board_tb b LEFT OUTER JOIN user_tb u ON user_id = u.id;
     </select>
 
@@ -74,5 +74,12 @@
     <select id="countReportSizeByBoardId" resultType="Integer">
         SELECT count(id) FROM report_tb WHERE board_id = #{id}
     </select>
+
+    <select id="findReportsByBoardId" resultType="com.adminapplication.dto.ReportDetailsResponseDto">
+        SELECT r.id, u.nickname, r.category, r.reason_image, DATE_FORMAT(r.created_at, '%y/%m/%d %h:%i') created_at
+        FROM report_tb r
+        LEFT OUTER JOIN user_tb u ON r.user_id = u.id WHERE r.board_id = #{id}
+    </select>
+
 
 </mapper>

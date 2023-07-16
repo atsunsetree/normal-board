@@ -3,6 +3,7 @@ package com.adminapplication.admin;
 import com.adminapplication.dto.AllBoardsResponseDto;
 import com.adminapplication.dto.AllReportsResponseDto;
 import com.adminapplication.dto.AllUsersInfoResponseDto;
+import com.adminapplication.dto.ReportDetailsResponseDto;
 import com.adminapplication.emailservice.EmailService;
 import com.core.entity.Board;
 import com.core.entity.Role;
@@ -92,7 +93,7 @@ public class AdminService { // 비즈니스 로직
      * @param id
      * @return
      */
-    public int setStatusById(Integer id) {
+    public int setStatus(Integer id) {
         String status = Status.BLACK.name();
         Board boardData = adminRepository.findBoardById(id);
 
@@ -106,7 +107,7 @@ public class AdminService { // 비즈니스 로직
      * @param id
      * @return
      */
-    public int deleteBoardById(Integer id) {
+    public int deleteBoard(Integer id) {
         return adminRepository.deleteBoardById(id);
     }
 
@@ -114,7 +115,7 @@ public class AdminService { // 비즈니스 로직
      * 게시글에 포함된 모든 댓글을 삭제합니다.
      * @param id
      */
-    public void deleteAllCommentByBoardId(Integer id) {
+    public void deleteComments(Integer id) {
         for(int index = 0; index < adminRepository.countCommentSizeByBoardId(id); index++) {
             adminRepository.deleteAllCommentsByBoardId(id);
         }
@@ -126,13 +127,26 @@ public class AdminService { // 비즈니스 로직
      * @return
      */
     public List<AllReportsResponseDto> getReportList() {
-
         return adminRepository.findAllReports();
     }
 
-    public void deleteReportByBoardId(Integer id) {
+    /**
+     * 게시글의 신고를 거절 처리하면 해당 신고를 삭제합니다.
+     * @param id
+     */
+    public void deleteReports(Integer id) {
         for(int index = 0; index < adminRepository.countReportSizeByBoardId(id); index++) {
             adminRepository.deleteReportByBoardId(id);
         }
+    }
+
+    /**
+     * 신고 상세 페이지에 나열할 특정 게시글의 신고목록을 받아 옵니다.
+     * localhost:8081/admin/reportList/{id}
+     * @param id
+     * @return
+     */
+    public List<ReportDetailsResponseDto> getReports(Integer id) {
+        return adminRepository.findReportsByBoardId(id);
     }
 }
