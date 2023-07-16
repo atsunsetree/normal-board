@@ -1,14 +1,14 @@
 package com.adminapplication.admin;
 
-import com.core.entity.User;
-import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.session.SqlSession;
+import com.adminapplication.dto.ReportDetailsResponseDto;
+import com.core.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -55,7 +55,7 @@ public class AdminController {
         // 유효성 검사
 
         // 서비스 호출 - 게시글 상태 변경(숨기기/보이기)
-        adminService.setStatusById(id);
+        adminService.setStatus(id);
         // 응답
         return "redirect:/admin/boardList";
     }
@@ -65,8 +65,8 @@ public class AdminController {
         // 유효성 검사
 
         // 서비스 호출 - 게시글 및 해당 게시글의 댓글 삭제
-        adminService.deleteAllCommentByBoardId(id);
-        adminService.deleteBoardById(id);
+        adminService.deleteComments(id);
+        adminService.deleteBoard(id);
 
         // 응답
         return "redirect:/admin/boardList";
@@ -86,7 +86,7 @@ public class AdminController {
     public String hide(@PathVariable(name = "id") Integer id) {
 
         // 서비스 호출 - 게시글 숨김, 작성자 블랙리스트 등록
-        adminService.setStatusById(id);
+        adminService.setStatus(id);
         adminService.setRoleById(id);
         // 응답
         return "redirect:/admin/reportList";
@@ -97,9 +97,20 @@ public class AdminController {
         // 유효성 검사
 
         // 서비스 호출 - 신고 삭제
-        adminService.deleteReportByBoardId(id);
+        adminService.deleteReports(id);
 
         // 응답
         return "redirect:/admin/reportList";
+    }
+
+    @GetMapping("/reportList/{id}")
+    public String reportDetail(@PathVariable(name = "id") Integer id, Model model) {
+        // 유효성 검사
+
+        // 조회 결과물 매핑
+        model.addAttribute("reports", adminService.getReports(id));
+        model.addAttribute("Category", Category.class);
+        // 응답
+        return "/reportDetail";
     }
 }
