@@ -1,9 +1,6 @@
 package com.adminapplication.admin;
 
-import com.adminapplication.dto.AllBoardsResponseDto;
-import com.adminapplication.dto.AllReportsResponseDto;
-import com.adminapplication.dto.AllUsersInfoResponseDto;
-import com.adminapplication.dto.ReportDetailsResponseDto;
+import com.adminapplication.dto.*;
 import com.adminapplication.emailservice.EmailService;
 import com.core.entity.Board;
 import com.core.entity.Role;
@@ -148,5 +145,14 @@ public class AdminService { // 비즈니스 로직
      */
     public List<ReportDetailsResponseDto> getReports(Integer id) {
         return adminRepository.findReportsByBoardId(id);
+    }
+
+    /**
+     * 등록된 블랙리스트 목록을 불러옵니다.
+     * localhost:8081/admin/blacklist
+     * @return
+     */
+    public List<AllBlacklistResponseDto> getBlacklists() {
+        return adminRepository.findAllBlacklists();
     }
 }
