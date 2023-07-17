@@ -40,7 +40,8 @@
 
     <select id="findAllBoards" resultType="com.adminapplication.dto.AllBoardsResponseDto">
         SELECT b.id, u.nickname, b.title, b.status, DATE_FORMAT(b.created_at, '%y/%m/%d %h:%i') created_at
-        FROM board_tb b LEFT OUTER JOIN user_tb u ON user_id = u.id;
+        FROM board_tb b
+        LEFT OUTER JOIN user_tb u ON user_id = u.id;
     </select>
 
     <update id="updateStatusById">
@@ -64,7 +65,9 @@
     </select>
 
     <select id="findAllReports" resultType="com.adminapplication.dto.AllReportsResponseDto">
-        SELECT b.id, b.title, b.user_id, b.status, count(b.id) qty_of_report FROM report_tb r LEFT OUTER JOIN board_tb b ON r.board_id = b.id GROUP BY b.id
+        SELECT b.id, b.title, b.user_id, b.status, count(b.id) qty_of_report
+        FROM report_tb r
+        LEFT OUTER JOIN board_tb b ON r.board_id = b.id GROUP BY b.id
     </select>
 
     <delete id="deleteReportByBoardId">
@@ -80,6 +83,14 @@
         FROM report_tb r
         LEFT OUTER JOIN user_tb u ON r.user_id = u.id WHERE r.board_id = #{id}
     </select>
+
+    <select id="findAllBlacklists" resultType="com.adminapplication.dto.AllBlacklistResponseDto">
+        SELECT b.id, b.category, u.username, DATE_FORMAT(b.created_at, '%y/%m/%d %h:%i') created_at
+        FROM blacklist_tb b
+        LEFT OUTER JOIN user_tb u ON b.user_id = u.id
+    </select>
+
+
 
 
 </mapper>

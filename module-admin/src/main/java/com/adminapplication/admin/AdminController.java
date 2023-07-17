@@ -113,4 +113,13 @@ public class AdminController {
         // 응답
         return "/reportDetail";
     }
+
+    @GetMapping("/blacklist")
+    public String blacklist(Model model) {
+
+        model.addAttribute("blacklists", adminService.getBlacklists());
+        model.addAttribute("Category", Category.class);
+
+        return "/blacklist";
+    }
 }
