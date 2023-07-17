@@ -9,6 +9,6 @@ import lombok.Setter;
 public class AllBlacklistResponseDto {
     private Integer id;
     private String username;
-    private Integer category;
+    private Category category;
     private String createdAt;
 }

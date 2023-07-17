@@ -15,7 +15,7 @@ public class Report {
 
     private String reasonImage;
 
-    @Enumerated
+    @Enumerated(value = EnumType.STRING)
     private Category category;
 
     private LocalDateTime createdAt;
