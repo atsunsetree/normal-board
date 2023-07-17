@@ -6,6 +6,7 @@ import com.boardapplication.repository.UserRepository;
 import com.core.entity.Board;
 import com.core.entity.Status;
 import com.core.entity.User;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
