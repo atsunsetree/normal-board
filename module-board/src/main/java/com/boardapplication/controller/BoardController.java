@@ -27,7 +27,7 @@ public class BoardController {
     public String list(Model model, @PageableDefault(page=0, size=6, sort = "id", direction = Sort.Direction.DESC)Pageable pageable){
         Page<BoardDto> boardDtoPage = boardService.getBoardList(pageable);
         //Pageable은 0부터 시작이라 1을 더해줘야함
-        int nowPage = boardDtoPage.getPageable().getPageNumber() + 1;
+        int nowPage = boardDtoPage.getPageable().getPageNumber();
         // 현재 페이지에서 가장 앞에 페이지 번호를 보여즘
         // -1값이 들어가는 것을 막기 위해 max값으로 두개 값을 넣고 더 큰값을 넣어줌
         int startPage = Math.max(nowPage - 4, 1);
@@ -47,7 +47,7 @@ public class BoardController {
             model.addAttribute("noResults", true);
         }
         //Pageable은 0부터 시작이라 1을 더해줘야함
-        int nowPage = boardDtoPage.getPageable().getPageNumber() + 1;
+        int nowPage = boardDtoPage.getPageable().getPageNumber();
         // 현재 페이지에서 가장 앞에 페이지 번호를 보여즘
         // -1값이 들어가는 것을 막기 위해 max값으로 두개 값을 넣고 더 큰값을 넣어줌
         int startPage = Math.max(nowPage - 4, 1);
