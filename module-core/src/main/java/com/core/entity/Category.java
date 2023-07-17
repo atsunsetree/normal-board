@@ -20,4 +20,8 @@ public enum Category {
         }
         return null;
     }
+
+    public String getValue() {
+        return description;
+    }
 }

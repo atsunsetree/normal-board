@@ -1,5 +1,6 @@
 package com.adminapplication.dto;
 
+import com.core.entity.Role;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,8 +8,10 @@ import lombok.Setter;
 @Setter
 public class AllBoardsResponseDto {
     private Integer id;
-    private String nickname;
+    private Integer userId;
+    private String username;
     private String title;
     private String status;
+    private Role role;
     private String createdAt;
 }

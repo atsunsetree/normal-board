@@ -1,6 +1,7 @@
 package com.adminapplication.admin;
 
 import com.adminapplication.dto.*;
+import com.core.entity.Blacklist;
 import com.core.entity.Board;
 import com.core.entity.User;
 import org.apache.ibatis.annotations.Mapper;
@@ -39,5 +40,7 @@ public interface AdminRepository {
 
     List<ReportDetailsResponseDto> findReportsByBoardId(Integer id);
 
-    List<AllBlacklistResponseDto> findAllBlacklists();
+    List<AllBlacklistsResponseDto> findAllBlacklists();
+
+    Integer insertBlacklist(Blacklist blacklist);
 }
