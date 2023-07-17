@@ -30,6 +30,13 @@
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteABoardModal" th:attr="data-bs-target='#deleteABoardModal'+${board.getId}">삭제</button>
                     </td>
                 </form>
+                <form th:action="@{/admin/role(userId=${userInfo.getId})}" method="POST">
+                    <td>
+                        <button th:case="BLACK" class="btn btn-secondary">블랙리스트</button>
+                        <button th:case="NORMAL" class="btn btn-dark">블랙리스트</button>
+                        <button th:case="VIP" class="btn btn-dark">블랙리스트</button>
+                    </td>
+                </form>
 
                 <!-- Modal, 고유 번호 부여 th:id="deleteABoardModal+${board.getId}" -->
                 <div class="modal fade" th:id="deleteABoardModal+${board.getId}" aria-labelledby="deleteABoardModalLabel" aria-hidden="true">

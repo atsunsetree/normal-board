@@ -15,13 +15,12 @@
                     <th scope="col">신고 건수</th>
                 </thead>
                 <tbody th:each="report : ${reportList}" class="table-group-divider">
-                    <span th:switch="${report.getStatus.name()}" > <!-- 신고 상세 페이지로 이동 경로 설정 -->
-<!--                        <tr th:case="NORMAL" th:href="@{/admin/reportList/{id}(id=${report.getId})}">-->
+                    <span th:switch="${report.getStatus.name()}" >
                         <tr th:case="NORMAL" th:onclick="@{/admin/reportList/{id}(id=${report.getId})}">
 <!--                            <th th:text="${report.getId}"></th> &lt;!&ndash; board 별 GROUP BY index 필요 &ndash;&gt;-->
                             <form th:action="@{/admin/reportList/{id}(id=${report.getId})}" method="GET">
                                 <td>
-                                    <button class="btn btn-outline-dark">상세보기</button>
+                                    <button class="btn btn-outline-dark">상세보기</button> <!-- 신고 상세 페이지로 이동 경로 설정 -->
                                 </td>
                             </form>
                             <td th:text="${report.getTitle}"></td>
