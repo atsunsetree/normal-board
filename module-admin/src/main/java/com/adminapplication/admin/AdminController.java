@@ -1,12 +1,15 @@
 package com.adminapplication.admin;
 
 import com.adminapplication.dto.ReportDetailsResponseDto;
+import com.core.entity.Blacklist;
 import com.core.entity.Category;
+import com.core.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,26 +27,20 @@ public class AdminController {
     // 사용자 정보 관리 페이지
     @GetMapping("/userList")
     public String main(@RequestParam(name = "target", required = false) String target, Model model) {
+
+        model.addAttribute("categories", Category.values());
         // 조회된 결과물 매핑
         model.addAttribute("userInfoList", adminService.getSortedUserInfoList(target));
         // 응답
         return "/main";
     }
 
-    @PostMapping("/role")
-    public String setRole(@RequestParam(value = "userId") Integer id) {
-        // 유효성 검사
-
-        // 서비스 호출 - 사용자 권한 변경(블랙리스트/본래 권한)
-        adminService.setRoleById(id);
-        // 응답
-        return "redirect:/admin/userList";
-    }
-
     // 게시판 관리 페이지
     @GetMapping("/boardList")
     public String board(Model model) {
 
+        model.addAttribute("categories", Category.values());
+        model.addAttribute("Category", Category.class);
         // 조회 결과물 매핑
         model.addAttribute("boardList", adminService.getBoardList());
         // 응답
@@ -85,9 +82,8 @@ public class AdminController {
     @PostMapping("/reportList/{id}/hide")
     public String hide(@PathVariable(name = "id") Integer id) {
 
-        // 서비스 호출 - 게시글 숨김, 작성자 블랙리스트 등록
+        // 서비스 호출 - 게시글 숨김
         adminService.setStatus(id);
-        adminService.setRoleById(id);
         // 응답
         return "redirect:/admin/reportList";
     }
@@ -112,5 +108,28 @@ public class AdminController {
         model.addAttribute("Category", Category.class);
         // 응답
         return "/reportDetail";
+    }
+
+    @GetMapping("/blacklist")
+    public String blacklist(Model model) {
+
+        model.addAttribute("blacklists", adminService.getBlacklists());
+        model.addAttribute("Category", Category.class);
+
+        return "/blacklist";
+    }
+
+    @GetMapping("/blacklist/{id}/register") // 사용처 - board
+    public String saveBlacklist(
+            @PathVariable(name = "id") Integer id,
+            @RequestParam(value = "category", required = false) String category
+    ) {
+        // 유효성 검사
+
+        // 서비스 호출 - 블랙리스트 등록 또는 해제
+        if(!category.equals("undo")) adminService.setRoleById(id, Category.valueOf(category));
+        if(category.equals("undo")) adminService.setRoleById(id, null);
+        // 응답
+        return "redirect:/admin/userList";
     }
 }

@@ -6,10 +6,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ReportDetailsResponseDto {
+public class AllBlacklistsResponseDto {
     private Integer id;
-    private String nickname;
+    private String username;
     private Category category;
-    private String reasonImage;
     private String createdAt;
 }
