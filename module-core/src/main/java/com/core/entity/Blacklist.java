@@ -15,9 +15,6 @@ public class Blacklist {
 
     private Long userId; // 블랙리스트 사용자
 
-    @Enumerated(value = EnumType.STRING)
-    private Role role; // 이전 권한
-
     @Enumerated
     private Category category; // 등록 사유
 
