@@ -15,6 +15,7 @@ public class BoardDto{
     private String content;
     private String thumbnail;
     private Status status;
+    private String userNickname;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -33,13 +34,14 @@ public class BoardDto{
     }
 
     @Builder
-    public BoardDto(Long id, Long userId, String title, String content, String thumbnail, Status status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public BoardDto(Long id, Long userId, String title, String content, String thumbnail, Status status, String userNickname, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.title = title;
         this.content = content;
         this.thumbnail = thumbnail;
         this.status = status;
+        this.userNickname = userNickname;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
