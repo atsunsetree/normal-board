@@ -9,7 +9,7 @@ import lombok.Setter;
 public class ReportDetailsResponseDto {
     private Integer id;
     private String nickname;
-    private Integer category;
+    private Category category;
     private String reasonImage;
     private String createdAt;
 }

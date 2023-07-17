@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 public class AllUsersInfoResponseDto {
     private Integer id;
-    private String nickname;
+    private String username;
     private String email;
     private Role role;
     private Integer qtyOfBoard;   // Quantity Of Board
