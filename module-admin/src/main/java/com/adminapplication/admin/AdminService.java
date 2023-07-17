@@ -1,7 +1,9 @@
 package com.adminapplication.admin;
 
-import com.adminapplication.dto.AllBoardResponseDto;
+import com.adminapplication.dto.AllBoardsResponseDto;
+import com.adminapplication.dto.AllReportsResponseDto;
 import com.adminapplication.dto.AllUsersInfoResponseDto;
+import com.adminapplication.dto.ReportDetailsResponseDto;
 import com.adminapplication.emailservice.EmailService;
 import com.core.entity.Board;
 import com.core.entity.Role;
@@ -23,10 +25,6 @@ public class AdminService { // 비즈니스 로직
 
 //    public List<User> getUserList() {
 //        return adminRepository.findAllUsers();
-//    }
-
-//    public List<AllUsersInfoResponseDto> getUserInfoList() {
-//        return adminRepository.findAllUsersInfo();
 //    }
 
     /**
@@ -52,7 +50,6 @@ public class AdminService { // 비즈니스 로직
         return adminRepository.findSortedAllUsersInfo(orderBy, target, desc);
     }
 
-    // TODO: 예외 처리, 이메일 메세지에 대한 enum
     /**
      * 사용자의 권한을 수정합니다.
      * 화면에서 권한 버튼을 누를 때 사용자 권한이 BLACK이 아니면 BLACK으로 변경하고
@@ -71,8 +68,8 @@ public class AdminService { // 비즈니스 로직
         if (principalRole.equals(Role.BLACK)) {
             // blacklist 테이블을 하나 만들어두고 참조해서 원래의 권한을 찾아오는 방법도 생각했지만
             // 여기서는 이런 방법으로 구현해봄.
-            if(adminRepository.findBoardSizeByUserId(id) >= 10) role = Role.VIP;
-            if(adminRepository.findBoardSizeByUserId(id) < 10) role = Role.NORMAL;
+            if(adminRepository.countBoardSizeByUserId(id) >= 10) role = Role.VIP;
+            if(adminRepository.countBoardSizeByUserId(id) < 10) role = Role.NORMAL;
         }
 
         // 변경 전 - 후 권한 안내 메일 전송
@@ -81,14 +78,14 @@ public class AdminService { // 비즈니스 로직
         return adminRepository.updateRoleById(role.name(), id);
     }
 
-
-    public List<AllBoardResponseDto> getBoardList() {
-
-
+    /**
+     * 모든 게시글 정보를 받아옵니다.
+     * @return
+     */
+    public List<AllBoardsResponseDto> getBoardList() {
         return adminRepository.findAllBoards();
     }
 
-    // TODO: 유효성 검사
     /**
      * 게시글 상태를 수정합니다.
      * 화면에서 상태 버튼을 누를 때 게시글 상태가 BLACK이 아니면 BLACK으로 변경하고
@@ -96,12 +93,60 @@ public class AdminService { // 비즈니스 로직
      * @param id
      * @return
      */
-    public int setStatusById(Integer id) {
+    public int setStatus(Integer id) {
         String status = Status.BLACK.name();
         Board boardData = adminRepository.findBoardById(id);
 
         if(boardData.getStatus().equals(Status.BLACK)) status = Status.NORMAL.name();
 
         return adminRepository.updateStatusById(status, id);
+    }
+
+    /**
+     * 게시글을 삭제합니다.
+     * @param id
+     * @return
+     */
+    public int deleteBoard(Integer id) {
+        return adminRepository.deleteBoardById(id);
+    }
+
+    /**
+     * 게시글에 포함된 모든 댓글을 삭제합니다.
+     * @param id
+     */
+    public void deleteComments(Integer id) {
+        for(int index = 0; index < adminRepository.countCommentSizeByBoardId(id); index++) {
+            adminRepository.deleteAllCommentsByBoardId(id);
+        }
+    }
+
+    /**
+     * 신고 목록 페이지 요청 시 DB에서 신고 정보를 받아 옵니다.
+     * localhost:8081/admin/reportList
+     * @return
+     */
+    public List<AllReportsResponseDto> getReportList() {
+        return adminRepository.findAllReports();
+    }
+
+    /**
+     * 게시글의 신고를 거절 처리하면 해당 신고를 삭제합니다.
+     * @param id
+     */
+    public void deleteReports(Integer id) {
+        for(int index = 0; index < adminRepository.countReportSizeByBoardId(id); index++) {
+            adminRepository.deleteReportByBoardId(id);
+        }
+    }
+
+    /**
+     * 신고 상세 페이지에 나열할 특정 게시글의 신고목록을 받아 옵니다.
+     * localhost:8081/admin/reportList/{id}
+     * @param id
+     * @return
+     */
+    public List<ReportDetailsResponseDto> getReports(Integer id) {
+        return adminRepository.findReportsByBoardId(id);
     }
 }

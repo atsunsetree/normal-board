@@ -6,8 +6,8 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity(name = "user_tb")
 @Getter
+@Entity(name = "user_tb")
 public class User {
 
     @Id

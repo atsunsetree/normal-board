@@ -9,25 +9,8 @@
 <!--        select * from user_tb-->
 <!--    </select>-->
 
-<!--    <select id="findAllUsersInfo" resultType="com.adminapplication.dto.AllUsersInfoResponseDto">-->
-<!--        SELECT nickname, email, role, qty_of_board, qty_of_comment-->
-<!--        FROM user_tb-->
-<!--        LEFT OUTER JOIN (-->
-<!--            SELECT user_tb.id, count(comment_tb.id) qty_of_comment-->
-<!--            FROM user_tb-->
-<!--            LEFT OUTER JOIN comment_tb-->
-<!--            ON user_tb.id = comment_tb.user_id GROUP BY user_tb.id-->
-<!--        ) AS join_c ON user_tb.id = join_c.id-->
-<!--            LEFT OUTER JOIN (-->
-<!--            SELECT user_tb.id, count(board_tb.id) qty_of_board-->
-<!--            FROM user_tb-->
-<!--            LEFT OUTER JOIN board_tb-->
-<!--            ON user_tb.id = board_tb.user_id GROUP BY user_tb.id-->
-<!--        ) AS join_b ON user_tb.id = join_b.id-->
-<!--    </select>-->
-
     <select id="findSortedAllUsersInfo" resultType="com.adminapplication.dto.AllUsersInfoResponseDto">
-        SELECT nickname, email, role, qty_of_board, qty_of_comment
+        SELECT user_tb.id, nickname, email, role, qty_of_board, qty_of_comment
         FROM user_tb
             LEFT OUTER JOIN (
             SELECT user_tb.id, count(comment_tb.id) qty_of_comment
@@ -47,16 +30,16 @@
         UPDATE user_tb SET role = #{role} WHERE id = #{id}
     </update>
 
-    <select id="findBoardSizeByUserId" resultType="Integer">
-        select count(id) from board_tb WHERE user_id = #{id}
+    <select id="countBoardSizeByUserId" resultType="Integer">
+        SELECT count(id) FROM board_tb WHERE user_id = #{id}
     </select>
 
     <select id="findUserById" resultType="com.core.entity.User">
-        select * from user_tb WHERE id = #{id}
+        SELECT * FROM user_tb WHERE id = #{id}
     </select>
 
-    <select id="findAllBoards" resultType="com.adminapplication.dto.AllBoardResponseDto">
-        SELECT u.nickname, b.title, DATE_FORMAT(b.created_at, '%y-%m-%d %h:%i') created_at
+    <select id="findAllBoards" resultType="com.adminapplication.dto.AllBoardsResponseDto">
+        SELECT b.id, u.nickname, b.title, b.status, DATE_FORMAT(b.created_at, '%y/%m/%d %h:%i') created_at
         FROM board_tb b LEFT OUTER JOIN user_tb u ON user_id = u.id;
     </select>
 
@@ -65,7 +48,37 @@
     </update>
 
     <select id="findBoardById" resultType="com.core.entity.Board">
-        select * from board_tb WHERE id = #{id}
+        SELECT * FROM board_tb WHERE id = #{id}
+    </select>
+
+    <delete id="deleteBoardById">
+        DELETE FROM board_tb WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteAllCommentsByBoardId">
+        DELETE FROM comment_tb WHERE board_id = #{id}
+    </delete>
+
+    <select id="countCommentSizeByBoardId" resultType="Integer">
+        SELECT count(id) FROM comment_tb WHERE board_id = #{id}
+    </select>
+
+    <select id="findAllReports" resultType="com.adminapplication.dto.AllReportsResponseDto">
+        SELECT b.id, b.title, b.user_id, b.status, count(b.id) qty_of_report FROM report_tb r LEFT OUTER JOIN board_tb b ON r.board_id = b.id GROUP BY b.id
+    </select>
+
+    <delete id="deleteReportByBoardId">
+        DELETE FROM report_tb WHERE board_id = #{id}
+    </delete>
+
+    <select id="countReportSizeByBoardId" resultType="Integer">
+        SELECT count(id) FROM report_tb WHERE board_id = #{id}
+    </select>
+
+    <select id="findReportsByBoardId" resultType="com.adminapplication.dto.ReportDetailsResponseDto">
+        SELECT r.id, u.nickname, r.category, r.reason_image, DATE_FORMAT(r.created_at, '%y/%m/%d %h:%i') created_at
+        FROM report_tb r
+        LEFT OUTER JOIN user_tb u ON r.user_id = u.id WHERE r.board_id = #{id}
     </select>
 
 
