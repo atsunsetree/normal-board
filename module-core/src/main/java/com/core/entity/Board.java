@@ -3,7 +3,6 @@ package com.core.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,7 +16,8 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private User user;
 
     private String title;
     private String content;
@@ -30,9 +30,9 @@ public class Board {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Board(Long id, Long userId, String title, String content, String thumbnail, Status status, LocalDateTime createdAt, LocalDateTime updatedAt){
+    public Board(Long id, User user, String title, String content, String thumbnail, Status status, LocalDateTime createdAt, LocalDateTime updatedAt){
         this.id = id;
-        this.userId = userId;
+        this.user = user;
         this.title = title;
         this.content = content;
         this.thumbnail = thumbnail;

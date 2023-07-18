@@ -2,6 +2,7 @@ package com.boardapplication.dto;
 
 import com.core.entity.Board;
 import com.core.entity.Status;
+import com.core.entity.User;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @Data
 public class BoardDto{
     private Long id;
-    private Long userId;
+    private User user;
     private String title;
     private String content;
     private String thumbnail;
@@ -22,7 +23,7 @@ public class BoardDto{
     public Board toEntity(){
         Board build = Board.builder()
                 .id(id)
-                .userId(userId)
+                .user(user)
                 .title(title)
                 .content(content)
                 .thumbnail(thumbnail)
@@ -34,9 +35,9 @@ public class BoardDto{
     }
 
     @Builder
-    public BoardDto(Long id, Long userId, String title, String content, String thumbnail, Status status, String userNickname, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public BoardDto(Long id, User user, String title, String content, String thumbnail, Status status, String userNickname, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
-        this.userId = userId;
+        this.user = user;
         this.title = title;
         this.content = content;
         this.thumbnail = thumbnail;
