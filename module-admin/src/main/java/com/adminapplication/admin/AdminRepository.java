@@ -43,4 +43,6 @@ public interface AdminRepository {
     List<AllBlacklistsResponseDto> findAllBlacklists();
 
     Integer insertBlacklist(Blacklist blacklist);
+
+    Integer deleteBlacklistById(Integer id);
 }

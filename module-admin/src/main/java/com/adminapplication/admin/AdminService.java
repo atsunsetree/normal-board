@@ -75,6 +75,10 @@ public class AdminService { // 비즈니스 로직
 
             adminRepository.insertBlacklist(blacklist);
         }
+        // 블랙리스트 해제
+        if (!role.equals(Role.BLACK)) {
+            adminRepository.deleteBlacklistById(id);
+        }
 
         // 변경 전 - 후 권한 안내 메일 전송
         emailService.sendMail(userData, principalRole, role);
