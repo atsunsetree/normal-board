@@ -94,5 +94,11 @@
         insert into blacklist_tb (category, user_id, created_at) values(#{category}, #{userId}, now())
     </insert>
 
+    <delete id="deleteBlacklistById">
+        DELETE FROM blacklist_tb WHERE user_id = #{id}
+    </delete>
+
+
+
 
 </mapper>
