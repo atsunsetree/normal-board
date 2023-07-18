@@ -20,7 +20,7 @@ public class JoinValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
-        JoinDTO joinDTO = (JoinDTO) errors;
+        JoinDTO joinDTO = (JoinDTO) obj;
         if (userRepository.existsByUsername(joinDTO.getUsername())) {
             errors.rejectValue("username", "invalid.username",
                     new Object[]{joinDTO.getUsername()}, "이미 사용중인 아이디입니다.");
