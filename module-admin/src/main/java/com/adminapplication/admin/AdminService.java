@@ -2,6 +2,7 @@ package com.adminapplication.admin;
 
 import com.adminapplication.dto.*;
 import com.adminapplication.emailservice.EmailService;
+import com.adminapplication.exception.CustomException;
 import com.core.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,7 @@ public class AdminService { // 비즈니스 로직
      * @param id
      * @return
      */
-    public int setRoleById(Integer id, Category category) {
+    public int setRoleById(Long id, Category category) {
         Role role = Role.BLACK;
 
         User userData = adminRepository.findUserById(id);
@@ -101,7 +102,7 @@ public class AdminService { // 비즈니스 로직
      * @param id
      * @return
      */
-    public int setStatus(Integer id) {
+    public int setStatus(Long id) {
         String status = Status.BLACK.name();
         Board boardData = adminRepository.findBoardById(id);
 
@@ -115,7 +116,7 @@ public class AdminService { // 비즈니스 로직
      * @param id
      * @return
      */
-    public int deleteBoard(Integer id) {
+    public int deleteBoard(Long id) {
         return adminRepository.deleteBoardById(id);
     }
 
@@ -123,7 +124,7 @@ public class AdminService { // 비즈니스 로직
      * 게시글에 포함된 모든 댓글을 삭제합니다.
      * @param id
      */
-    public void deleteComments(Integer id) {
+    public void deleteComments(Long id) {
         for(int index = 0; index < adminRepository.countCommentSizeByBoardId(id); index++) {
             adminRepository.deleteAllCommentsByBoardId(id);
         }
@@ -142,7 +143,7 @@ public class AdminService { // 비즈니스 로직
      * 게시글의 신고를 거절 처리하면 해당 신고를 삭제합니다.
      * @param id
      */
-    public void deleteReports(Integer id) {
+    public void deleteReports(Long id) {
         for(int index = 0; index < adminRepository.countReportSizeByBoardId(id); index++) {
             adminRepository.deleteReportByBoardId(id);
         }
@@ -154,7 +155,7 @@ public class AdminService { // 비즈니스 로직
      * @param id
      * @return
      */
-    public List<ReportDetailsResponseDto> getReports(Integer id) {
+    public List<ReportDetailsResponseDto> getReports(Long id) {
         return adminRepository.findReportsByBoardId(id);
     }
 
@@ -166,4 +167,22 @@ public class AdminService { // 비즈니스 로직
     public List<AllBlacklistsResponseDto> getBlacklists() {
         return adminRepository.findAllBlacklists();
     }
+
+    public List<Board> getBoards(Long id) {
+        return adminRepository.findAllBoardsById(id);
+    }
+
+    public boolean isNotExistId(String username) {
+        return adminRepository.findByUsername(username) == null;
+    }
+
+    public boolean isWrongPassword(LoginRequestDto loginRequestDto) {
+        return adminRepository.findByUsernameAndPassword(loginRequestDto.getUsername(), loginRequestDto.getPassword()) == null;
+    }
+
+    public Admin login(LoginRequestDto loginRequestDto) {
+        return adminRepository.findByUsernameAndPassword(loginRequestDto.getUsername(), loginRequestDto.getPassword());
+    }
+
+
 }

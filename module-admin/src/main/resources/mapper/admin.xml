@@ -85,7 +85,7 @@
     </select>
 
     <select id="findAllBlacklists" resultType="com.adminapplication.dto.AllBlacklistsResponseDto">
-        SELECT b.id, b.category, u.username, DATE_FORMAT(b.created_at, '%y/%m/%d %h:%i') created_at
+        SELECT b.id, b.user_id, b.category, u.username, DATE_FORMAT(b.created_at, '%y/%m/%d %h:%i') created_at
         FROM blacklist_tb b
         LEFT OUTER JOIN user_tb u ON b.user_id = u.id
     </select>
@@ -98,7 +98,16 @@
         DELETE FROM blacklist_tb WHERE user_id = #{id}
     </delete>
 
+    <select id="findAllBoardsById" resultType="com.core.entity.Board">
+        SELECT * FROM board_tb WHERE user_id = #{id}
+    </select>
 
+    <select id="findByUsernameAndPassword" resultType="com.core.entity.Admin">
+        select * from admin_tb where username = #{username} and password = #{password}
+    </select>
 
+    <select id="findByUsername" resultType="com.core.entity.Admin">
+        select * from admin_tb where username = #{username}
+    </select>
 
 </mapper>

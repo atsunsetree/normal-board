@@ -25,8 +25,8 @@
                         <td th:text="${userInfo.getQtyOfComment}"></td>
                         <form name="blacklistButton">
                             <td> <!-- 사용자 권한에 따라 버튼 색 변화 --> <!-- Blacklist Button trigger modal -->
-                                <button th:if="${!userInfo.getRole.name().equals('BLACK')}" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#blacklistModal" th:attr="data-bs-target='#blacklistModal'+${userInfo.getId}">블랙리스트 등록</button>
-                                <button th:if="${userInfo.getRole.name().equals('BLACK')}" type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#deleteBlacklistModal" th:attr="data-bs-target='#deleteBlacklistModal'+${userInfo.getId}">블랙리스트 해제</button>
+                                <button th:if="${!userInfo.getRole.name().equals('BLACK')}" type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#blacklistModal" th:attr="data-bs-target='#blacklistModal'+${userInfo.getId}">블랙리스트 등록</button>
+                                <button th:if="${userInfo.getRole.name().equals('BLACK')}" type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#deleteBlacklistModal" th:attr="data-bs-target='#deleteBlacklistModal'+${userInfo.getId}">블랙리스트 해제</button>
                             </td>
                         </form>
                     </span>
@@ -59,7 +59,7 @@
                         <div class="modal-dialog modal-dialog-centered"> <!-- Modal 중앙 배치 modal-dialog-centered -->
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="deleteBlacklistModalLabel">게시글 삭제 확인</h1>
+                                    <h1 class="modal-title fs-5" id="deleteBlacklistModalLabel">블랙리스트 해제 확인</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">

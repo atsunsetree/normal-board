@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @Setter
 public class AllUsersInfoResponseDto {
-    private Integer id;
+    private Long id;
     private String username;
     private String email;
     private Role role;
