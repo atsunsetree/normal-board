@@ -1,6 +1,7 @@
 package com.adminapplication.admin;
 
 import com.adminapplication.dto.*;
+import com.core.entity.Admin;
 import com.core.entity.Blacklist;
 import com.core.entity.Board;
 import com.core.entity.User;
@@ -14,35 +15,41 @@ public interface AdminRepository {
 
     List<AllUsersInfoResponseDto> findSortedAllUsersInfo(String orderBy, String target, String desc);
 
-    Integer updateRoleById(String role, Integer id);
+    Integer updateRoleById(String role, Long id);
 
-    User findUserById(Integer id);
+    User findUserById(Long id);
 
-    Board findBoardById(Integer id);
+    Board findBoardById(Long id);
 
-    Integer countBoardSizeByUserId(Integer id);
+    Integer countBoardSizeByUserId(Long id);
 
     List<AllBoardsResponseDto> findAllBoards();
 
-    Integer updateStatusById(String status, Integer id);
+    Integer updateStatusById(String status, Long id);
 
-    Integer deleteBoardById(Integer id);
+    Integer deleteBoardById(Long id);
 
-    void deleteAllCommentsByBoardId(Integer id);
+    void deleteAllCommentsByBoardId(Long id);
 
-    Integer countCommentSizeByBoardId(Integer id);
+    Integer countCommentSizeByBoardId(Long id);
 
     List<AllReportsResponseDto> findAllReports();
 
-    Integer deleteReportByBoardId(Integer id);
+    Integer deleteReportByBoardId(Long id);
 
-    Integer countReportSizeByBoardId(Integer id);
+    Integer countReportSizeByBoardId(Long id);
 
-    List<ReportDetailsResponseDto> findReportsByBoardId(Integer id);
+    List<ReportDetailsResponseDto> findReportsByBoardId(Long id);
 
     List<AllBlacklistsResponseDto> findAllBlacklists();
 
     Integer insertBlacklist(Blacklist blacklist);
 
-    Integer deleteBlacklistById(Integer id);
+    Integer deleteBlacklistById(Long id);
+
+    List<Board> findAllBoardsById(Long id);
+
+    Admin findByUsernameAndPassword(String username, String password);
+
+    Admin findByUsername(String username);
 }

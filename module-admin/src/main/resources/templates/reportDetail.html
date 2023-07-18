@@ -2,7 +2,7 @@
 <html lang="kr" xmlns:th=":http://www.thymeleaf.org">
 <th:block th:replace="~{/layout/header :: header('신고 상세')}"></th:block>
     <body>
-        <nav th:replace="~{/layout고/navbar :: navbar}"></nav>
+        <nav th:replace="~{/layout/navbar :: navbar}"></nav>
         <div class="container">
             <div class="row">
                 <div class="col-3" th:each="report : ${reports}">

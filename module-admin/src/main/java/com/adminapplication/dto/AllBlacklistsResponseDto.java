@@ -7,7 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AllBlacklistsResponseDto {
-    private Integer id;
+    private Long id;
+    private Long userId;
     private String username;
     private Category category;
     private String createdAt;

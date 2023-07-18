@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AllBoardsResponseDto {
-    private Integer id;
-    private Integer userId;
+    private Long id;
+    private Long userId;
     private String username;
     private String title;
     private String status;

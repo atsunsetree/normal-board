@@ -13,28 +13,56 @@
                 <tbody th:each="report : ${reportList}" class="table-group-divider">
                     <span th:switch="${report.getStatus.name()}" >
                         <tr th:case="NORMAL" th:onclick="@{/admin/reportList/{id}(id=${report.getId})}">
-<!--                            <th th:text="${report.getId}"></th> &lt;!&ndash; board 별 GROUP BY index 필요 &ndash;&gt;-->
                             <form th:action="@{/admin/reportList/{id}(id=${report.getId})}" method="GET">
                                 <td>
-                                    <button class="btn btn-outline-dark">상세보기</button> <!-- 신고 상세 페이지로 이동 경로 설정 -->
+                                    <button class="btn btn-outline-dark btn-sm">상세보기</button> <!-- 신고 상세 페이지로 이동 경로 설정 -->
                                 </td>
                             </form>
                             <td th:text="${report.getTitle}"></td>
                             <td th:text="${report.getQtyOfReport}"></td>
                             <!-- 승인, 게시글 숨김 처리 및 작성자 블랙리스트 등록, 신고자 및 작성자에 통지 -->
-                            <form th:action="@{/admin/reportList/{id}/hide(id=${report.getId})}" method="POST">
+<!--                            <form th:action="@{/admin/reportList/{id}/hide(id=${report.getId})}" method="POST">-->
+<!--                                <td>-->
+<!--                                    <button class="btn btn-success btn-sm">승인</button>-->
+<!--                                </td>-->
+<!--                            </form>-->
+                            <form name="blacklistButton"> <!-- 블랙리스트 등록 버튼, Modal open -->
                                 <td>
-                                    <button class="btn btn-success">승인</button>
+                                    <!-- Blacklist Button trigger modal -->
+                                    <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#blacklistModal" th:attr="data-bs-target='#blacklistModal'+${report.getId}">블랙리스트 등록</button>
                                 </td>
                             </form>
                             <!-- 거절, 신고 목록에서 삭제, 신고자에 통지 -->
                             <form th:action="@{/admin/reportList/{id}/refuse(id=${report.getId})}" method="GET">
                                 <td>
-                                    <button class="btn btn-warning">거절</button>
+                                    <button class="btn btn-warning btn-sm">거절</button>
                                 </td>
                             </form>
                         </tr>
                     </span>
+                    <!-- Blacklist Modal, 고유 번호 부여 th:id="blacklistModal+${board.getUserId}" -->
+                    <div class="modal fade" th:id="blacklistModal+${report.getId}" aria-labelledby="blacklistModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered"> <!-- Modal 중앙 배치 modal-dialog-centered -->
+                            <div class="modal-content">
+                                <form th:action="@{/admin/blacklist/{id}/register(id=${report.getUserId}, category=${category})}">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="blacklistModalLabel">블랙리스트 등록</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body dropdown row g-3">
+                                        <select id="CategorySelectBox" name="category" class="form-select-sm col-4" required >
+                                            <option value="select" selected disabled>등록 사유 선택</option>
+                                            <option th:each="categoryMenu : ${categories}" th:text="${categoryMenu.getValue()}" th:value="${categoryMenu}"> <!--  th:name="selectedCategory" --></option>
+                                        </select>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                        <input type="submit" class="btn btn-success" value="등록" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </tbody>
             </table>
         </div>
