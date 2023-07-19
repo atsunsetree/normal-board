@@ -1,32 +1,35 @@
 package com.boardapplication.controller;
 
 import com.boardapplication.dto.BoardDto;
+import com.boardapplication.dto.CommentCreateRequestDto;
 import com.boardapplication.service.BoardService;
+import com.boardapplication.service.CommentService;
 import com.boardapplication.vo.CreateBoardForm;
+import com.core.entity.Board;
+import com.core.entity.Comment;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 public class BoardController {
-    private BoardService boardService;
+    private final BoardService boardService;
+    private final CommentService commentService;
 
-    public BoardController(BoardService boardService) {
-        this.boardService = boardService;
-    }
 
     @GetMapping("/boardList")
     public String list(Model model, @PageableDefault(page = 0, size = 6, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
@@ -76,6 +79,7 @@ public class BoardController {
             @RequestParam String title,
             @RequestParam String content,
             @RequestParam MultipartFile file,
+            RedirectAttributes redirectAttributes,
             HttpServletRequest request
     ) throws IOException {
         Long userId = 1L;
@@ -86,14 +90,32 @@ public class BoardController {
                 .build();
 
         Long savedBoardId = boardService.save(userId, createBoardForm, file);
-        return "redirect:/board" + savedBoardId;
+        redirectAttributes.addAttribute("boardId", savedBoardId);
+        return "redirect:/board/{boardId}";
     }
 
     @GetMapping("/board/{boardId}")
-    public String getBoardDetailView(@PathVariable Long boardId, HttpServletResponse response) throws IOException {
-        response.sendError(404);
+    public String getBoardDetailView(Model model, @PathVariable Long boardId, HttpServletResponse response) throws IOException {
+        Board board = boardService.getBoardById(boardId);
+        model.addAttribute("board", board);
+        List<Comment> list = commentService.getAllByBoardId(boardId);
+        model.addAttribute("comments", list);
+        System.out.println(list);
+        return "board/detail";
+    }
 
-//        boardService.getBoardById(boardId);
-        return "board/main";
+    @PostMapping("/board/{boardId}/comment")
+    public String createComment(@ModelAttribute CommentCreateRequestDto commentCreateRequestDto, @PathVariable Long boardId, RedirectAttributes redirectAttributes) throws IOException {
+        System.out.println(commentCreateRequestDto);
+        Comment comment = commentService.createParent(1L, commentCreateRequestDto.getContent(), boardId);
+//        redirectAttributes.addAttribute("comment", comment);
+        return "redirect:/board/{boardId}";
+    }
+
+    @PostMapping("/board/{boardId}/comment/{commentId}")
+    public String createChildrenComment(@ModelAttribute CommentCreateRequestDto commentCreateRequestDto, @PathVariable Long commentId, @PathVariable Long boardId, RedirectAttributes redirectAttributes) throws IOException {
+        commentService.createChildren(1L, boardId, commentId, commentCreateRequestDto);
+//        redirectAttributes.addAttribute("comment", comment);
+        return "redirect:/board/{boardId}";
     }
 }

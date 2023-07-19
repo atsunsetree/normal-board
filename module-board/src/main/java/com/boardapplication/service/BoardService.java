@@ -18,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -114,19 +116,19 @@ public class BoardService {
         }
 
 
-        String fullPath = fileDir + UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        String fullPath = fileDir + fileName;
         file.transferTo(new File(fullPath));
         board = Board.builder()
                 .title(createBoardForm.getTitle())
                 .content(createBoardForm.getContent())
-                .thumbnail(fullPath)
+                .thumbnail("images/" + fileName)
                 .user(user)
                 .build();
         return boardRepository.save(board).getId();
     }
 
     public Board getBoardById(Long boardId) {
-        return boardRepository.findById(boardId)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 Board입니다."));
+        return boardRepository.getReferenceById(boardId);
     }
 }
