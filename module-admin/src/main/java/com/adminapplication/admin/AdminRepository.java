@@ -1,10 +1,7 @@
 package com.adminapplication.admin;
 
 import com.adminapplication.dto.*;
-import com.core.entity.Admin;
-import com.core.entity.Blacklist;
-import com.core.entity.Board;
-import com.core.entity.User;
+import com.core.entity.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -25,7 +22,7 @@ public interface AdminRepository {
 
     List<AllBoardsResponseDto> findAllBoards();
 
-    Integer updateStatusById(String status, Long id);
+    Integer updateStatusById(Status status, Long id);
 
     Integer deleteBoardById(Long id);
 
@@ -52,4 +49,5 @@ public interface AdminRepository {
     Admin findByUsernameAndPassword(String username, String password);
 
     Admin findByUsername(String username);
+
 }

@@ -6,6 +6,7 @@ import com.adminapplication.exception.CustomException;
 import com.core.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -53,6 +54,7 @@ public class AdminService { // 비즈니스 로직
      * @param id
      * @return
      */
+    @Transactional
     public int setRoleById(Long id, Category category) {
         Role role = Role.BLACK;
 
@@ -96,19 +98,30 @@ public class AdminService { // 비즈니스 로직
     }
 
     /**
-     * 게시글 상태를 수정합니다.
-     * 화면에서 상태 버튼을 누를 때 게시글 상태가 BLACK이 아니면 BLACK으로 변경하고
-     * BLACK이면 NORMAL로 변경합니다.
+     * 게시글 숨김/보이기
+     * @param category
      * @param id
-     * @return
      */
-    public int setStatus(Long id) {
-        String status = Status.BLACK.name();
-        Board boardData = adminRepository.findBoardById(id);
+    public void setStatus(String category, Long id) {
+        Status status = Status.BLACK;
 
-        if(boardData.getStatus().equals(Status.BLACK)) status = Status.NORMAL.name();
+        // 숨김 처리만 요청할 때 로직
+        if(category == null) {
+            if (getBoard(id).getStatus().equals(Status.NORMAL)) adminRepository.updateStatusById(status, id);
+            if (getBoard(id).getStatus().equals(Status.BLACK)) {
+                if (getUser(getBoard(id).getUserId()).getRole().equals(Role.BLACK)) // 블랙리스트인데 숨김 해제할 경우
+                    throw new CustomException("블랙리스트입니다. 숨김 해제할 수 없습니다.");
+                adminRepository.updateStatusById(Status.NORMAL, id);
+            }
+            return;
+        }
 
-        return adminRepository.updateStatusById(status, id);
+        // 블랙리스트 등록할 때 로직
+        if(category.equals("undo")) status = Status.NORMAL;
+
+        for(Board board : getBoards(id)) {
+            adminRepository.updateStatusById(status, board.getId());
+        }
     }
 
     /**
@@ -168,21 +181,59 @@ public class AdminService { // 비즈니스 로직
         return adminRepository.findAllBlacklists();
     }
 
+    /**
+     * 사용자가 작성한 모든 게시글을 불러옵니다.
+     * @param id
+     * @return
+     */
     public List<Board> getBoards(Long id) {
         return adminRepository.findAllBoardsById(id);
     }
 
+    /**
+     * 사용자의 존재 유무를 확인합니다.
+     * @param username
+     * @return
+     */
     public boolean isNotExistId(String username) {
         return adminRepository.findByUsername(username) == null;
     }
 
+    /**
+     * 사용자의 계정을 먼저 확인 한 뒤 이 메서드를 호출하면
+     * 비밀번호가 틀렸는지 확인합니다.
+     * @param loginRequestDto
+     * @return
+     */
     public boolean isWrongPassword(LoginRequestDto loginRequestDto) {
         return adminRepository.findByUsernameAndPassword(loginRequestDto.getUsername(), loginRequestDto.getPassword()) == null;
     }
 
+    /**
+     * 사용자의 계정과 비밀번호를 찾아 사용자 정보를 리턴합니다.
+     * @param loginRequestDto
+     * @return
+     */
     public Admin login(LoginRequestDto loginRequestDto) {
         return adminRepository.findByUsernameAndPassword(loginRequestDto.getUsername(), loginRequestDto.getPassword());
     }
 
+    /**
+     * 사용자를 찾습니다.
+     * @param id
+     * @return
+     */
+    public User getUser(Long id) {
+        return adminRepository.findUserById(id);
+    }
+
+    /**
+     * 게시글을 찾습니다.
+     * @param id
+     * @return
+     */
+    public Board getBoard(Long id) {
+        return adminRepository.findBoardById(id);
+    }
 
 }
