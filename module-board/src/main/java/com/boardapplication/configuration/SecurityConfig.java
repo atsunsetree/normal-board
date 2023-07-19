@@ -2,7 +2,6 @@ package com.boardapplication.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -15,10 +14,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests()
-                .mvcMatchers("/","/test","/login","/join", "/profile").permitAll()
-                .mvcMatchers(HttpMethod.GET, "/user/*").permitAll()
-                .anyRequest().authenticated();
+        http.csrf().disable()
+                .authorizeRequests()
+                .mvcMatchers("/", "/test", "/login", "/join", "/profile").permitAll()
+                /*
+                .mvcMatchers("/login").not().fullyAuthenticated() //
+                .mvcMatchers("/user/**").authenticated()
+                .mvcMatchers(HttpMethod.GET, "/user/{username}").authenticated()
+                .mvcMatchers("/board/{username}").authenticated() //.access("hasRole('')")
+
+                 */
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/loginProc")
+                .and()
+                .logout().logoutSuccessUrl("/");
     }
 
     @Bean
