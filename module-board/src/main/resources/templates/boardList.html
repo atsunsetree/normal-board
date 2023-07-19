@@ -45,7 +45,7 @@
                 <a th:href="@{'/boardDetail/' + ${board.id}}">
                 <div class="card-body">
                         <div class="thumbnail">
-                            <p th:text="${'썸네일입니다: ' + board.thumbnail}"></p>
+                            <img src="${board.thumbnail}" class="img-thumbnail" alt="이미지가 없습니다">
                         </div>
                         <h3 class="board-number" th:text="${board.id +'번'}"></h3>
                         <h6 class="board-title" th:text="${'제목: '+ board.title}"></h6>
