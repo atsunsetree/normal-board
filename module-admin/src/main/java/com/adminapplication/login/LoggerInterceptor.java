@@ -1,4 +1,4 @@
-package com.adminapplication.admin;
+package com.adminapplication.login;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
