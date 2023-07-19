@@ -4,23 +4,20 @@
     <body>
         <nav th:replace="~{/layout/navbar :: navbar}"></nav>
 
-        <div class="container my-3">
-            <form th:action="@{/admin/login}" method="POST">
-                <div th:if="${param.error}">
-                    <div class="alert alert-danger">
-                        관리자 계정 또는 비밀번호를 확인해 주세요.
+        <div class="container my-3 row-cols-4">
+            <div class="position-absolute top-50 start-50 translate-middle" >
+                <form th:action="@{/admin/login}" method="POST">
+                    <div class="mb-3" align="left">
+                        <label for="username" class="form-label" >관리자 계정</label>
+                        <input type="text" name="username" id="username" class="form-control" placeholder="id">
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label for="username" class="form-label">관리자 계정</label>
-                    <input type="text" name="username" id="username" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">비밀번호</label>
-                    <input type="password" name="password" id="password" class="form-control">
-                </div>
-                <button type="submit" class="btn btn-primary">로그인</button>
-            </form>
+                    <div class="mb-3" align="left">
+                        <label for="password" class="form-label">비밀번호</label>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">로그인</button>
+                </form>
+            </div>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
