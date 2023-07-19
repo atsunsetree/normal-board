@@ -10,7 +10,7 @@
 <!--    </select>-->
 
     <select id="findSortedAllUsersInfo" resultType="com.adminapplication.dto.AllUsersInfoResponseDto">
-        SELECT user_tb.id, nickname, email, role, qty_of_board, qty_of_comment
+        SELECT user_tb.id, username, email, role, qty_of_board, qty_of_comment
         FROM user_tb
             LEFT OUTER JOIN (
             SELECT user_tb.id, count(comment_tb.id) qty_of_comment
@@ -39,8 +39,9 @@
     </select>
 
     <select id="findAllBoards" resultType="com.adminapplication.dto.AllBoardsResponseDto">
-        SELECT b.id, u.nickname, b.title, b.status, DATE_FORMAT(b.created_at, '%y/%m/%d %h:%i') created_at
-        FROM board_tb b LEFT OUTER JOIN user_tb u ON user_id = u.id;
+        SELECT b.id, b.user_id, u.username, b.title, b.status, u.Role, DATE_FORMAT(b.created_at, '%y/%m/%d %h:%i') created_at
+        FROM board_tb b
+        LEFT OUTER JOIN user_tb u ON user_id = u.id;
     </select>
 
     <update id="updateStatusById">
@@ -64,7 +65,9 @@
     </select>
 
     <select id="findAllReports" resultType="com.adminapplication.dto.AllReportsResponseDto">
-        SELECT b.id, b.title, b.user_id, b.status, count(b.id) qty_of_report FROM report_tb r LEFT OUTER JOIN board_tb b ON r.board_id = b.id GROUP BY b.id
+        SELECT b.id, b.title, b.user_id, b.status, count(b.id) qty_of_report
+        FROM report_tb r
+        LEFT OUTER JOIN board_tb b ON r.board_id = b.id GROUP BY b.id
     </select>
 
     <delete id="deleteReportByBoardId">
@@ -81,5 +84,30 @@
         LEFT OUTER JOIN user_tb u ON r.user_id = u.id WHERE r.board_id = #{id}
     </select>
 
+    <select id="findAllBlacklists" resultType="com.adminapplication.dto.AllBlacklistsResponseDto">
+        SELECT b.id, b.user_id, b.category, u.username, DATE_FORMAT(b.created_at, '%y/%m/%d %h:%i') created_at
+        FROM blacklist_tb b
+        LEFT OUTER JOIN user_tb u ON b.user_id = u.id
+    </select>
+
+    <insert id="insertBlacklist">
+        insert into blacklist_tb (category, user_id, created_at) values(#{category}, #{userId}, now())
+    </insert>
+
+    <delete id="deleteBlacklistById">
+        DELETE FROM blacklist_tb WHERE user_id = #{id}
+    </delete>
+
+    <select id="findAllBoardsById" resultType="com.core.entity.Board">
+        SELECT * FROM board_tb WHERE user_id = #{id}
+    </select>
+
+    <select id="findByUsernameAndPassword" resultType="com.core.entity.Admin">
+        select * from admin_tb where username = #{username} and password = #{password}
+    </select>
+
+    <select id="findByUsername" resultType="com.core.entity.Admin">
+        select * from admin_tb where username = #{username}
+    </select>
 
 </mapper>

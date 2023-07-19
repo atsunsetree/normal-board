@@ -1,14 +1,9 @@
 package com.adminapplication.admin;
 
-import com.adminapplication.dto.AllBoardsResponseDto;
-import com.adminapplication.dto.AllReportsResponseDto;
-import com.adminapplication.dto.AllUsersInfoResponseDto;
-import com.adminapplication.dto.ReportDetailsResponseDto;
+import com.adminapplication.dto.*;
 import com.adminapplication.emailservice.EmailService;
-import com.core.entity.Board;
-import com.core.entity.Role;
-import com.core.entity.Status;
-import com.core.entity.User;
+import com.adminapplication.exception.CustomException;
+import com.core.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,18 +53,32 @@ public class AdminService { // 비즈니스 로직
      * @param id
      * @return
      */
-    public int setRoleById(Integer id) {
+    public int setRoleById(Long id, Category category) {
         Role role = Role.BLACK;
 
         User userData = adminRepository.findUserById(id);
         Role principalRole = userData.getRole();
 
         // 사용자 권한 체크 후 id 의 게시글 수 검색
-        if (principalRole.equals(Role.BLACK)) {
+        if (principalRole == Role.BLACK) {
             // blacklist 테이블을 하나 만들어두고 참조해서 원래의 권한을 찾아오는 방법도 생각했지만
             // 여기서는 이런 방법으로 구현해봄.
             if(adminRepository.countBoardSizeByUserId(id) >= 10) role = Role.VIP;
             if(adminRepository.countBoardSizeByUserId(id) < 10) role = Role.NORMAL;
+        }
+
+        // 블랙리스트 등록
+        if (role.equals(Role.BLACK)) {
+            Blacklist blacklist = Blacklist.builder()
+                    .userId(userData.getId())
+                    .category(category)
+                    .build();
+
+            adminRepository.insertBlacklist(blacklist);
+        }
+        // 블랙리스트 해제
+        if (!role.equals(Role.BLACK)) {
+            adminRepository.deleteBlacklistById(id);
         }
 
         // 변경 전 - 후 권한 안내 메일 전송
@@ -93,7 +102,7 @@ public class AdminService { // 비즈니스 로직
      * @param id
      * @return
      */
-    public int setStatus(Integer id) {
+    public int setStatus(Long id) {
         String status = Status.BLACK.name();
         Board boardData = adminRepository.findBoardById(id);
 
@@ -107,7 +116,7 @@ public class AdminService { // 비즈니스 로직
      * @param id
      * @return
      */
-    public int deleteBoard(Integer id) {
+    public int deleteBoard(Long id) {
         return adminRepository.deleteBoardById(id);
     }
 
@@ -115,7 +124,7 @@ public class AdminService { // 비즈니스 로직
      * 게시글에 포함된 모든 댓글을 삭제합니다.
      * @param id
      */
-    public void deleteComments(Integer id) {
+    public void deleteComments(Long id) {
         for(int index = 0; index < adminRepository.countCommentSizeByBoardId(id); index++) {
             adminRepository.deleteAllCommentsByBoardId(id);
         }
@@ -134,7 +143,7 @@ public class AdminService { // 비즈니스 로직
      * 게시글의 신고를 거절 처리하면 해당 신고를 삭제합니다.
      * @param id
      */
-    public void deleteReports(Integer id) {
+    public void deleteReports(Long id) {
         for(int index = 0; index < adminRepository.countReportSizeByBoardId(id); index++) {
             adminRepository.deleteReportByBoardId(id);
         }
@@ -146,7 +155,34 @@ public class AdminService { // 비즈니스 로직
      * @param id
      * @return
      */
-    public List<ReportDetailsResponseDto> getReports(Integer id) {
+    public List<ReportDetailsResponseDto> getReports(Long id) {
         return adminRepository.findReportsByBoardId(id);
     }
+
+    /**
+     * 등록된 블랙리스트 목록을 불러옵니다.
+     * localhost:8081/admin/blacklist
+     * @return
+     */
+    public List<AllBlacklistsResponseDto> getBlacklists() {
+        return adminRepository.findAllBlacklists();
+    }
+
+    public List<Board> getBoards(Long id) {
+        return adminRepository.findAllBoardsById(id);
+    }
+
+    public boolean isNotExistId(String username) {
+        return adminRepository.findByUsername(username) == null;
+    }
+
+    public boolean isWrongPassword(LoginRequestDto loginRequestDto) {
+        return adminRepository.findByUsernameAndPassword(loginRequestDto.getUsername(), loginRequestDto.getPassword()) == null;
+    }
+
+    public Admin login(LoginRequestDto loginRequestDto) {
+        return adminRepository.findByUsernameAndPassword(loginRequestDto.getUsername(), loginRequestDto.getPassword());
+    }
+
+
 }

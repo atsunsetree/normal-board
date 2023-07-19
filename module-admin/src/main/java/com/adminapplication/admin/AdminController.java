@@ -1,6 +1,9 @@
 package com.adminapplication.admin;
 
-import com.adminapplication.dto.ReportDetailsResponseDto;
+import com.adminapplication.dto.LoginRequestDto;
+import com.adminapplication.exception.CustomException;
+import com.core.entity.Admin;
+import com.core.entity.Board;
 import com.core.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,8 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Controller
 @RequestMapping("/admin") // 유효성 검사
@@ -24,26 +26,24 @@ public class AdminController {
     // 사용자 정보 관리 페이지
     @GetMapping("/userList")
     public String main(@RequestParam(name = "target", required = false) String target, Model model) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
+
+        model.addAttribute("categories", Category.values());
         // 조회된 결과물 매핑
         model.addAttribute("userInfoList", adminService.getSortedUserInfoList(target));
         // 응답
         return "/main";
     }
 
-    @PostMapping("/role")
-    public String setRole(@RequestParam(value = "userId") Integer id) {
-        // 유효성 검사
-
-        // 서비스 호출 - 사용자 권한 변경(블랙리스트/본래 권한)
-        adminService.setRoleById(id);
-        // 응답
-        return "redirect:/admin/userList";
-    }
-
     // 게시판 관리 페이지
     @GetMapping("/boardList")
     public String board(Model model) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
 
+        model.addAttribute("categories", Category.values());
+        model.addAttribute("Category", Category.class);
         // 조회 결과물 매핑
         model.addAttribute("boardList", adminService.getBoardList());
         // 응답
@@ -51,7 +51,9 @@ public class AdminController {
     }
 
     @PostMapping("/boardList/{id}/status")
-    public String setStatus(@PathVariable(name = "id") Integer id) {
+    public String setStatus(@PathVariable(name = "id") Long id) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
         // 유효성 검사
 
         // 서비스 호출 - 게시글 상태 변경(숨기기/보이기)
@@ -61,7 +63,9 @@ public class AdminController {
     }
 
     @GetMapping("/boardList/{id}/delete")
-    public String deleteBoard(@PathVariable(name = "id") Integer id) {
+    public String deleteBoard(@PathVariable(name = "id") Long id) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
         // 유효성 검사
 
         // 서비스 호출 - 게시글 및 해당 게시글의 댓글 삭제
@@ -75,7 +79,10 @@ public class AdminController {
     // 신고 목록 페이지
     @GetMapping("/reportList")
     public String report(Model model) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
 
+        model.addAttribute("categories", Category.values());
         // 조회 결과물 매핑
         model.addAttribute("reportList", adminService.getReportList());
         // 응답
@@ -83,28 +90,32 @@ public class AdminController {
     }
 
     @PostMapping("/reportList/{id}/hide")
-    public String hide(@PathVariable(name = "id") Integer id) {
+    public String hide(@PathVariable(name = "id") Long id) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
 
-        // 서비스 호출 - 게시글 숨김, 작성자 블랙리스트 등록
+        // 서비스 호출 - 게시글 숨김
         adminService.setStatus(id);
-        adminService.setRoleById(id);
         // 응답
         return "redirect:/admin/reportList";
     }
 
     @GetMapping("/reportList/{id}/refuse")
-    public String deleteReport(@PathVariable(name = "id") Integer id) {
+    public String deleteReport(@PathVariable(name = "id") Long id) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
         // 유효성 검사
 
         // 서비스 호출 - 신고 삭제
         adminService.deleteReports(id);
-
         // 응답
         return "redirect:/admin/reportList";
     }
 
     @GetMapping("/reportList/{id}")
-    public String reportDetail(@PathVariable(name = "id") Integer id, Model model) {
+    public String reportDetail(@PathVariable(name = "id") Long id, Model model) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
         // 유효성 검사
 
         // 조회 결과물 매핑
@@ -113,4 +124,73 @@ public class AdminController {
         // 응답
         return "/reportDetail";
     }
+
+    @GetMapping("/blacklist")
+    public String blacklist(Model model) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
+
+        model.addAttribute("blacklists", adminService.getBlacklists());
+        model.addAttribute("Category", Category.class);
+
+        return "/blacklist";
+    }
+
+    @GetMapping("/blacklist/{id}/register") // 사용처 - board
+    public String saveBlacklist(
+            @PathVariable(name = "id") Long id,
+            @RequestParam(value = "category", required = false) String category
+    ) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
+
+        // 유효성 검사
+
+        // 서비스 호출 1- 블랙리스트 등록 또는 해제
+        if(!category.equals("undo")) adminService.setRoleById(id, Category.valueOf(category));
+        if(category.equals("undo")) adminService.setRoleById(id, null);
+
+        // 서비스 호출 2- 게시글 상태 변경(숨기기/보이기)
+        for(Board board : adminService.getBoards(id)) {
+            adminService.setStatus(board.getId());
+        }
+        // 응답
+        return "redirect:/admin/userList";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "/login";
+    }
+
+    @PostMapping("/login")
+    public String login(LoginRequestDto loginRequestDto) {
+        // 유효성 검사
+        if (loginRequestDto.getUsername() == null || loginRequestDto.getUsername().isEmpty()) {
+            throw new CustomException("관리자 계정을 입력하세요.");
+        }
+        if (loginRequestDto.getPassword() == null || loginRequestDto.getPassword().isEmpty()) {
+            throw new CustomException("비밀번호를 입력하세요.");
+        }
+        if (adminService.isNotExistId(loginRequestDto.getUsername())) {
+            throw new CustomException("아이디가 존재하지 않습니다.");
+        }
+        if (adminService.isWrongPassword(loginRequestDto)) {
+            throw new CustomException("비밀번호가 틀렸습니다.");
+        }
+        // 서비스 호출
+        Admin principal = adminService.login(loginRequestDto);
+        // 로그인 인증 처리 - 세션
+        session.setAttribute("principal", principal);
+        session.setMaxInactiveInterval(60 * 30);
+
+        return "redirect:/admin/userList";
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+        session.invalidate();
+        return "redirect:/admin/login";
+    }
+
 }
