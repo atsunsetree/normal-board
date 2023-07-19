@@ -1,4 +1,4 @@
-package com.adminapplication.admin;
+package com.adminapplication.login;
 
 import com.core.entity.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
