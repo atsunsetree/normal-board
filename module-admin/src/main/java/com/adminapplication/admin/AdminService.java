@@ -185,4 +185,12 @@ public class AdminService { // 비즈니스 로직
     }
 
 
+    public User getUser(Long id) {
+        return adminRepository.findUserById(id);
+    }
+
+    public Board getBoard(Long id) {
+        return adminRepository.findBoardById(id);
+    }
+
 }
