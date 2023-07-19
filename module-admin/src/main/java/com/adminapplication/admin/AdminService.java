@@ -168,27 +168,57 @@ public class AdminService { // 비즈니스 로직
         return adminRepository.findAllBlacklists();
     }
 
+    /**
+     * 사용자가 작성한 모든 게시글을 불러옵니다.
+     * @param id
+     * @return
+     */
     public List<Board> getBoards(Long id) {
         return adminRepository.findAllBoardsById(id);
     }
 
+    /**
+     * 사용자의 존재 유무를 확인합니다.
+     * @param username
+     * @return
+     */
     public boolean isNotExistId(String username) {
         return adminRepository.findByUsername(username) == null;
     }
 
+    /**
+     * 사용자의 계정을 먼저 확인 한 뒤 이 메서드를 호출하면
+     * 비밀번호가 틀렸는지 확인합니다.
+     * @param loginRequestDto
+     * @return
+     */
     public boolean isWrongPassword(LoginRequestDto loginRequestDto) {
         return adminRepository.findByUsernameAndPassword(loginRequestDto.getUsername(), loginRequestDto.getPassword()) == null;
     }
 
+    /**
+     * 사용자의 계정과 비밀번호를 찾아 사용자 정보를 리턴합니다.
+     * @param loginRequestDto
+     * @return
+     */
     public Admin login(LoginRequestDto loginRequestDto) {
         return adminRepository.findByUsernameAndPassword(loginRequestDto.getUsername(), loginRequestDto.getPassword());
     }
 
-
+    /**
+     * 사용자를 찾습니다.
+     * @param id
+     * @return
+     */
     public User getUser(Long id) {
         return adminRepository.findUserById(id);
     }
 
+    /**
+     * 게시글을 찾습니다.
+     * @param id
+     * @return
+     */
     public Board getBoard(Long id) {
         return adminRepository.findBoardById(id);
     }

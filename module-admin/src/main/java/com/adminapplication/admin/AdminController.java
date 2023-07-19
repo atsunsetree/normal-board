@@ -74,7 +74,7 @@ public class AdminController {
         if(session.getAttribute("principal") == null)
             throw new AuthException("로그인이 필요합니다.");
         if(adminService.getBoard(id) == null)
-            throw new CustomException("해당 사용자가 존재하지 않습니다.");
+            throw new CustomException("해당 게시글이 존재하지 않습니다.");
 
         // 서비스 호출 - 게시글 및 해당 게시글의 댓글 삭제
         adminService.deleteComments(id);
@@ -105,6 +105,7 @@ public class AdminController {
             throw new AuthException("로그인이 필요합니다.");
         if(adminService.getBoard(id) == null)
             throw new CustomException("해당 게시글이 존재하지 않습니다.");
+
         // 서비스 호출 - 게시글 숨김
         adminService.setStatus(id);
         // 응답
@@ -118,6 +119,9 @@ public class AdminController {
             throw new AuthException("로그인이 필요합니다.");
         if(adminService.getBoard(id) == null)
             throw new CustomException("해당 게시글이 존재하지 않습니다.");
+        if(adminService.getReports(id).size() == 0)
+            throw new CustomException("해당 게시글의 신고 내역이 없습니다.");
+
         // 서비스 호출 - 신고 삭제
         adminService.deleteReports(id);
         // 응답
@@ -131,6 +135,8 @@ public class AdminController {
             throw new AuthException("로그인이 필요합니다.");
         if(adminService.getBoard(id) == null)
             throw new CustomException("해당 게시글이 존재하지 않습니다.");
+        if(adminService.getReports(id).size() == 0)
+            throw new CustomException("해당 게시글의 신고 내역이 없습니다.");
 
         // 조회 결과물 매핑
         model.addAttribute("reports", adminService.getReports(id));
@@ -192,9 +198,11 @@ public class AdminController {
             throw new CustomException("아이디가 존재하지 않습니다.");
         if (adminService.isWrongPassword(loginRequestDto))
             throw new CustomException("비밀번호가 틀렸습니다.");
+
         // 서비스 호출
         Admin principal = adminService.login(loginRequestDto);
-        // 로그인 인증 처리 - 세션, 인증 유지 시간
+
+        // 로그인 인증 처리 - 세션, 인증 유지 시간 지정
         session.setAttribute("principal", principal);
         session.setMaxInactiveInterval(60 * 30);
 
