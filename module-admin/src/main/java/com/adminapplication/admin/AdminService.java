@@ -6,6 +6,7 @@ import com.adminapplication.exception.CustomException;
 import com.core.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -53,6 +54,7 @@ public class AdminService { // 비즈니스 로직
      * @param id
      * @return
      */
+    @Transactional
     public int setRoleById(Long id, Category category) {
         Role role = Role.BLACK;
 
@@ -96,19 +98,30 @@ public class AdminService { // 비즈니스 로직
     }
 
     /**
-     * 게시글 상태를 수정합니다.
-     * 화면에서 상태 버튼을 누를 때 게시글 상태가 BLACK이 아니면 BLACK으로 변경하고
-     * BLACK이면 NORMAL로 변경합니다.
+     * 게시글 숨김/보이기
+     * @param category
      * @param id
-     * @return
      */
-    public int setStatus(Long id) {
-        String status = Status.BLACK.name();
-        Board boardData = adminRepository.findBoardById(id);
+    public void setStatus(String category, Long id) {
+        Status status = Status.BLACK;
 
-        if(boardData.getStatus().equals(Status.BLACK)) status = Status.NORMAL.name();
+        // 숨김 처리만 요청할 때 로직
+        if(category == null) {
+            if (getBoard(id).getStatus().equals(Status.NORMAL)) adminRepository.updateStatusById(status, id);
+            if (getBoard(id).getStatus().equals(Status.BLACK)) {
+                if (getUser(getBoard(id).getUserId()).getRole().equals(Role.BLACK)) // 블랙리스트인데 숨김 해제할 경우
+                    throw new CustomException("블랙리스트입니다. 숨김 해제할 수 없습니다.");
+                adminRepository.updateStatusById(Status.NORMAL, id);
+            }
+            return;
+        }
 
-        return adminRepository.updateStatusById(status, id);
+        // 블랙리스트 등록할 때 로직
+        if(category.equals("undo")) status = Status.NORMAL;
+
+        for(Board board : getBoards(id)) {
+            adminRepository.updateStatusById(status, board.getId());
+        }
     }
 
     /**

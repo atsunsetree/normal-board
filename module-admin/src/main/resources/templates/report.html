@@ -21,11 +21,6 @@
                             <td th:text="${report.getTitle}"></td>
                             <td th:text="${report.getQtyOfReport}"></td>
                             <!-- 승인, 게시글 숨김 처리 및 작성자 블랙리스트 등록, 신고자 및 작성자에 통지 -->
-<!--                            <form th:action="@{/admin/reportList/{id}/hide(id=${report.getId})}" method="POST">-->
-<!--                                <td>-->
-<!--                                    <button class="btn btn-success btn-sm">승인</button>-->
-<!--                                </td>-->
-<!--                            </form>-->
                             <form name="blacklistButton"> <!-- 블랙리스트 등록 버튼, Modal open -->
                                 <td>
                                     <!-- Blacklist Button trigger modal -->
