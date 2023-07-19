@@ -1,5 +1,6 @@
-<img src="https://capsule-render.vercel.app/api?type=waving&color=E3CEF6&height=250&section=header&text=📒게시판%20제작%20프로젝트&fontSize=50" />
-
+<div align=center>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=E3CEF6&height=250&section=header&text=📒게시판%20제작%20프로젝트&fontSize=50" />
+</div>
 <div align=center><h1>📚 STACKS</h1></div>
 
 <div align=center> 
