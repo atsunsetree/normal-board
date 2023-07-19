@@ -26,6 +26,8 @@ public class AdminController {
     // 사용자 정보 관리 페이지
     @GetMapping("/userList")
     public String main(@RequestParam(name = "target", required = false) String target, Model model) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
 
         model.addAttribute("categories", Category.values());
         // 조회된 결과물 매핑
@@ -37,6 +39,8 @@ public class AdminController {
     // 게시판 관리 페이지
     @GetMapping("/boardList")
     public String board(Model model) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
 
         model.addAttribute("categories", Category.values());
         model.addAttribute("Category", Category.class);
@@ -48,6 +52,8 @@ public class AdminController {
 
     @PostMapping("/boardList/{id}/status")
     public String setStatus(@PathVariable(name = "id") Long id) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
         // 유효성 검사
 
         // 서비스 호출 - 게시글 상태 변경(숨기기/보이기)
@@ -58,6 +64,8 @@ public class AdminController {
 
     @GetMapping("/boardList/{id}/delete")
     public String deleteBoard(@PathVariable(name = "id") Long id) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
         // 유효성 검사
 
         // 서비스 호출 - 게시글 및 해당 게시글의 댓글 삭제
@@ -71,6 +79,8 @@ public class AdminController {
     // 신고 목록 페이지
     @GetMapping("/reportList")
     public String report(Model model) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
 
         model.addAttribute("categories", Category.values());
         // 조회 결과물 매핑
@@ -81,6 +91,8 @@ public class AdminController {
 
     @PostMapping("/reportList/{id}/hide")
     public String hide(@PathVariable(name = "id") Long id) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
 
         // 서비스 호출 - 게시글 숨김
         adminService.setStatus(id);
@@ -90,6 +102,8 @@ public class AdminController {
 
     @GetMapping("/reportList/{id}/refuse")
     public String deleteReport(@PathVariable(name = "id") Long id) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
         // 유효성 검사
 
         // 서비스 호출 - 신고 삭제
@@ -100,6 +114,8 @@ public class AdminController {
 
     @GetMapping("/reportList/{id}")
     public String reportDetail(@PathVariable(name = "id") Long id, Model model) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
         // 유효성 검사
 
         // 조회 결과물 매핑
@@ -111,6 +127,8 @@ public class AdminController {
 
     @GetMapping("/blacklist")
     public String blacklist(Model model) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
 
         model.addAttribute("blacklists", adminService.getBlacklists());
         model.addAttribute("Category", Category.class);
@@ -123,6 +141,9 @@ public class AdminController {
             @PathVariable(name = "id") Long id,
             @RequestParam(value = "category", required = false) String category
     ) {
+        // 비로그인 -> 로그인 페이지로 이동
+        if(session.getAttribute("principal") == null) return "/login";
+
         // 유효성 검사
 
         // 서비스 호출 1- 블랙리스트 등록 또는 해제
