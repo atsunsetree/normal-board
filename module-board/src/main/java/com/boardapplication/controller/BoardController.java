@@ -129,7 +129,7 @@ public class BoardController {
 
     @PostMapping("/board/{boardId}/comment")
     public String createComment(@ModelAttribute CommentCreateRequestDto commentCreateRequestDto, @PathVariable Long boardId, RedirectAttributes redirectAttributes) throws IOException {
-        Comment comment = commentService.createParent(1L, commentCreateRequestDto.getContent(), boardId);
+        Comment comment = commentService.createParent(2L, commentCreateRequestDto.getContent(), boardId);
 //        redirectAttributes.addAttribute("comment", comment);
         return "redirect:/board/{boardId}";
     }

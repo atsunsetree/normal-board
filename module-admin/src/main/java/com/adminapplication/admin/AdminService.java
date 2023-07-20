@@ -109,7 +109,7 @@ public class AdminService { // 비즈니스 로직
         if(category == null) {
             if (getBoard(id).getStatus().equals(Status.NORMAL)) adminRepository.updateStatusById(status, id);
             if (getBoard(id).getStatus().equals(Status.BLACK)) {
-                if (getUser(getBoard(id).getUserId()).getRole().equals(Role.BLACK)) // 블랙리스트인데 숨김 해제할 경우
+                if (getUser(getBoard(id).getUser().getId()).getRole().equals(Role.BLACK)) // 블랙리스트인데 숨김 해제할 경우
                     throw new CustomException("블랙리스트입니다. 숨김 해제할 수 없습니다.");
                 adminRepository.updateStatusById(Status.NORMAL, id);
             }

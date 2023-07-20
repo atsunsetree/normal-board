@@ -9,6 +9,7 @@ import com.core.entity.Board;
 import com.core.entity.Status;
 import com.core.entity.User;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -25,18 +26,14 @@ import java.util.UUID;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class BoardService {
 
     @Value("${file.dir}")
     private String fileDir;
+    private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
-    private BoardRepository boardRepository;
-    private UserRepository userRepository;
-
-    public BoardService(BoardRepository boardRepository, UserRepository userRepository){
-        this.boardRepository = boardRepository;
-        this.userRepository = userRepository;
-    }
 
     @Transactional
     public Page<BoardDto> getBoardList(Pageable pageable){

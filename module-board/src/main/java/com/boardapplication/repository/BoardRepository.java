@@ -15,7 +15,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     Page<Board> findByContentAndStatus(String keyword, Status status, Pageable pageable);
 
     @Query("SELECT b FROM board_tb b " +
-            "JOIN user_tb u on b.user = u.id " +
+            "JOIN user_tb u on b.user = u " +
             "WHERE b.status = :status " +
             "AND u.nickname = :keyword " +
             "order by b.id DESC")
