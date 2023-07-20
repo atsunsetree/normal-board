@@ -25,7 +25,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeRequests()
-                .mvcMatchers("/", "/test", "/login", "/join", "/profile").permitAll()
+                .mvcMatchers("/**").permitAll()
+
+//                .mvcMatchers("/", "/test", "/login", "/join", "/profile").permitAll()
                 /*
                 .mvcMatchers("/login").not().fullyAuthenticated() //
                 .mvcMatchers("/user/**").authenticated()

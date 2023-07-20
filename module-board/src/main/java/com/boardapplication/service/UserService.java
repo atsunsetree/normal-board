@@ -54,7 +54,7 @@ public class UserService {
         Page<BoardDto> boardList = boardService.getBoardList(pageable);
 
         for (BoardDto boardDto : boardList) {
-            Long userId = boardDto.getUserId();
+            Long userId = boardDto.getUser().getId();
             int postCount = boardRepository.countByUserId(userId);
             if (postCount >= 10) {
                 User user = userRepository.findByUsername(String.valueOf(userId));
