@@ -12,8 +12,8 @@
                 </thead>
                 <tbody th:each="report : ${reportList}" class="table-group-divider">
                     <span th:switch="${report.getStatus.name()}" >
-                        <tr th:case="NORMAL" th:onclick="@{/admin/reportList/{id}(id=${report.getId})}">
-                            <form th:action="@{/admin/reportList/{id}(id=${report.getId})}" method="GET">
+                        <tr th:case="NORMAL">
+                            <form th:action="@{/admin/reportList/{id}(id=${report.getBoardId})}" method="GET">
                                 <td>
                                     <button class="btn btn-outline-dark btn-sm">상세보기</button> <!-- 신고 상세 페이지로 이동 경로 설정 -->
                                 </td>
@@ -24,28 +24,30 @@
                             <form name="blacklistButton"> <!-- 블랙리스트 등록 버튼, Modal open -->
                                 <td>
                                     <!-- Blacklist Button trigger modal -->
-                                    <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#blacklistModal" th:attr="data-bs-target='#blacklistModal'+${report.getId}">블랙리스트 등록</button>
+                                    <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#blacklistModal" th:attr="data-bs-target='#blacklistModal'+${report.getBoardId}">블랙리스트 등록</button>
                                 </td>
                             </form>
                             <!-- 거절, 신고 목록에서 삭제, 신고자에 통지 -->
-                            <form th:action="@{/admin/reportList/{id}/refuse(id=${report.getId})}" method="GET">
+                            <form th:action="@{/admin/reportList/{id}/refuse(id=${report.getBoardId})}" method="GET">
                                 <td>
                                     <button class="btn btn-warning btn-sm">거절</button>
                                 </td>
                             </form>
                         </tr>
                     </span>
+
                     <!-- Blacklist Modal, 고유 번호 부여 th:id="blacklistModal+${board.getUserId}" -->
-                    <div class="modal fade" th:id="blacklistModal+${report.getId}" aria-labelledby="blacklistModalLabel" aria-hidden="true">
+                    <div class="modal fade" th:id="blacklistModal+${report.getBoardId}" aria-labelledby="blacklistModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered"> <!-- Modal 중앙 배치 modal-dialog-centered -->
                             <div class="modal-content">
-                                <form th:action="@{/admin/blacklist/{id}/register(id=${report.getUserId}, category=${category})}">
+                                    <form th:action="@{/admin/blacklist/{id}/register(id=${report.getUserId}, category=${category})}" method="GET">
+                                        <input type="hidden" name="reportedBoardId" th:value="${report.getBoardId}">
                                     <div class="modal-header">
                                         <h1 class="modal-title fs-5" id="blacklistModalLabel">블랙리스트 등록</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body dropdown row g-3">
-                                        <select id="CategorySelectBox" name="category" class="form-select-sm col-4" required >
+                                        <select id="CategorySelectBox" name="category" class="form-select-sm col-4">
                                             <option value="select" selected disabled>등록 사유 선택</option>
                                             <option th:each="categoryMenu : ${categories}" th:text="${categoryMenu.getValue()}" th:value="${categoryMenu}"> <!--  th:name="selectedCategory" --></option>
                                         </select>

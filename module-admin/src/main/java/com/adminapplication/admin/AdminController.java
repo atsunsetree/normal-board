@@ -1,16 +1,24 @@
 package com.adminapplication.admin;
 
+import com.adminapplication.dto.AllReportsResponseDto;
 import com.adminapplication.dto.LoginRequestDto;
+import com.adminapplication.dto.ReportDetailsResponseDto;
+import com.adminapplication.email.EmailService;
 import com.adminapplication.exception.AuthException;
 import com.adminapplication.exception.CustomException;
 import com.core.entity.Admin;
 import com.core.entity.Category;
+import com.core.entity.Role;
+import com.core.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 
 @Controller
@@ -22,6 +30,9 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private EmailService emailService;
 
     // 사용자 정보 관리 페이지
     @GetMapping("/userList")
@@ -106,6 +117,7 @@ public class AdminController {
         model.addAttribute("categories", Category.values());
         // 조회 결과물 매핑
         model.addAttribute("reportList", adminService.getReportList());
+
         // 응답
         return "/report";
     }
@@ -164,7 +176,8 @@ public class AdminController {
     @GetMapping("/blacklist/{id}/register")
     public String saveBlacklist(
             @PathVariable(name = "id") Long id,
-            @RequestParam(value = "category") String category
+            @RequestParam(value = "category") String category,
+            @RequestParam(value = "reportedBoardId", required = false) Long reportedId
     ) {
 
         // 유효성 검사
@@ -172,6 +185,8 @@ public class AdminController {
             throw new AuthException("로그인이 필요합니다.");
         if(adminService.getUser(id) == null)
             throw new CustomException("해당 사용자가 존재하지 않습니다.");
+        if(category == null || category.equals("등록 사유 선택") || category.isEmpty() || category.isBlank())
+            throw new CustomException("등록 사유를 입력해주세요.");
         for(int index = 0; index < Category.values().length; index++) {
             if(Category.values()[index].name().equals(category)) break;
             if(!category.equals("undo") && index == Category.values().length - 1) throw new CustomException("등록 사유를 잘못 입력하였습니다.");
@@ -181,7 +196,16 @@ public class AdminController {
         if(!category.equals("undo")) adminService.setRoleById(id, Category.valueOf(category));
         if(category.equals("undo")) adminService.setRoleById(id, null);
 
-        // 서비스 호출 2- 게시글 숨김/보임
+        // 서비스 호출 2- 권한 변경 시 이메일 전송 / 신고내역 있는 사용자는 신고자에게도 메일 전송
+        List<User> reporters = new ArrayList<>();
+        if(reportedId != null) {
+            for(ReportDetailsResponseDto reportDetailsResponseDto : adminService.getReports(reportedId)) {
+                reporters.add(adminService.getUser(reportDetailsResponseDto.getUserId()));
+            }
+        }
+        emailService.sendMail(adminService.getUser(id), reporters, Role.NORMAL, Role.BLACK);
+
+        // 서비스 호출 3- 게시글 숨김/보임
         adminService.setStatus(category, id);
 
         // 응답
