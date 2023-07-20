@@ -66,13 +66,13 @@ public class BoardService {
         List<BoardDto> boardDtoList = new ArrayList<>();
 
         if(searchType.equals("boardTitle")){
-            boards = boardRepository.findByTitleAndStatus(keyword, Status.NORMAL, pageable);
+            boards = boardRepository.findByTitleContainingAndStatus(keyword, Status.NORMAL, pageable);
         }
         else if(searchType.equals("boardWriter")){
-            boards = boardRepository.findByNicknameAndStatus(keyword, Status.NORMAL, pageable);
+            boards = boardRepository.findByNicknameContainingAndStatus(keyword, Status.NORMAL, pageable);
         }
         else {
-            boards = boardRepository.findByContentAndStatus(keyword, Status.NORMAL, pageable);
+            boards = boardRepository.findByContentContainingAndStatus(keyword, Status.NORMAL, pageable);
         }
         for(Board board : boards){
             if(board.getStatus().equals(Status.NORMAL)){
