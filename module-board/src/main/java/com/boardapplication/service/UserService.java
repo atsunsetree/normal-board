@@ -1,7 +1,7 @@
 package com.boardapplication.service;
 
 import com.boardapplication.dto.BoardDto;
-import com.boardapplication.dto.JoinDTO;
+import com.boardapplication.dto.JoinDto;
 import com.boardapplication.repository.BoardRepository;
 import com.boardapplication.repository.UserRepository;
 import com.core.entity.Role;
@@ -31,14 +31,14 @@ public class UserService {
     private final BoardService boardService;
     private final ModelMapper modelMapper;
 
-    public User processNewUser(JoinDTO joinDTO) {
-        User newUser = saveNewUser(joinDTO);
+    public User processNewUser(JoinDto joinDto) {
+        User newUser = saveNewUser(joinDto);
         return userRepository.save(newUser);
     }
 
-    private User saveNewUser(@Valid JoinDTO joinDTO) {
-        joinDTO.setPassword(passwordEncoder.encode(joinDTO.getPassword()));
-        User user = modelMapper.map(joinDTO, User.class);
+    private User saveNewUser(@Valid JoinDto joinDto) {
+        joinDto.setPassword(passwordEncoder.encode(joinDto.getPassword()));
+        User user = modelMapper.map(joinDto, User.class);
         return userRepository.save(user);
     }
 
@@ -48,7 +48,7 @@ public class UserService {
     }
 
     //스케줄러 자동등업
-    @Scheduled(fixedRate = 600000)
+    @Scheduled(fixedRate = 600000) //10분
     public void autoUpdateRole() {
         Pageable pageable = Pageable.unpaged(); //전체조회
         Page<BoardDto> boardList = boardService.getBoardList(pageable);
@@ -58,7 +58,7 @@ public class UserService {
             int postCount = boardRepository.countByUserId(userId);
             if (postCount >= 10) {
                 User user = userRepository.findByUsername(String.valueOf(userId));
-                if (user != null && !"black".equals(user.getRole())) {
+                if (user != null && !"BLACK".equals(user.getRole())) {
                     user.setRole(Role.valueOf("VIP"));
                     userRepository.save(user);
                 }
