@@ -20,6 +20,8 @@ public class Board {
     private User user;
 
     private String title;
+
+    @Column(columnDefinition = "LONGTEXT")
     private String content;
     private String thumbnail;
 
@@ -41,4 +43,8 @@ public class Board {
         this.updatedAt = updatedAt;
     }
 
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

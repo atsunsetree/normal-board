@@ -2,12 +2,17 @@ package com.boardapplication.controller;
 
 import com.boardapplication.dto.BoardDto;
 import com.boardapplication.dto.CommentCreateRequestDto;
+import com.boardapplication.dto.UpdateBoardRequestDto;
+import com.boardapplication.repository.UserRepository;
 import com.boardapplication.service.BoardService;
 import com.boardapplication.service.CommentService;
-import com.boardapplication.vo.CreateBoardForm;
+import com.boardapplication.dto.CreateBoardRequestDto;
+import com.boardapplication.service.ReportService;
 import com.core.entity.Board;
+import com.core.entity.Category;
 import com.core.entity.Comment;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,7 +25,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 
@@ -29,6 +36,11 @@ import java.util.List;
 public class BoardController {
     private final BoardService boardService;
     private final CommentService commentService;
+    private final ReportService reportService;
+
+
+    @Value("${file.dir}")
+    private String dirPath;
 
 
     @GetMapping("/boardList")
@@ -83,13 +95,13 @@ public class BoardController {
             HttpServletRequest request
     ) throws IOException {
         Long userId = 1L;
-        CreateBoardForm createBoardForm = CreateBoardForm.builder()
+        CreateBoardRequestDto createBoardRequestDto = CreateBoardRequestDto.builder()
                 .title(title)
                 .content(content)
                 .file(file)
                 .build();
 
-        Long savedBoardId = boardService.save(userId, createBoardForm, file);
+        Long savedBoardId = boardService.save(userId, createBoardRequestDto, file);
         redirectAttributes.addAttribute("boardId", savedBoardId);
         return "redirect:/board/{boardId}";
     }
@@ -100,13 +112,23 @@ public class BoardController {
         model.addAttribute("board", board);
         List<Comment> list = commentService.getAllByBoardId(boardId);
         model.addAttribute("comments", list);
-        System.out.println(list);
+        model.addAttribute("userId", 1L);
         return "board/detail";
+    }
+
+    @GetMapping(value = "/board/image/{fileName}")
+    @ResponseBody
+    public byte[] getImage(@PathVariable String fileName) {
+        try (InputStream inputStream = new FileInputStream(dirPath + fileName)){
+
+            return inputStream.readAllBytes();
+        }catch (Exception e){
+            return null;
+        }
     }
 
     @PostMapping("/board/{boardId}/comment")
     public String createComment(@ModelAttribute CommentCreateRequestDto commentCreateRequestDto, @PathVariable Long boardId, RedirectAttributes redirectAttributes) throws IOException {
-        System.out.println(commentCreateRequestDto);
         Comment comment = commentService.createParent(1L, commentCreateRequestDto.getContent(), boardId);
 //        redirectAttributes.addAttribute("comment", comment);
         return "redirect:/board/{boardId}";
@@ -116,6 +138,46 @@ public class BoardController {
     public String createChildrenComment(@ModelAttribute CommentCreateRequestDto commentCreateRequestDto, @PathVariable Long commentId, @PathVariable Long boardId, RedirectAttributes redirectAttributes) throws IOException {
         commentService.createChildren(1L, boardId, commentId, commentCreateRequestDto);
 //        redirectAttributes.addAttribute("comment", comment);
+        return "redirect:/board/{boardId}";
+    }
+
+    @PostMapping("/board/{boardId}/comment/{commentId}/delete")
+    public String deleteComment(@PathVariable Long commentId, @PathVariable Long boardId) throws IOException {
+        commentService.deleteById(commentId);
+//        redirectAttributes.addAttribute("comment", comment);
+        return "redirect:/board/{boardId}";
+    }
+
+
+    @GetMapping("/board/{boardId}/update")
+    public String updateBoardView(@PathVariable Long boardId, Model model) {
+        Board findBoard = boardService.getBoardById(boardId);
+        model.addAttribute("board", findBoard);
+        return "board/edit";
+    }
+
+    @PostMapping("/board/{boardId}/update")
+    public String updateBoard(@PathVariable Long boardId, @ModelAttribute UpdateBoardRequestDto updateBoardRequestDto, Model model) {
+        boardService.update(boardId, updateBoardRequestDto);
+        return "redirect:/board/{boardId}";
+    }
+
+    @PostMapping("/board/{boardId}/delete")
+    public String deleteBoard(@PathVariable Long boardId) {
+        boardService.deleteById(boardId);
+        return "redirect:/boardList";
+    }
+
+    @GetMapping("/board/{boardId}/report")
+    public String reportBoardView(@PathVariable Long boardId, Model model) {
+        model.addAttribute("boardId", boardId);
+        model.addAttribute("categories", Category.values());
+        return "board/report";
+    }
+
+    @PostMapping("/board/{boardId}/report")
+    public String reportBoard(@PathVariable Long boardId, Category category, MultipartFile file) throws IOException {
+        reportService.create(1L, boardId, file, category);
         return "redirect:/board/{boardId}";
     }
 }

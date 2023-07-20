@@ -8,11 +8,29 @@
 </head>
 <body>
 <div class="container" th:object="${board}">
+    <div class="row justify-content-center mt-lg-3">
+        <h1 class="col-10">게시글 상세보기</h1>
+    </div>
+    <div class="row justify-content-center mt-lg-3 mb-5">
+        <div class="col-10 border-bottom"></div>
+    </div>
     <div class="row d-flex justify-content-center">
         <div class="col-md-10">
-            <img th:src="@{*{thumbnail}}" class="card-img col-md-6" alt="thumbnail" src=""/>
+            <img th:src="|/board/image/*{thumbnail}|" class="card-img col-md-6" alt="thumbnail" src=""/>
             <h5 th:text="*{getTitle()}">Card title</h5>
             <p th:utext="*{getContent()}"></p>
+
+            <div class="d-flex justify-content-between">
+                <form th:action="@{/board/{boardId}/delete(boardId=*{id})}" method="post">
+                    <button th:if="${board.user.id == userId}" type="button" class="btn btn-warning" th:onclick="|location.href='@{/board/{boardId}/update(boardId=*{id})}'|">수정</button>
+                    <button th:if="${board.user.id == userId}" type="submit" class="btn btn-danger">삭제</button>
+                </form>
+                <form th:action="@{/board/{boardId}/report(boardId=${board.id})}">
+                    <button th:if="${board.user.id == userId}" type="submit" class="btn btn-danger">신고</button>
+                </form>
+
+            </div>
+
         </div>
     </div>
 
@@ -25,7 +43,7 @@
                               style="background: #fff;"></textarea>
                 </div>
                 <div class="float-end mt-2 pt-1">
-                    <button type="submit" class="btn btn-primary btn-sm">Post comment</button>
+                    <button type="submit" class="btn btn-primary btn-sm">등록</button>
                 </div>
             </form>
         </div>
@@ -37,16 +55,22 @@
                 <div class="card-body">
                     <h5 class="card-title" th:text="${comment.user.nickname}">유저 닉네임</h5>
                     <p class="card-text" th:text="${comment.content}">부모 댓글 내용</p>
-                    <button class="btn btn-primary" data-bs-toggle="collapse"
-                            th:data-bs-target="'#replyBox' + ${comment.id}">답글 달기 토글
-                    </button>
+                    <div>
+                        <form th:action="@{/board/{boardId}/comment/{commentId}/delete(boardId=*{id}, commentId=${comment.id})}" method="post">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="collapse"
+                                    th:data-bs-target="'#replyBox' + ${comment.id}">답글
+                            </button>
+                            <button th:if="${comment.user.id == userId}" type="submit" class="btn btn-danger">삭제</button>
+                        </form>
+                    </div>
+
                     <div th:id="'replyBox' + ${comment.id}" class="collapse mt-3">
                         <form th:action="@{/board/{boardId}/comment/{commentId}(boardId=${board.id}, commentId=${comment.id})}"
                               method="post">
                             <!--                                <input type="hidden" name="parentId" th:value="${comment.id}">-->
                             <div class="input-group">
                                 <input type="text" class="form-control" name="content" placeholder="답글을 입력하세요">
-                                <button type="submit" class="btn btn-outline-secondary">답글 등록</button>
+                                <button type="submit" class="btn btn-outline-secondary">등록</button>
                             </div>
                         </form>
                     </div>
@@ -56,6 +80,9 @@
                                 <h5 class="card-title" th:text="${child.user.nickname}">유저 닉네임</h5>
                                 <p class="card-text" th:text="${child.content}">대댓글 내용</p>
                             </div>
+                            <form th:action="@{/board/{boardId}/comment/{commentId}/delete(boardId=*{id}, commentId=${child.id})}" method="post">
+                                <button th:if="${child.user.id == userId}" type="submit" class="btn btn-danger">삭제</button>
+                            </form>
                         </div>
                     </div>
                 </div>

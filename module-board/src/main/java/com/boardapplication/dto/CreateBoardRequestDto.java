@@ -1,4 +1,4 @@
-package com.boardapplication.vo;
+package com.boardapplication.dto;
 
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-public class CreateBoardForm {
+public class CreateBoardRequestDto {
 
     private String title;
     private String content;
