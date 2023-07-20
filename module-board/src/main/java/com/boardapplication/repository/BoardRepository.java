@@ -20,4 +20,5 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
             "AND u.nickname = :keyword " +
             "order by b.id DESC")
     Page<Board> findByNicknameAndStatus(@Param("keyword") String keyword, @Param("status") Status status, Pageable pageable);
+    int countByUserId(Long userId); //
 }
