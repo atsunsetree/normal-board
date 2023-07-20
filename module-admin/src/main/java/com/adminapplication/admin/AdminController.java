@@ -176,7 +176,7 @@ public class AdminController {
     @GetMapping("/blacklist/{id}/register")
     public String saveBlacklist(
             @PathVariable(name = "id") Long id,
-            @RequestParam(value = "category") String category,
+            @RequestParam(value = "category", required = false) String category,
             @RequestParam(value = "reportedBoardId", required = false) Long reportedId
     ) {
 
