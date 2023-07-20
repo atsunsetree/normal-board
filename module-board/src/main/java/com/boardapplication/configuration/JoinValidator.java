@@ -1,4 +1,5 @@
 package com.boardapplication.configuration;
+
 import com.boardapplication.dto.JoinDTO;
 import com.boardapplication.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,15 +15,15 @@ public class JoinValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.isAssignableFrom(JoinDTO.class);
+        return clazz.isAssignableFrom(JoinDto.class);
     }
 
     @Override
     public void validate(Object obj, Errors errors) {
-        JoinDTO joinDTO = (JoinDTO) obj;
-        if (userRepository.existsByUsername(joinDTO.getUsername())) {
+        JoinDto joinDto = (JoinDto) obj;
+        if (userRepository.existsByUsername(joinDto.getUsername())) {
             errors.rejectValue("username", "invalid.username",
-                    new Object[]{joinDTO.getUsername()}, "이미 사용중인 아이디입니다.");
+                    new Object[]{joinDto.getUsername()}, "이미 사용중인 아이디입니다.");
         }
     }
 }

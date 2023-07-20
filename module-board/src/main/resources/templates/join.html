@@ -8,6 +8,7 @@
 </head>
 <body>
 <div class="container">
+<!-- <<<<<<< feature/#38 -->
   <div class="py-5 text-center">
     <h2 style="text-align: center;">회원가입</h2>
   </div>
@@ -24,6 +25,24 @@
           </div>
           <div th:if="${duplicateResult}" th:text="${duplicateResult}" id="duplicateResult"></div>
         </div>
+<!-- ======= -->
+<!--     <div class="py-5 text-center">
+        <h2 style="text-align: center;">회원가입</h2>
+    </div>
+    <div class="row justify-content-center">
+        <form class="needs-validation col-sm-6" action="#"
+              th:action="@{/join}" th:object="${joinDto}" method="post" novalidate>
+            <div class="form-group">
+                <label for="username">아이디</label>
+                <div class="input-group">
+                    <input id="username" type="text" th:field="*{username}" class="form-control"
+                           placeholder="username" aria-describedby="usernameHelp" required minlength="3" maxlength="20">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-secondary btn-sm">중복검사</button>
+                    </div>
+                    <div th:if="${duplicateResult}" th:text="${duplicateResult}" id="duplicateResult"></div>
+                </div> -->
+<!-- >>>>>>> develop -->
 
         <small id="usernameHelp" class="form-text text-muted">
           공백없이 영문으로 3자 이상 20자 이내로 입력하세요. 가입후에 변경할 수 없습니다.
@@ -54,6 +73,7 @@
         <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</small>
       </div>
 
+<!-- <<<<<<< feature/#38 -->
       <div class="form-group">
         <label for="nickname">닉네임</label>
         <input id="nickname" type="nickname" th:field="*{nickname}" class="form-control"
@@ -64,6 +84,18 @@
         <small class="invalid-feedback">닉네임을 입력하세요.</small>
         <small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">nickname Error</small>
       </div>
+<!-- ======= -->
+<!--             <div class="form-group">
+                <label for="nickname">닉네임</label>
+                <input id="nickname" type="text" th:field="*{nickname}" class="form-control"
+                       placeholder="nickname" aria-describedby="nicknameHelp" required>
+                <small id="nicknameHelp" class="form-text text-muted">
+                    한글 또는 영어로 3자 이상 20자 이내로 입력하세요. 게시글 작성시 보이게 될 닉네임입니다.
+                </small>
+                <small class="invalid-feedback">닉네임을 입력하세요.</small>
+                <small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">nickname Error</small>
+            </div> -->
+<!-- >>>>>>> develop -->
 
 
       <div class="form-group">

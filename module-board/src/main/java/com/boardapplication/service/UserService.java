@@ -1,7 +1,7 @@
 package com.boardapplication.service;
 
 import com.boardapplication.dto.BoardDto;
-import com.boardapplication.dto.JoinDTO;
+import com.boardapplication.dto.JoinDto;
 import com.boardapplication.repository.BoardRepository;
 import com.boardapplication.repository.UserRepository;
 import com.core.entity.Role;
@@ -35,14 +35,14 @@ public class UserService {
     private final BoardService boardService;
     private final ModelMapper modelMapper;
 
-    public User processNewUser(JoinDTO joinDTO) {
-        User newUser = saveNewUser(joinDTO);
+    public User processNewUser(JoinDto joinDto) {
+        User newUser = saveNewUser(joinDto);
         return userRepository.save(newUser);
     }
 
-    private User saveNewUser(@Valid JoinDTO joinDTO) {
-        joinDTO.setPassword(passwordEncoder.encode(joinDTO.getPassword()));
-        User user = modelMapper.map(joinDTO, User.class);
+    private User saveNewUser(@Valid JoinDto joinDto) {
+        joinDto.setPassword(passwordEncoder.encode(joinDto.getPassword()));
+        User user = modelMapper.map(joinDto, User.class);
         return userRepository.save(user);
     }
 
@@ -52,6 +52,7 @@ public class UserService {
     }
 
     //스케줄러 자동등업
+// <<<<<<< feature/#38
     @Scheduled(fixedRate = 60000)
     public void autoUpdateRole() {
         List<User> users = userRepository.findAll();
@@ -60,6 +61,22 @@ public class UserService {
             if(user.getRole() == Role.NORMAL && postCount >= 10){
                 user.setRole(Role.VIP);
                 userRepository.save(user);
+// =======
+//     @Scheduled(fixedRate = 600000) //10분
+//     public void autoUpdateRole() {
+//         Pageable pageable = Pageable.unpaged(); //전체조회
+//         Page<BoardDto> boardList = boardService.getBoardList(pageable);
+
+//         for (BoardDto boardDto : boardList) {
+//             Long userId = boardDto.getUser().getId();
+//             int postCount = boardRepository.countByUserId(userId);
+//             if (postCount >= 10) {
+//                 User user = userRepository.findByUsername(String.valueOf(userId));
+//                 if (user != null && !"BLACK".equals(user.getRole())) {
+//                     user.setRole(Role.valueOf("VIP"));
+//                     userRepository.save(user);
+//                 }
+// >>>>>>> develop
             }
         }
     }

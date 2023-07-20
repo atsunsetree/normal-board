@@ -11,7 +11,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 @Data
-public class JoinDTO {
+public class JoinDto {
     @NotEmpty
     @Length(min = 3, max = 20)
     @Pattern(regexp = "^[a-zA-Z0-9]{3,20}$")

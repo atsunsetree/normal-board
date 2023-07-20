@@ -11,7 +11,7 @@ import java.util.Collection;
 
 @Getter
 @RequiredArgsConstructor
-public class UserSessionDTO implements UserDetails {
+public class UserSessionDto implements UserDetails {
     private final User user;
 
     @Override

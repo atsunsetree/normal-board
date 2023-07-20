@@ -1,7 +1,7 @@
 package com.boardapplication.controller;
 
 import com.boardapplication.configuration.JoinValidator;
-import com.boardapplication.dto.JoinDTO;
+import com.boardapplication.dto.JoinDto;
 import com.boardapplication.repository.UserRepository;
 import com.boardapplication.service.UserService;
 import com.core.entity.User;
@@ -25,7 +25,7 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
 
-    @InitBinder("joinDTO")
+    @InitBinder("joinDto")
     public void initBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(joinValidator);
     }
@@ -34,13 +34,12 @@ public class UserController {
     public String index(Authentication authentication) {
 
         if (authentication != null && authentication.isAuthenticated()) {
-            return "redirect:/profile";
+            return "redirect:/boardList";
         } else {
             return "/login";
         }
 
     }
-
 
     @GetMapping("/login")
     public String login(){
@@ -50,20 +49,21 @@ public class UserController {
 
     @GetMapping("/join")
     public String join(Model model) {
-        model.addAttribute("joinDTO", new JoinDTO());
+        model.addAttribute("joinDto", new JoinDto());
         return "/join";
     }
 
 
 
     @PostMapping("/join")
-    public String joinDTO(@Valid JoinDTO joinDTO, Errors errors) {
+    public String joinDto(@Valid JoinDto joinDto, Errors errors) {
+        //System.out.println(errors.getAllErrors());
         if (errors.hasErrors()) {
             return "/join";
         }
-        User user = userService.processNewUser(joinDTO);
+        User user = userService.processNewUser(joinDto);
 
-        return "/";
+        return "redirect:/boardList";
     }
 
     /*
