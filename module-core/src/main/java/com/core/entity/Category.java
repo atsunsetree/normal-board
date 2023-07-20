@@ -1,5 +1,8 @@
 package com.core.entity;
 
+import lombok.Getter;
+
+@Getter
 public enum Category {
 
     ABUSE("욕설"),
