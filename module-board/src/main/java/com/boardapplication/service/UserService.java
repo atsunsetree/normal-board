@@ -5,46 +5,38 @@ import com.boardapplication.repository.UserRepository;
 import com.core.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.validation.Valid;
+
 
 @Slf4j
 @Transactional
 @RequiredArgsConstructor
 @Service
-public abstract class UserService implements UserDetailsService {
+public class UserService {
 
-    private final JoinDTO joinDTO;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
-    public User saveUser(User user) {
+    public User processNewUser(JoinDTO joinDTO) {
+        User newUser = saveNewUser(joinDTO);
+        return userRepository.save(newUser);
+    }
+
+    private User saveNewUser(@Valid JoinDTO joinDTO) {
+        joinDTO.setPassword(passwordEncoder.encode(joinDTO.getPassword()));
+        User user = modelMapper.map(joinDTO, User.class);
         return userRepository.save(user);
     }
-    /*
-    public User JoinNewUser(@Valid JoinDTO joinDTO) {
-        User user = JoinDTO.newUser(joinDTO, passwordEncoder);
-        //User user = modelMapper.map(joinDTO, User.class);
-        return userRepository.save(user);
 
+    public void updatePassword(User user, String newPassword) {
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
-
-     */
-
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
-        }
-
-        return null;
-    }
-
 
 }
