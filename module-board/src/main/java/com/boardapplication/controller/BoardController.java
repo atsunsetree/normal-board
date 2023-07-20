@@ -2,17 +2,15 @@ package com.boardapplication.controller;
 
 import com.boardapplication.dto.BoardDto;
 import com.boardapplication.dto.CommentCreateRequestDto;
+import com.boardapplication.dto.CreateBoardRequestDto;
 import com.boardapplication.dto.UpdateBoardRequestDto;
-import com.boardapplication.repository.UserRepository;
 import com.boardapplication.service.BoardService;
 import com.boardapplication.service.CommentService;
-import com.boardapplication.dto.CreateBoardRequestDto;
 import com.boardapplication.service.ReportService;
 import com.core.entity.Board;
 import com.core.entity.Category;
 import com.core.entity.Comment;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -39,7 +37,7 @@ public class BoardController {
     private final ReportService reportService;
 
 
-    @Value("${file.dir}")
+   // @Value("${file.dir}")
     private String dirPath;
 
 

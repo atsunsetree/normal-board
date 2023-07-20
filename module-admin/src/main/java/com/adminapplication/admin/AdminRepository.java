@@ -38,7 +38,7 @@ public interface AdminRepository {
 
     List<ReportDetailsResponseDto> findReportsByBoardId(Long id);
 
-    List<AllBlacklistsResponseDto> findAllBlacklists();
+    List<AllBlacklistResponseDto> findAllBlacklists();
 
     Integer insertBlacklist(Blacklist blacklist);
 

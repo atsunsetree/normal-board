@@ -177,7 +177,7 @@ public class AdminService { // 비즈니스 로직
      * localhost:8081/admin/blacklist
      * @return
      */
-    public List<AllBlacklistsResponseDto> getBlacklists() {
+    public List<AllBlacklistResponseDto> getBlacklists() {
         return adminRepository.findAllBlacklists();
     }
 
