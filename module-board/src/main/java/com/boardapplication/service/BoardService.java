@@ -6,6 +6,7 @@ import com.boardapplication.repository.BoardRepository;
 import com.boardapplication.repository.UserRepository;
 import com.boardapplication.dto.CreateBoardRequestDto;
 import com.core.entity.Board;
+import com.core.entity.Role;
 import com.core.entity.Status;
 import com.core.entity.User;
 
@@ -38,6 +39,66 @@ public class BoardService {
     @Transactional
     public Page<BoardDto> getBoardList(Pageable pageable){
         Page<Board> boards = boardRepository.findByStatus(Status.NORMAL, pageable);
+        List<BoardDto> boardDtoList = new ArrayList<>();
+        for(Board board : boards){
+            if(board.getStatus().equals(Status.NORMAL)){
+                User user = userRepository.findById(board.getUser().getId()).orElse(null);
+                String nickname = user != null ? user.getNickname() : null;
+
+                BoardDto dto = BoardDto.builder()
+                        .id(board.getId())
+                        .user(user)
+                        .title(board.getTitle())
+                        .content(board.getContent())
+                        .thumbnail(board.getThumbnail())
+                        .status(board.getStatus())
+                        .createdAt(board.getCreatedAt())
+                        .updatedAt(board.getUpdatedAt())
+                        .userNickname(nickname)
+                        .build();
+                boardDtoList.add(dto);
+            }
+        }
+        return new PageImpl<>(boardDtoList, pageable, boards.getTotalElements());
+    }
+
+    public Page<BoardDto> getBoardListByRole(String role, Pageable pageable) {
+        // 사용자 역할(role)에 따라 보여줄 게시판 카테고리를 분기 처리
+        if (role.equals("vip")) {
+            return getVipBoardList(pageable);
+        } else {
+            return getNormalBoardList(pageable);
+        }
+    }
+
+    private Page<BoardDto> getNormalBoardList(Pageable pageable) {
+        Page<Board> boards = boardRepository.findByRoleAndStatus(Role.NORMAL, Status.NORMAL, pageable);
+        List<BoardDto> boardDtoList = new ArrayList<>();
+        for(Board board : boards){
+            if(board.getStatus().equals(Status.NORMAL)){
+                User user = userRepository.findById(board.getUser().getId()).orElse(null);
+                String nickname = user != null ? user.getNickname() : null;
+
+                BoardDto dto = BoardDto.builder()
+                        .id(board.getId())
+                        .user(user)
+                        .title(board.getTitle())
+                        .content(board.getContent())
+                        .thumbnail(board.getThumbnail())
+                        .status(board.getStatus())
+                        .createdAt(board.getCreatedAt())
+                        .updatedAt(board.getUpdatedAt())
+                        .userNickname(nickname)
+                        .build();
+                boardDtoList.add(dto);
+            }
+        }
+        return new PageImpl<>(boardDtoList, pageable, boards.getTotalElements());
+
+    }
+
+    private Page<BoardDto> getVipBoardList(Pageable pageable) {
+        Page<Board> boards = boardRepository.findByRoleAndStatus(Role.VIP, Status.NORMAL, pageable);
         List<BoardDto> boardDtoList = new ArrayList<>();
         for(Board board : boards){
             if(board.getStatus().equals(Status.NORMAL)){

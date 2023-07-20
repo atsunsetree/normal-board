@@ -11,30 +11,30 @@
 <nav class="navbar navbar-expand-lg bg-light" style="background-color: #e3f2fd;">
     <div class="container-fluid">
         <ul class="nav justify-content-center">
-        <a class="navbar-brand" href="#">검색게시글 목록</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">새싹게시판</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">우수게시판</a>
-                </li>
-            </ul>
-            <form class="d-flex" role="search" style="margin-left: 15px" action="/searchBoardList" method="get">
-                <select name="searchType">
-                    <option th:value=boardTitle>제목</option>
-                    <option th:value=boardWriter>작성자</option>
-                    <option th:value=boardContent>내용</option>
-                </select>
-                <input class="form-control me-2" type="search" name="keyword" placeholder="검색어를 입력하세요." aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Serch</button>
-            </form>
-            <a class="btn btn-outline-secondary" style="color: #86b7fe; margin-left: 15px" href="#" role="button">글쓰기</a>
-        </div>
+            <a class="navbar-brand" href="#">검색게시글 목록</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/boardList/normal}">새싹게시판</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/boardList/vip}">우수게시판</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search" style="margin-left: 15px" action="/searchBoardList" method="get">
+                    <select name="searchType">
+                        <option th:value=boardTitle>제목</option>
+                        <option th:value=boardWriter>작성자</option>
+                        <option th:value=boardContent>내용</option>
+                    </select>
+                    <input class="form-control me-2" type="search" name="keyword" placeholder="검색어를 입력하세요." aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Serch</button>
+                </form>
+                <a class="btn btn-outline-secondary" style="color: #86b7fe; margin-left: 15px" href="#" role="button">글쓰기</a>
+            </div>
         </ul>
     </div>
 </nav>

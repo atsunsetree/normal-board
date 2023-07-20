@@ -1,6 +1,7 @@
 package com.boardapplication.repository;
 
 import com.core.entity.Board;
+import com.core.entity.Role;
 import com.core.entity.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,4 +23,11 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     Page<Board> findByNicknameContainingAndStatus(String keyword, Status status, Pageable pageable);
 
     Page<Board> findByContentContainingAndStatus(String keyword, Status status, Pageable pageable);
+
+    @Query("SELECT b FROM board_tb b " +
+            "JOIN user_tb u on b.user = u " +
+            "WHERE b.status = :status " +
+            "AND u.role = :role " +
+            "order by b.id DESC")
+    Page<Board> findByRoleAndStatus(Role role, Status status, Pageable pageable);
 }

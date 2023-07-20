@@ -11,17 +11,17 @@
 <nav class="navbar navbar-expand-lg bg-light" style="background-color: #e3f2fd;">
     <div class="container-fluid">
         <ul class="nav justify-content-center">
-            <a class="navbar-brand" href="#">게시글 목록</a>
+            <a class="navbar-brand" href="/boardList">게시글 목록</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">새싹게시판</a>
+                        <a class="nav-link active" aria-current="page" th:href="@{/boardList/normal}">새싹게시판</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">우수게시판</a>
+                        <a class="nav-link active" aria-current="page" th:href="@{/boardList/vip}">우수게시판</a>
                     </li>
                 </ul>
                 <form class="d-flex" role="search" style="margin-left: 15px" action="/searchBoardList" method="get">
@@ -33,7 +33,7 @@
                     <input class="form-control me-2" type="search" name="keyword" placeholder="검색어를 입력하세요." aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Serch</button>
                 </form>
-                <a class="btn btn-outline-secondary" style="color: #86b7fe; margin-left: 15px" href="#" role="button">글쓰기</a>
+                <a class="btn btn-outline-secondary" style="color: #86b7fe; margin-left: 15px" th:href="@{/board/write}" role="button">글쓰기</a>
             </div>
         </ul>
     </div>
@@ -48,7 +48,16 @@
                     <h3 class="board-number" th:text="${board.id +'번'}" style="margin-top: 5px"></h3>
                     <h6 class="board-title" th:text="${'제목: '+ board.title}"></h6>
                     <p class="board-userId" th:text="${'닉네임: ' + board.userNickname}"></p>
-                    <p class="board-content" th:utext="${'내용 ' + board.content}"></p>
+                    <p class="board-content" th:utext="${board.content}"></p>
+<!--                    <p class="board-content" th:utext="'내용: ' + ${board.content}"></p>-->
+
+                    <!--                    <p class="board-content">-->
+<!--                        <span>내용: </span>-->
+<!--                        <span class="board-content" th:utext="${board.content}"></span>-->
+<!--                        <pre class="board-content" th:utext="${board.content}"></pre>-->
+<!--                    </p>-->
+<!--                    <p class="board-content" th:text="${'내용 ' + board.content}" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis"></p>-->
+<!--                    <p class="board-content" th:utext  style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis">내용: <span th:utext th:text="${board.content}"></span></p>-->
                 </div>
                 </a>
             </div>
