@@ -1,6 +1,6 @@
 package com.boardapplication.service;
 
-import com.boardapplication.dto.UserSessionDTO;
+import com.boardapplication.dto.UserSessionDto;
 import com.boardapplication.repository.UserRepository;
 import com.core.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +25,6 @@ public class LoginService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
         session.setAttribute("username", username);
-        return new UserSessionDTO(user);
+        return new UserSessionDto(user);
     }
 }
