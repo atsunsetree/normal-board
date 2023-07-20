@@ -1,6 +1,7 @@
 package com.boardapplication.repository;
 
 import com.core.entity.Board;
+import com.core.entity.Role;
 import com.core.entity.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,15 +11,23 @@ import org.springframework.data.repository.query.Param;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
     Page<Board> findByStatus(Status status, Pageable pageable);
-    Page<Board> findByTitleAndStatus(String keyword, Status status, Pageable pageable);
+    int countByUserId(Long userId); //
 
-    Page<Board> findByContentAndStatus(String keyword, Status status, Pageable pageable);
+    Page<Board> findByTitleContainingAndStatus(String keyword, Status status, Pageable pageable);
 
     @Query("SELECT b FROM board_tb b " +
             "JOIN user_tb u on b.user = u " +
             "WHERE b.status = :status " +
-            "AND u.nickname = :keyword " +
+            "AND u.nickname LIKE %:keyword% " +
             "order by b.id DESC")
-    Page<Board> findByNicknameAndStatus(@Param("keyword") String keyword, @Param("status") Status status, Pageable pageable);
-    int countByUserId(Long userId); //
+    Page<Board> findByNicknameContainingAndStatus(String keyword, Status status, Pageable pageable);
+
+    Page<Board> findByContentContainingAndStatus(String keyword, Status status, Pageable pageable);
+
+    @Query("SELECT b FROM board_tb b " +
+            "JOIN user_tb u on b.user = u " +
+            "WHERE b.status = :status " +
+            "AND u.role = :role " +
+            "order by b.id DESC")
+    Page<Board> findByRoleAndStatus(Role role, Status status, Pageable pageable);
 }

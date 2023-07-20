@@ -17,6 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
+
+import static java.rmi.server.LogStream.log;
 
 
 @Slf4j
@@ -48,20 +52,31 @@ public class UserService {
     }
 
     //스케줄러 자동등업
-    @Scheduled(fixedRate = 600000) //10분
+// <<<<<<< feature/#38
+    @Scheduled(fixedRate = 60000)
     public void autoUpdateRole() {
-        Pageable pageable = Pageable.unpaged(); //전체조회
-        Page<BoardDto> boardList = boardService.getBoardList(pageable);
+        List<User> users = userRepository.findAll();
+        for(User user : users){
+            int postCount = boardRepository.countByUserId(user.getId());
+            if(user.getRole() == Role.NORMAL && postCount >= 10){
+                user.setRole(Role.VIP);
+                userRepository.save(user);
+// =======
+//     @Scheduled(fixedRate = 600000) //10분
+//     public void autoUpdateRole() {
+//         Pageable pageable = Pageable.unpaged(); //전체조회
+//         Page<BoardDto> boardList = boardService.getBoardList(pageable);
 
-        for (BoardDto boardDto : boardList) {
-            Long userId = boardDto.getUser().getId();
-            int postCount = boardRepository.countByUserId(userId);
-            if (postCount >= 10) {
-                User user = userRepository.findByUsername(String.valueOf(userId));
-                if (user != null && !"BLACK".equals(user.getRole())) {
-                    user.setRole(Role.valueOf("VIP"));
-                    userRepository.save(user);
-                }
+//         for (BoardDto boardDto : boardList) {
+//             Long userId = boardDto.getUser().getId();
+//             int postCount = boardRepository.countByUserId(userId);
+//             if (postCount >= 10) {
+//                 User user = userRepository.findByUsername(String.valueOf(userId));
+//                 if (user != null && !"BLACK".equals(user.getRole())) {
+//                     user.setRole(Role.valueOf("VIP"));
+//                     userRepository.save(user);
+//                 }
+// >>>>>>> develop
             }
         }
     }

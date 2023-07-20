@@ -1,6 +1,6 @@
 package com.boardapplication.configuration;
 
-import com.boardapplication.dto.JoinDto;
+import com.boardapplication.dto.JoinDTO;
 import com.boardapplication.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -27,5 +27,3 @@ public class JoinValidator implements Validator {
         }
     }
 }
-
-
