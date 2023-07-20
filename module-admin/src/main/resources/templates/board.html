@@ -16,7 +16,7 @@
                         <td th:text="${board.getTitle}"></td>
                         <td th:text="${board.getCreatedAt}"></td>
                         <form th:action="@{/admin/boardList/{id}/status(id=${board.getId})}" method="POST">
-                            <td th:switch="${board.getStatus}"> <!-- 게시글 상태에 따라 색 변화 -->
+                            <td th:switch="${board.getStatus.name()}"> <!-- 게시글 상태에 따라 색 변화 -->
                                 <button th:case="BLACK" class="btn btn-secondary btn-sm">숨김</button>
                                 <button th:case="NORMAL" class="btn btn-primary btn-sm">숨김</button>
                             </td>

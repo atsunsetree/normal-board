@@ -8,8 +8,9 @@ import lombok.Setter;
 @Setter
 public class ReportDetailsResponseDto {
     private Long id;
-    private String nickname;
-    private Category category;
-    private String reasonImage;
+    private String nickname; // 게시글 작성자 닉네임
+    private Long userId; // 신고자
+    private Category category; // 신고 사유
+    private String reasonImage; // 신고 이미지
     private String createdAt;
 }

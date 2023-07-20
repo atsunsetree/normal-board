@@ -22,7 +22,7 @@ public interface AdminRepository {
 
     List<AllBoardsResponseDto> findAllBoards();
 
-    Integer updateStatusById(Status status, Long id);
+    Integer updateStatusById(String status, Long id);
 
     Integer deleteBoardById(Long id);
 

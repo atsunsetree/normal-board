@@ -1,12 +1,11 @@
 package com.adminapplication.admin;
 
 import com.adminapplication.dto.*;
-import com.adminapplication.emailservice.EmailService;
+import com.adminapplication.email.EmailService;
 import com.adminapplication.exception.CustomException;
 import com.core.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -54,7 +53,6 @@ public class AdminService { // 비즈니스 로직
      * @param id
      * @return
      */
-    @Transactional
     public int setRoleById(Long id, Category category) {
         Role role = Role.BLACK;
 
@@ -62,7 +60,7 @@ public class AdminService { // 비즈니스 로직
         Role principalRole = userData.getRole();
 
         // 사용자 권한 체크 후 id 의 게시글 수 검색
-        if (principalRole == Role.BLACK) {
+        if (principalRole.equals(Role.BLACK)) {
             // blacklist 테이블을 하나 만들어두고 참조해서 원래의 권한을 찾아오는 방법도 생각했지만
             // 여기서는 이런 방법으로 구현해봄.
             if(adminRepository.countBoardSizeByUserId(id) >= 10) role = Role.VIP;
@@ -77,6 +75,7 @@ public class AdminService { // 비즈니스 로직
                     .build();
 
             adminRepository.insertBlacklist(blacklist);
+
         }
         // 블랙리스트 해제
         if (!role.equals(Role.BLACK)) {
@@ -84,7 +83,7 @@ public class AdminService { // 비즈니스 로직
         }
 
         // 변경 전 - 후 권한 안내 메일 전송
-        emailService.sendMail(userData, principalRole, role);
+//        emailService.sendMail(userData, null, principalRole, role);
 
         return adminRepository.updateRoleById(role.name(), id);
     }
@@ -107,12 +106,19 @@ public class AdminService { // 비즈니스 로직
 
         // 숨김 처리만 요청할 때 로직
         if(category == null) {
-            if (getBoard(id).getStatus().equals(Status.NORMAL)) adminRepository.updateStatusById(status, id);
-            if (getBoard(id).getStatus().equals(Status.BLACK)) {
-                if (getUser(getBoard(id).getUser().getId()).getRole().equals(Role.BLACK)) // 블랙리스트인데 숨김 해제할 경우
+// <<<<<<< feature/#45
+            if (getBoard(id).getStatus().equals(status)) {
+                if (getUser(getBoard(id).getUserId()).getRole().equals(Role.BLACK)) // 블랙리스트인데 숨김 해제할 경우
+// =======
+//             if (getBoard(id).getStatus().equals(Status.NORMAL)) adminRepository.updateStatusById(status, id);
+//             if (getBoard(id).getStatus().equals(Status.BLACK)) {
+//                 if (getUser(getBoard(id).getUser().getId()).getRole().equals(Role.BLACK)) // 블랙리스트인데 숨김 해제할 경우
+// >>>>>>> develop
                     throw new CustomException("블랙리스트입니다. 숨김 해제할 수 없습니다.");
-                adminRepository.updateStatusById(Status.NORMAL, id);
+                adminRepository.updateStatusById(Status.NORMAL.name(), id);
+                return;
             }
+            adminRepository.updateStatusById(status.name(), id);
             return;
         }
 
@@ -120,7 +126,7 @@ public class AdminService { // 비즈니스 로직
         if(category.equals("undo")) status = Status.NORMAL;
 
         for(Board board : getBoards(id)) {
-            adminRepository.updateStatusById(status, board.getId());
+            adminRepository.updateStatusById(status.name(), board.getId());
         }
     }
 
