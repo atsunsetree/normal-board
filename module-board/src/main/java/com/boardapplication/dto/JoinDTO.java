@@ -30,19 +30,19 @@ public class JoinDTO {
     @Pattern(regexp = "^[a-zA-Z가-힣]{3,20}$")
     private String nickname;
 
-    public User toEntity(PasswordEncoder passwordEncoder) {
-        User user = new User();
-        user.setUsername(username);
-        user.setEmail(email);
-        user.setNickname(nickname);
-        user.setRole(Role.NORMAL);
-
-        if (password != null) {
-            String enPassword = passwordEncoder.encode(password);
-            user.setPassword(enPassword);
-        }
-
-        return user;
-    }
+//    public User toEntity(PasswordEncoder passwordEncoder) {
+//        User user = new User();
+//        user.setUsername(username);
+//        user.setEmail(email);
+//        user.setNickname(nickname);
+//        user.setRole(Role.NORMAL);
+//
+//        if (password != null) {
+//            String enPassword = passwordEncoder.encode(password);
+//            user.setPassword(enPassword);
+//        }
+//
+//        return user;
+//    }
 
 }

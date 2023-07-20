@@ -42,16 +42,13 @@
     <div class="card-grid">
         <div th:each="board, index : ${boardPage.content}" class="board-list">
             <div class="card">
-                <a th:href="@{'/boardDetail/' + ${board.id}}">
+                <a th:href="@{'/board/' + ${board.id}}">
                 <div class="card-body">
-                        <div class="thumbnail">
-                            <img src="${board.thumbnail}" class="img-thumbnail" alt="이미지가 없습니다">
-                        </div>
-                        <h3 class="board-number" th:text="${board.id +'번'}"></h3>
-                        <h6 class="board-title" th:text="${'제목: '+ board.title}"></h6>
-                        <p class="board-userId" th:text="${'닉네임: ' + board.userNickname}"></p>
-                        <p class="board-content" th:text="${'내용: ' + board.content}"></p>
-                        <p class="board-creatAt" th:text="${'작성시간: ' + #temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}"></p>
+                    <img th:src="@{|/board/image/${board.thumbnail}|}" class="img-thumbnail" alt="이미지가 없습니다" src="" style="width: 300px; height: 150px"/>
+                    <h3 class="board-number" th:text="${board.id +'번'}" style="margin-top: 5px"></h3>
+                    <h6 class="board-title" th:text="${'제목: '+ board.title}"></h6>
+                    <p class="board-userId" th:text="${'닉네임: ' + board.userNickname}"></p>
+                    <p class="board-content" th:utext="${'내용 ' + board.content}"></p>
                 </div>
                 </a>
             </div>
