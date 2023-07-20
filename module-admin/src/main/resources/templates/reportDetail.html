@@ -4,12 +4,12 @@
     <body>
         <nav th:replace="~{/layout/navbar :: navbar}"></nav>
         <div class="container">
-            <div class="row">
-                <div class="col-3" th:each="report : ${reports}">
-                    <div class="card" style="width: 18rem;" >
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col" th:each="report : ${reports}">
+                    <div class="card border-dark" style="width: 18rem;" >
                         <img src="https://picsum.photos/seed/picsum/300/200" class="card-img-top" alt="근거 이미지">
                         <div class="card-img-overlay">
-                            <h5 class="card-title" th:text="${report.getNickname}"></h5>
+                            <h5 class="card-title" th:text="'신고자 : ' + ${report.getNickname}"></h5>
                         </div>
                         <div class="card-body">
                             <p class="card-text" th:text="'신고 사유 : ' + ${report.getCategory.getValue()}"></p>

@@ -86,9 +86,10 @@ public class AdminController {
         if(adminService.getBoard(id) == null)
             throw new CustomException("해당 게시글이 존재하지 않습니다.");
 
-        // 서비스 호출 - 게시글 및 해당 게시글의 댓글 삭제
+        // 서비스 호출 - 게시글 및 해당 게시글의 댓글, 신고내역 삭제
         adminService.deleteComments(id);
         adminService.deleteBoard(id);
+        adminService.deleteReports(id);
 
         // 응답
         return "redirect:/admin/boardList";
@@ -173,7 +174,7 @@ public class AdminController {
             throw new CustomException("해당 사용자가 존재하지 않습니다.");
         for(int index = 0; index < Category.values().length; index++) {
             if(Category.values()[index].name().equals(category)) break;
-            if(index == Category.values().length - 1) throw new CustomException("등록 사유를 잘못 입력하였습니다.");
+            if(!category.equals("undo") && index == Category.values().length - 1) throw new CustomException("등록 사유를 잘못 입력하였습니다.");
         }
 
         // 서비스 호출 1- 블랙리스트 등록/해제

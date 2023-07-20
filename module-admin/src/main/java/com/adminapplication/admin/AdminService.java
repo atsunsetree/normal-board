@@ -54,7 +54,6 @@ public class AdminService { // 비즈니스 로직
      * @param id
      * @return
      */
-    @Transactional
     public int setRoleById(Long id, Category category) {
         Role role = Role.BLACK;
 
@@ -107,12 +106,13 @@ public class AdminService { // 비즈니스 로직
 
         // 숨김 처리만 요청할 때 로직
         if(category == null) {
-            if (getBoard(id).getStatus().equals(Status.NORMAL)) adminRepository.updateStatusById(status, id);
-            if (getBoard(id).getStatus().equals(Status.BLACK)) {
+            if (getBoard(id).getStatus().equals(status)) {
                 if (getUser(getBoard(id).getUserId()).getRole().equals(Role.BLACK)) // 블랙리스트인데 숨김 해제할 경우
                     throw new CustomException("블랙리스트입니다. 숨김 해제할 수 없습니다.");
-                adminRepository.updateStatusById(Status.NORMAL, id);
+                adminRepository.updateStatusById(Status.NORMAL.name(), id);
+                return;
             }
+            adminRepository.updateStatusById(status.name(), id);
             return;
         }
 
@@ -120,7 +120,7 @@ public class AdminService { // 비즈니스 로직
         if(category.equals("undo")) status = Status.NORMAL;
 
         for(Board board : getBoards(id)) {
-            adminRepository.updateStatusById(status, board.getId());
+            adminRepository.updateStatusById(status.name(), board.getId());
         }
     }
 
