@@ -41,6 +41,38 @@
       </tr>
     </tbody>
   </table>
+  <div align=center><h1>🐣 프로젝트 시작하는 법</h1></div>
+  </div>
+  <div align=center><h3>1. yml파일 설정하기 : module-board의 yml파일을 설정하세요</h3></div>
+
+  ```yaml
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: utf-8
+      force: true
+
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+  datasource:
+    username: # 본인의mysql 데이터 name
+    password: # 본인의mysql 데이터 password
+    url: # 본인의 mysql 데이터 url
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        ddl-auto: update
+        format_sql: true
+file:
+  dir: C://Users//User//IdeaProjects//normal-board//module-board//src//main//resources//static//asset//upload//
+# 파일 경로는  //normal-board 전까지 본인의 프로젝트 경로로 맞게 설정하세요
+```
   <div align=center><h1>🖥 기능 소개</h1></div>
   <div align=center><h3>1. 회원가입 & 로그인</h3></div>
   <div align=center><h3>2. 회원정보보기 & 수정하기</h3></div>
@@ -50,4 +82,4 @@
   <div align=center><h3>6. 관리자 회원 권한 관리 & email 전송</h3></div>
   <div align=center><h3>7. 관리자 블랙리스트 회원 등록 & 해제</h3></div>
   <div align=center><h3>8. 관리자 게시글 통계 관리 & 게시글 삭제, 숨김, 보이기</h3></div>
-</div>
+
