@@ -9,3 +9,5 @@ public class AdminApplication {
         SpringApplication.run(com.adminapplication.AdminApplication.class, args);
     }
 }
+
+

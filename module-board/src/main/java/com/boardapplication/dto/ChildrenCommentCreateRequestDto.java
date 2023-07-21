@@ -1,7 +1,6 @@
 package com.boardapplication.dto;
 
 
-import com.core.entity.User;
 import lombok.*;
 
 @Getter

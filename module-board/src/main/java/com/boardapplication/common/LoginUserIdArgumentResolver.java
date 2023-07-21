@@ -24,7 +24,12 @@ public class LoginUserIdArgumentResolver implements HandlerMethodArgumentResolve
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public Object resolveArgument(
+            MethodParameter parameter,
+            ModelAndViewContainer mavContainer,
+            NativeWebRequest webRequest,
+            WebDataBinderFactory binderFactory
+    ) {
         UserSessionDto sessionDto = (UserSessionDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         String username = sessionDto.getUsername();
