@@ -101,6 +101,9 @@ mybatis:
     - classpath:mapper/**.xml # classpath -> resource 폴더를 찾음.
   configuration:
     map-underscore-to-camel-case: true # under_score 형식을 카멜표기법으로 변환
+file:
+  dir: C://Users//User//IdeaProjects//normal-board//module-board//src//main//resources//static//asset//upload//report
+# 파일 경로는  //normal-board 전까지 본인의 프로젝트 경로로 맞게 설정하세요
 ```
 <div align=center><h3>2. 포트 다르게 잡기 <br> edit configurations 화면에서 Modify options클릭 -> add VM Options추가<br>-Dserver.port=8080 (board 앱 쪽)<br>-Dserver.port=8081 (admin 앱 쪽)</h3></div>
 
