@@ -42,8 +42,10 @@
     </tbody>
   </table>
   <div align=center><h1>🐣 프로젝트 시작하는 법</h1></div>
+  <div><h4>★본 프로젝트는 관리자 서버와 게시판 서버가 분리되어 있어 프로그램을 실행시키기 위해 설정이 필요합니다★</h4></div>
   </div>
-  <div align=center><h3>1. yml파일 설정하기 : module-board의 yml파일을 설정하세요</h3></div>
+  <div align=center><h3>1. yml파일 설정하기</h3></div>
+  <div align=center><h4>1-1. module-board의 yml파일 설정하기 (게시판 실행시)</h4></div>
 
   ```yaml
 server:
@@ -73,6 +75,42 @@ file:
   dir: C://Users//User//IdeaProjects//normal-board//module-board//src//main//resources//static//asset//upload//
 # 파일 경로는  //normal-board 전까지 본인의 프로젝트 경로로 맞게 설정하세요
 ```
+<div align=center><h4>1-2. module-admin의 yml파일 설정하기 (관리자 실행시)</h4></div>
+
+```yaml
+server:
+  port: 8081
+  servlet:
+    encoding:
+      charset: utf-8
+      force: true
+spring:
+  datasource:
+    username: root
+    password: root1234
+    url: jdbc:mysql://localhost:3306/toy03
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  thymeleaf:
+    prefix: classpath:templates/thymeleaf
+    suffix: .html
+    mode: HTML
+    check-template-location: true
+    cache: false
+mybatis:
+  mapper-locations:
+    - classpath:mapper/**.xml # classpath -> resource 폴더를 찾음.
+  configuration:
+    map-underscore-to-camel-case: true # under_score 형식을 카멜표기법으로 변환
+```
+<div align=center><h3>2. 포트 다르게 잡기 <br> edit configurations 화면에서 Modify options클릭 -> add VM Options추가<br>-Dserver.port=8080 (board 앱 쪽)<br>-Dserver.port=8081 (admin 앱 쪽)</h3></div>
+
+![image](https://github.com/Spring-Board-Toy3/normal-board/assets/69192549/84d5cefe-112f-4caa-98bb-886e83b1324b)
+
+<div align=center>
+  <h3>3. 신고하기 img경로 폴더 생성 : module-board의 다음 경로에 report폴더를 생성해주세요</h3>
+
+  ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/69192549/2083f0a0-1fa5-4562-ad6c-c18748f645c2)
+</div>
   <div align=center><h1>🖥 기능 소개</h1></div>
   <div align=center><h3>1. 회원가입 & 로그인</h3></div>
   <div align=center><h3>2. 회원정보보기 & 수정하기</h3></div>
