@@ -6,8 +6,6 @@ import com.boardapplication.dto.JoinDto;
 import com.boardapplication.repository.UserRepository;
 import com.boardapplication.service.UserService;
 import com.core.entity.User;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -29,7 +27,6 @@ public class UserController {
     private final JoinValidator joinValidator;
     private final UserService userService;
     private final UserRepository userRepository;
-    private final ObjectMapper objectMapper;
 
     @InitBinder("joinDto")
     public void initBinder(WebDataBinder webDataBinder) {
@@ -44,9 +41,7 @@ public class UserController {
         } else {
             return "redirect:/login";
         }
-
     }
-
 
     @GetMapping("/join")
     public String join(Model model) {
@@ -54,11 +49,11 @@ public class UserController {
         return "/join";
     }
 
-
-
     @PostMapping("/join")
-    public String joinDto(@Valid JoinDto joinDto, Errors errors) {
-        //System.out.println(errors.getAllErrors());
+    public String joinDto(
+            @Valid JoinDto joinDto,
+            Errors errors
+    ) {
         if (errors.hasErrors()) {
             return "/join";
         }
@@ -68,7 +63,7 @@ public class UserController {
     }
 
     @GetMapping("/checkusername")
-    public ResponseEntity<CheckDuplicateNicknameResponseDto> checkUsername(@RequestParam String username) throws JsonProcessingException {
+    public ResponseEntity<CheckDuplicateNicknameResponseDto> checkUsername(@RequestParam String username) {
         System.out.println("username = " + username);
         if (userRepository.existsByUsername(username)) {
             CheckDuplicateNicknameResponseDto checkDuplicateNicknameResponseDto = CheckDuplicateNicknameResponseDto.builder()
@@ -83,8 +78,6 @@ public class UserController {
             return ResponseEntity.ok(checkDuplicateNicknameResponseDto);
         }
     }
-
-
 
     @GetMapping("/profile")
     public String profile() {

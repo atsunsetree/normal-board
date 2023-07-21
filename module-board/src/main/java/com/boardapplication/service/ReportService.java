@@ -27,8 +27,12 @@ public class ReportService {
     private final ReportRepository reportRepository;
     private final BoardRepository boardRepository;
 
-
-    public void create(long userId, Long boardId, MultipartFile file, Category category) throws IOException {
+    public void create(
+            long userId,
+            Long boardId,
+            MultipartFile file,
+            Category category
+    ) throws IOException {
         User user = userRepository.getReferenceById(userId);
         Board board = boardRepository.getReferenceById(boardId);
 

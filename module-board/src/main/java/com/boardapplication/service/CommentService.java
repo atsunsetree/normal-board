@@ -38,7 +38,12 @@ public class CommentService {
         return commentRepository.save(comment);
 
     }
-    public void createChildren(Long userId, Long boardId, Long commentId, CommentCreateRequestDto commentCreateRequestDto) {
+    public void createChildren(
+            Long userId,
+            Long boardId,
+            Long commentId,
+            CommentCreateRequestDto commentCreateRequestDto
+    ) {
         User user = userRepository.getReferenceById(userId);
         Board board = boardRepository.getReferenceById(boardId);
         Comment comment = commentRepository.getReferenceById(commentId);

@@ -1,6 +1,5 @@
 package com.adminapplication.admin;
 
-import com.adminapplication.dto.AllReportsResponseDto;
 import com.adminapplication.dto.LoginRequestDto;
 import com.adminapplication.dto.ReportDetailsResponseDto;
 import com.adminapplication.email.EmailService;
@@ -11,19 +10,24 @@ import com.core.entity.Category;
 import com.core.entity.Role;
 import com.core.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+
+    @Value("${file.dir}")
+    private String dirPath;
 
     @Autowired
     private HttpSession session;
@@ -251,4 +255,15 @@ public class AdminController {
         return "redirect:/admin/login";
     }
 
+    @GetMapping(value = "/report/{fileName}")
+    @ResponseBody
+    public byte[] getImage(@PathVariable String fileName) {
+        try (InputStream inputStream = new FileInputStream(dirPath + fileName)){
+            return inputStream.readAllBytes();
+        }catch (Exception e){
+            throw new CustomException("파일이 손상되었습니다.");
+        }
+    }
 }
+
+

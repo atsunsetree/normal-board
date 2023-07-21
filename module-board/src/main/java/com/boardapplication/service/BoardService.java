@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -74,6 +75,7 @@ public class BoardService {
     private Page<BoardDto> getNormalBoardList(Pageable pageable) {
         Page<Board> boards = boardRepository.findByRoleAndStatus(Role.NORMAL, Status.NORMAL, pageable);
         List<BoardDto> boardDtoList = new ArrayList<>();
+
         for(Board board : boards){
             if(board.getStatus().equals(Status.NORMAL)){
                 User user = userRepository.findById(board.getUser().getId()).orElse(null);
@@ -100,6 +102,7 @@ public class BoardService {
     private Page<BoardDto> getVipBoardList(Pageable pageable) {
         Page<Board> boards = boardRepository.findByRoleAndStatus(Role.VIP, Status.NORMAL, pageable);
         List<BoardDto> boardDtoList = new ArrayList<>();
+
         for(Board board : boards){
             if(board.getStatus().equals(Status.NORMAL)){
                 User user = userRepository.findById(board.getUser().getId()).orElse(null);
@@ -126,15 +129,13 @@ public class BoardService {
         Page<Board> boards = null;
         List<BoardDto> boardDtoList = new ArrayList<>();
 
-        if(searchType.equals("boardTitle")){
+        if(searchType.equals("boardTitle"))
             boards = boardRepository.findByTitleContainingAndStatus(keyword, Status.NORMAL, pageable);
-        }
-        else if(searchType.equals("boardWriter")){
+        else if(searchType.equals("boardWriter"))
             boards = boardRepository.findByNicknameContainingAndStatus(keyword, Status.NORMAL, pageable);
-        }
-        else {
+        else
             boards = boardRepository.findByContentContainingAndStatus(keyword, Status.NORMAL, pageable);
-        }
+
         for(Board board : boards){
             if(board.getStatus().equals(Status.NORMAL)){
                 User user = userRepository.findById(board.getUser().getId()).orElse(null);
@@ -158,7 +159,11 @@ public class BoardService {
 
 
     @Transactional
-    public Long save(Long userId, CreateBoardRequestDto createBoardRequestDto, MultipartFile file) throws IOException {
+    public Long save(
+            Long userId,
+            CreateBoardRequestDto createBoardRequestDto,
+            MultipartFile file
+    ) throws IOException {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 유저입니다"));
@@ -166,6 +171,7 @@ public class BoardService {
         Board board = null;
         if (file.isEmpty()) {
             board = Board.builder()
+                    .status(Status.NORMAL)
                     .title(createBoardRequestDto.getTitle())
                     .content(createBoardRequestDto.getContent())
                     .user(user)
@@ -174,26 +180,30 @@ public class BoardService {
             return boardRepository.save(board).getId();
         }
 
-
         String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
         String fullPath = fileDir + fileName;
         file.transferTo(new File(fullPath));
         board = Board.builder()
+                .status(Status.NORMAL)
                 .title(createBoardRequestDto.getTitle())
                 .content(createBoardRequestDto.getContent())
                 .thumbnail(fileName)
                 .status(Status.NORMAL)
                 .user(user)
                 .build();
+
         return boardRepository.save(board).getId();
     }
 
     @Transactional(readOnly = true)
-    public Board getBoardById(Long boardId) {
+    public Board getBoardById(Long boardId) throws EntityNotFoundException {
         return boardRepository.getReferenceById(boardId);
     }
 
-    public Board update(Long boardId, UpdateBoardRequestDto updateBoardRequestDto) {
+    public Board update(
+            Long boardId,
+            UpdateBoardRequestDto updateBoardRequestDto
+    ) {
         Board findBoard = getBoardById(boardId);
         findBoard.update(updateBoardRequestDto.getTitle(), updateBoardRequestDto.getContent());
         return findBoard;

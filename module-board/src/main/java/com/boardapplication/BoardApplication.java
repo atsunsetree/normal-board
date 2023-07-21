@@ -10,10 +10,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @EntityScan(basePackageClasses = {EntityBasePackage.class, BoardBasePackage.class})
-public class BoardapplicationApplication {
+public class BoardApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BoardapplicationApplication.class, args);
+        SpringApplication.run(BoardApplication.class, args);
     }
 
 }
