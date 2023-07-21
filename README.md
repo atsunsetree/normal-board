@@ -86,9 +86,9 @@ server:
       force: true
 spring:
   datasource:
-    username: root
-    password: root1234
-    url: jdbc:mysql://localhost:3306/toy03
+    username: # 본인의mysql 데이터 name
+    password: # 본인의mysql 데이터 password
+    url: # 본인의 mysql 데이터 url
     driver-class-name: com.mysql.cj.jdbc.Driver
   thymeleaf:
     prefix: classpath:templates/thymeleaf
@@ -96,6 +96,18 @@ spring:
     mode: HTML
     check-template-location: true
     cache: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: # 보내는이 이름
+    password: # 본인 설정 gmail 인증 비밀번호
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
 mybatis:
   mapper-locations:
     - classpath:mapper/**.xml # classpath -> resource 폴더를 찾음.
@@ -115,11 +127,25 @@ file:
   ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/69192549/2083f0a0-1fa5-4562-ad6c-c18748f645c2)
 </div>
   <div align=center><h1>🖥 기능 소개</h1></div>
-  <div align=center><h3>1. 회원가입 & 로그인</h3></div>
+  <div align=center><h3>1. 회원가입 & 로그인<br>- 회원가입시 아이디 중복체크</h3></div>
+
+  ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/69192549/765404a2-5c3a-4478-8bd5-6d1c8d79db20)
+  ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/69192549/b9846e60-db50-4281-9d0d-f8c1c3b638e0)
+
+
   <div align=center><h3>2. 회원정보보기 & 수정하기</h3></div>
-  <div align=center><h3>3. 게시글 목록보기 & 검색</h3></div>
-  <div align=center><h3>4. 게시글 상세보기 & 삭제, 수정하기</h3></div>
+  <div align=center><h3>3. 게시글 목록보기 & 검색 <br> - 게시글은 한줄에 3개 한 페이지당 6개씩 카드형식으로 출력 <br> - 제목, 게시글, 작성자로 검색 가능 (검색어가 게시글에 포함될시 검색됨) </h3></div>
+
+  ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/69192549/49da422a-aeb0-4c14-997c-c454720753f2)
+
+  <div align=center><h3>4. 게시글 상세보기 & 삭제, 수정하기<br> - 본인이 작성한 게시글일시 삭제, 수정하기 버튼이 뜸</h3></div>
+
+  ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/69192549/3a0eacf6-bcc2-404d-8db2-6478a1e1129e)
+
   <div align=center><h3>5. 게시글 댓글쓰기 & 삭제하기</h3></div>
+
+  ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/69192549/c9322784-755a-4884-b046-d9787691142a)
+
   <div align=center><h3>6. 관리자 회원 권한 관리 & email 전송</h3></div>
   <div align=center><h3>7. 관리자 블랙리스트 회원 등록 & 해제</h3></div>
   <div align=center><h3>8. 관리자 게시글 통계 관리 & 게시글 삭제, 숨김, 보이기</h3></div>
