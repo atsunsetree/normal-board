@@ -23,9 +23,10 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.csrf().disable()
-                .authorizeRequests()
-                .mvcMatchers("/**").permitAll()
+
+         http.csrf().disable()
+            .authorizeRequests()
+            .mvcMatchers("/**").permitAll()
 
 //                .mvcMatchers("/", "/test", "/login", "/join", "/profile").permitAll()
                 /*
@@ -35,16 +36,16 @@ public class SecurityConfig {
                 .mvcMatchers("/board/{username}").authenticated() //.access("hasRole('')")
 
                  */
-                .anyRequest().authenticated()
-                .and()
+            .anyRequest().authenticated()
+            .and()
+
                 .formLogin()
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/")
-                .and()
-                .logout().logoutSuccessUrl("/")
-                .and().build();
-    }
+            .and()
+                 .logout().logoutSuccessUrl("/");
+            return http.build();}
 }
 
