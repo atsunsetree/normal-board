@@ -31,7 +31,7 @@ public class UserService {
     private final BoardService boardService;
     private final ModelMapper modelMapper;
 
-    public User processNewUser(JoinDto joinDto) {
+    public User processNewUser(@Valid JoinDto joinDto) {
         User newUser = saveNewUser(joinDto);
         return userRepository.save(newUser);
     }
@@ -43,7 +43,21 @@ public class UserService {
     }
 
     public void updatePassword(User user, String newPassword) {
+        User persistance = userRepository.findById(user.getId()).orElseThrow(()->{
+            return new IllegalArgumentException("회원 찾기 실패");
+        });
+        newPassword = user.getPassword();
         user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    public void updateUserInfo(User user, JoinDto joinDto) {
+        User userOp = userRepository.findByUsername(joinDto.getUsername());
+        String newNickname = joinDto.getNickname();
+        String newEmail = joinDto.getEmail();
+
+        user.setNickname(newNickname);
+        user.setEmail(newEmail);
         userRepository.save(user);
     }
 

@@ -20,7 +20,7 @@
                     <input id="username" type="text" th:field="*{username}" class="form-control"
                            placeholder="username" aria-describedby="usernameHelp" required minlength="3" maxlength="20">
                     <div class="input-group-append">
-                        <button type="submit" class="btn btn-secondary btn-sm">중복검사</button>
+                        <button type="submit" class="btn btn-secondary btn-sm" >중복검사</button>
                     </div>
                     <div th:if="${duplicateResult}" th:text="${duplicateResult}" id="duplicateResult"></div>
                 </div>

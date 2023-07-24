@@ -62,3 +62,13 @@ a{
     margin-left: 5px;
     font-size: large;
 }
+.btn-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-secondary {
+    color: #ffffff; /* 글씨색을 흰색으로 설정 */
+    background-color: #8a2be2; /* 배경색을 보라색으로 설정 */
+    margin-left: 15px;
+}

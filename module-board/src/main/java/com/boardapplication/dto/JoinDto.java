@@ -45,4 +45,13 @@ public class JoinDto {
         return user;
     }
 
+    @Data
+    public class updateInfoDto {
+        //username, email,role,createdAt
+        private Long id;
+        private String nickname;
+        private String email;
+
+    }
+
 }
