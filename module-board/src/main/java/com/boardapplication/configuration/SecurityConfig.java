@@ -3,6 +3,7 @@ package com.boardapplication.configuration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,18 +27,17 @@ public class SecurityConfig {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .mvcMatchers("/**").permitAll()
+                //.mvcMatchers("/**").permitAll()
 
-//                .mvcMatchers("/", "/test", "/login", "/join", "/profile").permitAll()
-                /*
-                .mvcMatchers("/login").not().fullyAuthenticated() //
-                .mvcMatchers("/user/**").authenticated()
-                .mvcMatchers(HttpMethod.GET, "/user/{username}").authenticated()
-                .mvcMatchers("/board/{username}").authenticated() //.access("hasRole('')")
+                .antMatchers("/login").not().fullyAuthenticated() //
+                .antMatchers("/user/**", "/board/**").authenticated()
+                .antMatchers(HttpMethod.GET, "/user/{username}").authenticated()
+                //.antMatchers("/board/{id}").authenticated().access("hasRole('')")
 
-                 */
+
                 .anyRequest().authenticated()
                 .and()
+
 
                 .formLogin()
                 .usernameParameter("username")

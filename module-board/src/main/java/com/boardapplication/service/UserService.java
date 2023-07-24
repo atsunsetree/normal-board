@@ -60,5 +60,13 @@ public class UserService {
             }
         }
     }
+    public void updateUserInfo(User user, JoinDto joinDto) {
+        User userOp = userRepository.findByUsername(joinDto.getUsername());
+        String newNickname = joinDto.getNickname();
+        String newEmail = joinDto.getEmail();
 
+        user.setNickname(newNickname);
+        user.setEmail(newEmail);
+        userRepository.save(user);
+    }
 }

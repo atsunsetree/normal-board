@@ -25,4 +25,13 @@ public class JoinDto {
     @Length(min = 3, max = 20)
     @Pattern(regexp = "^[a-zA-Z가-힣]{3,20}$")
     private String nickname;
+
+    @Data
+    public class updateInfoDto {
+        //username, email,role,createdAt
+        private Long id;
+        private String nickname;
+        private String email;
+
+    }
 }
