@@ -134,6 +134,7 @@ file:
 
 
   <div align=center><h3>2. 회원정보보기 & 수정하기</h3></div>
+  
   <div align=center><h3>3. 게시글 목록보기 & 검색 <br> - 게시글은 한줄에 3개 한 페이지당 6개씩 카드형식으로 출력 <br> - 제목, 게시글, 작성자로 검색 가능 (검색어가 게시글에 포함될시 검색됨) </h3></div>
 
   ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/69192549/49da422a-aeb0-4c14-997c-c454720753f2)
@@ -147,6 +148,24 @@ file:
   ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/69192549/c9322784-755a-4884-b046-d9787691142a)
 
   <div align=center><h3>6. 관리자 회원 권한 관리 & email 전송</h3></div>
+  
+  ![스크린샷 2023-07-21 오후 9 20 08](https://github.com/Spring-Board-Toy3/normal-board/assets/68175311/dfdb3294-a3c0-426f-a015-e6ddb27a6e09)
+  
   <div align=center><h3>7. 관리자 블랙리스트 회원 등록 & 해제</h3></div>
+  
+  ![스크린샷 2023-07-21 오후 9 20 38](https://github.com/Spring-Board-Toy3/normal-board/assets/68175311/1344fd45-b888-42e7-9b5f-f867bd3d15aa)
+  
   <div align=center><h3>8. 관리자 게시글 통계 관리 & 게시글 삭제, 숨김, 보이기</h3></div>
+
+  ![스크린샷 2023-07-21 오후 9 20 20](https://github.com/Spring-Board-Toy3/normal-board/assets/68175311/7f10682c-10b7-4472-8741-ee500e72f32c)
+
+  <div align=center><h3>9. 관리자 신고 목록 페이지</h3></div>
+  
+  ![스크린샷 2023-07-21 오후 9 20 23](https://github.com/Spring-Board-Toy3/normal-board/assets/68175311/ccfdc705-b7e7-4fb8-b7ac-10b390592e6f)
+
+  <div align=center><h3>10. 관리자 사용자 예외 페이지</h3></div>
+  
+  ![스크린샷 2023-07-21 오후 9 21 57](https://github.com/Spring-Board-Toy3/normal-board/assets/68175311/d71d5f60-c9e5-4046-b10c-727779149b48)
+
+  
 
