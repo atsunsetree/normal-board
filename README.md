@@ -34,10 +34,32 @@
   <table>
     <tbody>
       <tr>
-        <td align="center"><a href="https://github.com/a07224"><img src="https://avatars.githubusercontent.com/u/69192549?v=4" width="100px;" alt=""/><br /><sub><b>강주희 : 게시판</b></sub></a><br /></td>
-        <td align="center"><a href="https://github.com/k1m2njun"><img src="https://avatars.githubusercontent.com/u/68175311?v=4" width="100px;" alt=""/><br /><sub><b>길민준 : 관리자</b></sub></a><br /></td>
-        <td align="center"><a href="https://github.com/cxxxtxxyxx"><img src="https://avatars.githubusercontent.com/u/109710879?v=4" width="100px;" alt=""/><br /><sub><b>최태윤 : 게시판</b></sub></a><br /></td>
-        <td align="center"><a href="https://github.com/atsunsetree"><img src="https://avatars.githubusercontent.com/u/128345842?v=4" width="100px;" alt=""/><br /><sub><b>최해솔 : 회원가입</b></sub></a><br /></td>
+        <td align="center"><a href="https://github.com/a07224">
+          <img src="https://avatars.githubusercontent.com/u/69192549?v=4" width="100px;" alt=""/><br /><sub><b>강주희 : 게시판</b></sub></a><br />
+        </td>
+        <td align="center"><a href="https://github.com/k1m2njun">
+          <img src="https://avatars.githubusercontent.com/u/68175311?v=4" width="100px;" alt=""/><br /><sub><b>길민준 : 관리자</b></sub></a><br />
+        </td>
+        <td align="center"><a href="https://github.com/cxxxtxxyxx">
+          <img src="https://avatars.githubusercontent.com/u/109710879?v=4" width="100px;" alt=""/><br /><sub><b>최태윤 : 게시판</b></sub></a><br />
+        </td>
+        <td align="center"><a href="https://github.com/atsunsetree">
+          <img src="https://avatars.githubusercontent.com/u/128345842?v=4" width="100px;" alt=""/><br /><sub><b>최해솔 : 회원가입</b></sub></a><br />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          게시판 조회,<br />스케쥴러 리팩토링,<br />사용자 예외 페이지,<br />화면 구현<br />페이징, 검색 기능
+        </td>
+        <td>
+          gradle multi module 적용,<br />관리자 api,<br />세션 기반 로그인,<br />예외처리 등<br />관리자<br />api 및 화면 일체
+        </td>
+        <td>
+          댓글 기능 구현,<br />게시판 글쓰기 구현,<br />깃허브 관리
+        </td>
+        <td>
+          security 적용<br />사용자 회원 정보<br />관련 일체,<br />화면 구현
+        </td>
       </tr>
     </tbody>
   </table>
