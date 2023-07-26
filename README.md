@@ -149,18 +149,21 @@ file:
   ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/69192549/2083f0a0-1fa5-4562-ad6c-c18748f645c2)
 </div>
   <div align=center><h1>🖥 기능 소개</h1></div>
-  <div align=center><h3>1. 회원가입 & 로그인<br>- 회원가입시 아이디 중복체크</h3></div>
-
+  <div align=center><h3>1. 회원가입(/join) & 로그인(/login)<br>- 회원가입시 아이디 중복체크</h3></div> 
+<div align=center>
+  
   ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/69192549/765404a2-5c3a-4478-8bd5-6d1c8d79db20)
   ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/69192549/b9846e60-db50-4281-9d0d-f8c1c3b638e0)
 
-
-  <div align=center><h3>2. 회원정보보기 & 수정하기</h3></div>
+  <div align=center><h3>2. 회원정보보기(/user/{id})</h3></div>
 
   ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/128345842/a0ccc1df-eb27-4f53-a440-17a75f15fa30)
+
+  <div align=center><h3>2-1. 회원정보 수정하기(버튼클릭)</h3></div>
+
   ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/128345842/44fd00c6-d859-498d-ac22-bb54f11433e1)
   ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/128345842/a0508ec5-14f3-4fb2-bf91-da8751559c6a)
-
+</div>
 
   
   <div align=center><h3>3. 게시글 목록보기 & 검색 <br> - 게시글은 한줄에 3개 한 페이지당 6개씩 카드형식으로 출력 <br> - 제목, 게시글, 작성자로 검색 가능 (검색어가 게시글에 포함될시 검색됨) </h3></div>
