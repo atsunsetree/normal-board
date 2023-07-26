@@ -157,6 +157,10 @@ file:
 
   <div align=center><h3>2. 회원정보보기 & 수정하기</h3></div>
 
+  ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/128345842/a0ccc1df-eb27-4f53-a440-17a75f15fa30)
+  ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/128345842/44fd00c6-d859-498d-ac22-bb54f11433e1)
+  ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/128345842/a0508ec5-14f3-4fb2-bf91-da8751559c6a)
+
 
   
   <div align=center><h3>3. 게시글 목록보기 & 검색 <br> - 게시글은 한줄에 3개 한 페이지당 6개씩 카드형식으로 출력 <br> - 제목, 게시글, 작성자로 검색 가능 (검색어가 게시글에 포함될시 검색됨) </h3></div>
