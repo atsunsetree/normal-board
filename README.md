@@ -156,9 +156,6 @@ file:
 
 
   <div align=center><h3>2. 회원정보보기 & 수정하기</h3></div>
-  ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/128345842/a0ccc1df-eb27-4f53-a440-17a75f15fa30)
-  ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/128345842/44fd00c6-d859-498d-ac22-bb54f11433e1)
-  ![image](https://github.com/Spring-Board-Toy3/normal-board/assets/128345842/a0508ec5-14f3-4fb2-bf91-da8751559c6a)
 
 
   
