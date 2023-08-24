@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th=":http://www.thymeleaf.org">
+    <th:block th:replace="~{/layout/header :: header('블랙리스트 목록')}"></th:block>
+    <body>
+        <nav th:replace="~{/layout/navbar :: navbar}"></nav>
+        <div class="container">
+            <table class="table table-hover">
+                <thead>
+                    <th scope="col">사용자</th>
+                    <th scope="col">사유</th>
+                    <th scope="col">등록일자</th>
+                </thead>
+                <tbody th:each="blacklist : ${blacklists}" class="table-group-divider">
+                    <span>
+                        <tr>
+                            <td th:text="${blacklist.getUsername}"></td>
+                            <td th:text="${blacklist.getCategory.getValue()}"></td>
+                            <td th:text="${blacklist.getCreatedAt}"></td>
+                            <form name="blacklistButton">
+                                <td>
+                                    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#deleteBlacklistModal" th:attr="data-bs-target='#deleteBlacklistModal'+${blacklist.getId}">블랙리스트 해제</button>
+                                </td>
+                            </form>
+                        </tr>
+                    </span>
+                    <!-- Blacklist undo Modal, 고유 번호 부여 th:id="deleteABoardModal+${board.getId}" -->
+                    <div class="modal fade" th:id="deleteBlacklistModal+${blacklist.getId}" aria-labelledby="deleteBlacklistModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered"> <!-- Modal 중앙 배치 modal-dialog-centered -->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="deleteBlacklistModalLabel">블랙리스트 해제 확인</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    블랙리스트를 해제합니다.<br>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                    <a type="button" class="btn btn-success" th:href="@{/admin/blacklist/{id}/register(id=${blacklist.getUserId}, category='undo')}">확인</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+    </body>
+</html>

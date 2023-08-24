@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th=":http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/board.css}"/>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-light" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+        <ul class="nav justify-content-center">
+            <a class="navbar-brand" href="#">검색게시글 목록</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/boardList/normal}">새싹게시판</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/boardList/vip}">우수게시판</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search" style="margin-left: 15px" action="/searchBoardList" method="get">
+                    <select name="searchType">
+                        <option th:value=boardTitle>제목</option>
+                        <option th:value=boardWriter>작성자</option>
+                        <option th:value=boardContent>내용</option>
+                    </select>
+                    <input class="form-control me-2" type="search" name="keyword" placeholder="검색어를 입력하세요." aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Serch</button>
+                </form>
+                <a class="btn btn-outline-secondary" style="color: #86b7fe; margin-left: 15px" href="#" role="button">글쓰기</a>
+            </div>
+        </ul>
+    </div>
+</nav>
+<script th:if="${noResults}">
+    alert("검색 결과가 없습니다.");
+    window.location.href="/boardList";
+</script>
+<div id="contents" class="contents">
+    <div class="card-grid">
+        <div th:each="board, index : ${boardPage.content}" class="board-list">
+            <div class="card">
+                <a th:href="@{'/boardDetail/' + ${board.id}}">
+                    <div class="card-body">
+                        <img th:src="@{|/board/image/${board.thumbnail}|}" class="img-thumbnail" alt="이미지가 없습니다" src="" style="width: 300px; height: 150px"/>
+                        <h3 class="board-number" th:text="${board.id +'번'}" style="margin-top: 5px"></h3>
+                        <h6 class="board-title" th:text="${'제목: '+ board.title}"></h6>
+                        <p class="board-userId" th:text="${'닉네임: ' + board.userNickname}"></p>
+                        <p class="board-content" th:text="${'내용: ' + #strings.replace(board.content, '<p>', '').replace('</p>', '')}"></p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="pagination-block">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/searchBoardList(searchType=${param.searchType}, keyword=${param.keyword}, page=${nowPage > 0 ? nowPage - 1 : 0})}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <th:block th:classappend="${'page-item'}" th:each="page:${#numbers.sequence(startPage,endPage > 0 ? endPage : 1)}">
+                        <a th:if="${page != nowPage+1}" th:href="@{/searchBoardList(searchType=${param.searchType}, keyword=${param.keyword}, page=${page-1})}" th:text ="${page}"></a>
+                        <strong th:if="${page-1==nowPage}" th:text ="${page}" style="color:cornflowerblue"></strong>
+                    </th:block>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/searchBoardList(searchType=${param.searchType}, keyword=${param.keyword}, page=${nowPage+1 < endPage ? nowPage+1 : nowPage})}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+</body>
+</html>
